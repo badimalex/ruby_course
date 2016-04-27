@@ -1,5 +1,4 @@
-== README
-For intsall bundle:
+## Installation
 
 ```bash
 $ bundle
