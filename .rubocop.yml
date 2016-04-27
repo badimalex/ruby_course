@@ -1,13 +1,15 @@
 Documentation:
   Enabled: false
+Metrics/LineLength:
+  Max: 99
 AllCops:
   Include:
   - 'app/**/*.rb'
   - 'test/**/*.rb'
+  - 'spec/**/*.rb'
   Exclude:
   - 'config/**/*.rb'
   - 'vendor/**/*.rb'
-  - 'spec/**/*.rb'
   - 'db/**/*.rb'
   - 'app/helpers/*.rb'
   - 'test/*.rb'
