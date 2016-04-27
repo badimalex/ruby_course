@@ -1,0 +1,14 @@
+Documentation:
+  Enabled: false
+AllCops:
+  Include:
+  - 'app/**/*.rb'
+  - 'test/**/*.rb'
+  Exclude:
+  - 'config/**/*.rb'
+  - 'vendor/**/*.rb'
+  - 'spec/**/*.rb'
+  - 'db/**/*.rb'
+  - 'app/helpers/*.rb'
+  - 'test/*.rb'
+  - 'bin/**/*'
