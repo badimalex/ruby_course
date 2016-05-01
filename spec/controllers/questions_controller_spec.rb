@@ -40,7 +40,7 @@ RSpec.describe QuestionsController do
     end
   end
 
-  describe 'GET #new' do
+  describe 'GET #edit' do
     before { get :edit, id: question }
 
     it 'assigns the requested question to @question' do
