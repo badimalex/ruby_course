@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
-  
+
   describe 'POST #new' do
     context 'with valid attributes' do
       it 'saves the new answer in database' do
@@ -23,12 +23,12 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       it 'does not save answer' do
-        expect { post :create, question_id: question.id, answer: {body: nil} }
+        expect { post :create, question_id: question.id, answer: { body: nil } }
           .to_not change(Answer, :count)
       end
 
       it 're-render new view' do
-        post :create, question_id: question.id, answer: {body: nil}
+        post :create, question_id: question.id, answer: { body: nil }
         expect(response).to render_template :new
       end
     end
