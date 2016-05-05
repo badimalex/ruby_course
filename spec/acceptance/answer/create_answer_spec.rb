@@ -10,8 +10,8 @@ feature 'Answer a question' do
 
     visit question_path
     click_on 'Add answer'
-    fill_in 'Body', with: 'My awesome answer body'
-    click_on 'Send'
+    fill_in 'Your Answer', with: 'My awesome answer body'
+    click_on 'Post Your Answer'
 
     expect(page).to have_content 'My awesome answer body'
   end
