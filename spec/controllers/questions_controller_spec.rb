@@ -26,6 +26,11 @@ RSpec.describe QuestionsController do
     it 'renders show view' do
       expect(response).to render_template :show
     end
+    
+    # как протестировать что у вопроса есть ответы на уровне юнит тестов?
+    # it 'populates an array of all answers' do
+    #   expect(assigns(:answers)).to match_array(answers)
+    # end
   end
 
   describe 'GET #new' do
