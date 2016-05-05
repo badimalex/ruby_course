@@ -4,8 +4,6 @@ feature 'User sign in' do
   given(:user) { create(:user) }
 
   scenario 'Registered user try to sign in' do
-    visit new_user_session_path
-
     sign_in user
 
     expect(page).to have_content 'Signed in successfully.'
