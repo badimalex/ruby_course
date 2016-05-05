@@ -8,7 +8,7 @@ feature 'Answer a question' do
     User.create!(email: 'user@test.com', password: '12345678')
     sign_in user
 
-    visit question_path
+    visit question_path question
     click_on 'Add answer'
     fill_in 'Your Answer', with: 'My awesome answer body'
     click_on 'Post Your Answer'
