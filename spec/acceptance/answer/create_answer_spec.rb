@@ -15,4 +15,11 @@ feature 'Answer a question' do
 
     expect(page).to have_content 'My awesome answer body'
   end
+  
+  scenario 'Non-authenticated user tries to answer a question' do
+    visit question_path question
+    
+    click_on 'Add answer'
+    expect(page). to have_content 'You need to sign in or sign up before continuing.'
+  end
 end
