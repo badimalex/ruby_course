@@ -9,6 +9,7 @@ feature 'Create question' do
     sign_in user
 
     visit questions_path
+    # а как протестировать добавление ответа, безе перехода на отдельную страницу?
     click_on 'Ask question'
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'My awesome question body'
