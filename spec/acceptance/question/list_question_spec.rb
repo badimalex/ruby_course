@@ -10,3 +10,4 @@ feature 'List question' do
     end
   end
 end
+# здесь только один сценарий, еще какие то могут быть?
