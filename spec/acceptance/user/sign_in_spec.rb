@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 feature 'User sign in' do
-  given(:user) { create(:user) }
-
   scenario 'Registered user try to sign in' do
-    sign_in user
+    sign_in
 
     expect(page).to have_content 'Signed in successfully.'
     expect(current_path).to eq root_path

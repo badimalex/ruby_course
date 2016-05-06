@@ -1,15 +1,11 @@
 require 'rails_helper'
 
 feature 'Create question' do
-  given(:user) { create(:user) }
-
   scenario 'Authenticated user creates a question' do
-    User.create!(email: 'user@test.com', password: '12345678')
-
-    sign_in user
+    sign_in
 
     visit questions_path
-    # а как протестировать добавление ответа, безе перехода на отдельную страницу?
+    # а как протестировать добавление ответа, без перехода на отдельную страницу?
     click_on 'Ask question'
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'My awesome question body'
