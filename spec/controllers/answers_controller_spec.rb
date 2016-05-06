@@ -1,14 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  sign_in_user
   let(:question) { create(:question, user: @user) }
+  let(:answer){ create(:answer, user: @user, question: question) }
 
   describe 'POST #new' do
     sign_in_user
     context 'with valid attributes' do
       it 'saves the new answer in database' do
         expect { post :create, question_id: question.id, answer: attributes_for(:answer) }
-          .to change(Answer, :count).by(1)
+          .to change(question.answers, :count).by(1) && change(@user.answers, :count).by(1)
       end
 
       it 'associates answer with question' do
@@ -31,6 +33,15 @@ RSpec.describe AnswersController, type: :controller do
       it 're-render new view' do
         post :create, question_id: question.id, answer: { body: nil }
         expect(response).to render_template :new
+      end
+    end
+  end
+  
+  describe 'Delete #destroy' do
+    context 'Author deletes own answer' do
+      it 'deletes answer' do
+        answer
+        expect { delete :destroy, question_id: question, id: answer }.to change(question.answers, :count).by(-1)
       end
     end
   end
