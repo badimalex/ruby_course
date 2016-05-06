@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 feature 'Answer a question' do
-  given(:user) { create(:user) }
   given(:question) { create(:question) }
 
   scenario 'User answer a question' do
-    User.create!(email: 'user@test.com', password: '12345678')
-    sign_in user
+    sign_in
 
     visit question_path question
     click_on 'Add answer'
@@ -18,7 +16,7 @@ feature 'Answer a question' do
   
   scenario 'Non-authenticated user tries to answer a question' do
     visit question_path question
-    
+
     click_on 'Add answer'
     expect(page). to have_content 'You need to sign in or sign up before continuing.'
   end
