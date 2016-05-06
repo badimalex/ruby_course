@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   sign_in_user
   let(:question) { create(:question, user: @user) }
-  let(:answer){ create(:answer, user: @user, question: question) }
+  let(:answer) { create(:answer, user: @user, question: question) }
 
   describe 'POST #new' do
     sign_in_user
@@ -36,7 +36,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
-  
+
   describe 'Delete #destroy' do
     context 'Author deletes own answer' do
       it 'deletes answer' do

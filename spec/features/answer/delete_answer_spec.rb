@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 feature 'Delete answer' do
-  
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given(:answer){ create(:answer, user: user, question: question) }
-  given(:another_answer){ create(:answer, user: create(:user), question: question) }
+  given(:answer) { create(:answer, user: user, question: question) }
+  given(:another_answer) { create(:answer, user: create(:user), question: question) }
 
   scenario 'Author deletes own answer' do
     sign_in user

@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  
+
   def author_of(entity)
-    self.id==entity.user_id
+    id == entity.user_id
   end
 end
