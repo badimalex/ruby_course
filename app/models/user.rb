@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
-  def author_of(question)
-    self.id==question.user_id
+  def author_of(entity)
+    self.id==entity.user_id
   end
 end
