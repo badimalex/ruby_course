@@ -7,9 +7,8 @@ module AcceptanceHelper
     click_on 'Sign up'
   end
 
-  def sign_in
+  def sign_in(user = create(:user))
     visit new_user_session_path
-    user = create(:user)
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password
     click_on 'Log in'

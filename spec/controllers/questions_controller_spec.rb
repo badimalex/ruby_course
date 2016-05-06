@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController do
-  let(:question) { create(:question) }
+  sign_in_user # ничего страшного что вынес сюда?
+  let(:question) { create(:question, user: @user) }
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
 
@@ -34,7 +36,6 @@ RSpec.describe QuestionsController do
   end
 
   describe 'GET #new' do
-    sign_in_user
 
     before { get :new }
 
@@ -48,7 +49,6 @@ RSpec.describe QuestionsController do
   end
 
   describe 'GET #edit' do
-    sign_in_user
 
     before { get :edit, id: question }
 
@@ -62,11 +62,9 @@ RSpec.describe QuestionsController do
   end
 
   describe 'POST #create' do
-    sign_in_user
-
     context 'with valid attributes' do
       it 'saves the new question in the database' do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by(1)
       end
       it 'redirect to show view' do
         post :create, question: attributes_for(:question)
@@ -75,7 +73,7 @@ RSpec.describe QuestionsController do
     end
     context 'with invalid attributes' do
       it 'does not save the question' do
-        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(@user.questions, :count)
       end
       it 're-renders new view' do
         post :create, question: attributes_for(:invalid_question)
@@ -85,8 +83,6 @@ RSpec.describe QuestionsController do
   end
 
   describe 'PATCH #update' do
-    sign_in_user
-
     context 'valid attributes' do
       it 'assigns the requested question to @question' do
         patch :update, id: question, question: attributes_for(:question)
@@ -121,16 +117,34 @@ RSpec.describe QuestionsController do
   end
 
   describe 'Delete #destroy' do
-    sign_in_user
+    context 'Author deletes own question' do
+      it 'deletes question' do
+        question
+        expect { delete :destroy, id: question }.to change(@user.questions, :count).by(-1)
+      end
+      it 'redirect to index view' do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
+    end
+    
+    context 'Author deletes another author own question' do
+      let(:another_user) { create(:user) }
+      let(:another_question) { create(:question, user: another_user) }
 
-    it 'deletes question' do
-      question
-      expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      it 'doesn\'t deletes a question' do
+        another_question
+        # как то так можно написать? to_not change(@another_user.questions, :count)
+        expect { delete :destroy, id: another_question }.to_not change(Question, :count)
+      end
+
+      # правильно ли сделана проверка, что юзер остается на текущей странице?
+      # или лучше проверять редирект на эту же страницу?
+      it 'stay at current_path' do
+        delete :destroy, id: another_question
+        expect(response).to redirect_to question_path(assigns(:question))
+      end
     end
 
-    it 'redirect to index view' do
-      delete :destroy, id: question
-      expect(response).to redirect_to questions_path
-    end
   end
 end

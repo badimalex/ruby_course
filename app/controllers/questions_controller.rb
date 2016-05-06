@@ -17,8 +17,13 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    if current_user.author_of(@question)
+      @question.destroy
+      redirect_to questions_path
+    else
+      flash[:notice] = 'You cannot mess with another author\'s post'
+      redirect_to @question
+    end
   end
 
   def update
@@ -30,7 +35,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(questions_params)
+    @question = current_user.questions.new(questions_params)
     if @question.save
       flash[:notice] = 'Your question successfully created.'
       redirect_to @question
