@@ -128,14 +128,13 @@ RSpec.describe QuestionsController do
       end
     end
     
-    context 'Author deletes another author own question' do
+    context 'Author deletes another author question' do
       let(:another_user) { create(:user) }
       let(:another_question) { create(:question, user: another_user) }
 
       it 'doesn\'t deletes a question' do
         another_question
-        # как то так можно написать? to_not change(@another_user.questions, :count)
-        expect { delete :destroy, id: another_question }.to_not change(Question, :count)
+        expect { delete :destroy, id: another_question }.to_not change(@user.questions, :count)
       end
 
       # правильно ли сделана проверка, что юзер остается на текущей странице?
