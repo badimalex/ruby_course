@@ -3,18 +3,12 @@ class AnswersController < ApplicationController
   before_action :load_answer, only: [:destroy]
   before_action :load_question
 
-  def new
-    @answer = Answer.new
-  end
-
   def create
-    # это хорошая практика в контроллере делать?
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
+    @answer = @question.answers.new(answer_params.merge(user: current_user))
     if @answer.save
       redirect_to @question
     else
-      render :new
+      render 'questions/show'
     end
   end
 
