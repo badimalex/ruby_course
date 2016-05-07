@@ -18,7 +18,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     # вот эту логику можно куда то вынести?
-    if current_user.author_of(@question)
+    if current_user.author_of?(@question)
       @question.destroy
       flash[:notice] = 'Your question successfully removed'
       redirect_to questions_path

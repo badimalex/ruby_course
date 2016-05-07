@@ -15,11 +15,11 @@ RSpec.describe User do
 
     context 'executes methods correctly' do
       it 'returns true, if is author of post' do
-        expect(user.author_of(question)).to be true
+        expect(user.author_of?(question)).to be true
       end
 
       it 'returns false, if is NOT author of post' do
-        expect(user.author_of(another_question)).to be false
+        expect(user.author_of?(another_question)).to be false
       end
     end
   end
