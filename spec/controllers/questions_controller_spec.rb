@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController do
-  sign_in_user # ничего страшного что вынес сюда?
+  sign_in_user
   let(:question) { create(:question, user: @user) }
 
   describe 'GET #index' do
@@ -28,11 +28,6 @@ RSpec.describe QuestionsController do
     it 'renders show view' do
       expect(response).to render_template :show
     end
-    
-    # как протестировать что у вопроса есть ответы на уровне юнит тестов?
-    # it 'populates an array of all answers' do
-    #   expect(assigns(:answers)).to match_array(answers)
-    # end
   end
 
   describe 'GET #new' do
@@ -73,7 +68,7 @@ RSpec.describe QuestionsController do
     end
     context 'with invalid attributes' do
       it 'does not save the question' do
-        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(@user.questions, :count)
+        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end
       it 're-renders new view' do
         post :create, question: attributes_for(:invalid_question)
@@ -134,7 +129,7 @@ RSpec.describe QuestionsController do
 
       it 'doesn\'t deletes a question' do
         another_question
-        expect { delete :destroy, id: another_question }.to_not change(@user.questions, :count)
+        expect { delete :destroy, id: another_question }.to_not change(Question, :count)
       end
 
       # правильно ли сделана проверка, что юзер остается на текущей странице?

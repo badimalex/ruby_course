@@ -5,7 +5,6 @@ feature 'Create question' do
     sign_in
 
     visit questions_path
-    # а как протестировать добавление ответа, без перехода на отдельную страницу?
     click_on 'Ask question'
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'My awesome question body'
