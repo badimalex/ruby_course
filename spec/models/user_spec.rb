@@ -14,11 +14,11 @@ RSpec.describe User do
     let(:another_question) { create(:question, user: another_user) }
 
     it 'returns true, if is author of post' do
-      expect(user.author_of?(question)).to be true
+      expect(user).to be_author_of(question)
     end
 
     it 'returns false, if is NOT author of post' do
-      expect(user.author_of?(another_question)).to be false
+      expect(user).to_not be_author_of(another_question)
     end
   end
 end

@@ -19,11 +19,9 @@ class QuestionsController < ApplicationController
   def destroy
     if current_user.author_of?(@question)
       @question.destroy
-      flash[:notice] = 'Your question successfully removed'
-      redirect_to questions_path
+      redirect_to questions_path, notice: 'Your question successfully removed'
     else
-      flash[:notice] = 'You cannot mess with another author\'s post'
-      redirect_to @question
+      redirect_to @question, notice: 'You cannot mess with another author\'s post'
     end
   end
 

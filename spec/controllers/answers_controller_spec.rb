@@ -53,7 +53,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    it 'stay at current_path' do
+    it 'redirects to question page' do
       delete :destroy, question_id: question, id: answer
       expect(response).to redirect_to question_path(assigns(:question))
     end
