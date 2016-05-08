@@ -13,7 +13,5 @@ feature 'User register' do
     click_on 'Sign up'
 
     expect(page).to have_content 'errors'
-    # на наличие какого путя проверять? происходит перенаправление на /users
-    # expect(current_path).to eq new_user_registration_path
   end
 end

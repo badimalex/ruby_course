@@ -6,7 +6,8 @@ html
   = javascript_include_tag "application"
   = csrf_meta_tags
   body
-    = link_to('Logout', destroy_user_session_path, :method => :delete)
+    - if current_user
+      = link_to('Logout', destroy_user_session_path, :method => :delete)
     p = notice
     p = alert
     = yield
