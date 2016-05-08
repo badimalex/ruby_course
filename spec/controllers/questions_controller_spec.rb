@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController do
-  let(:question) { create(:question) }
+  sign_in_user
+  let(:question) { create(:question, user: @user, title: 'Hello world', body: 'Best body question ever') }
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
 
@@ -55,7 +57,7 @@ RSpec.describe QuestionsController do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves the new question in the database' do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by(1)
       end
       it 'redirect to show view' do
         post :create, question: attributes_for(:question)
@@ -79,28 +81,28 @@ RSpec.describe QuestionsController do
         patch :update, id: question, question: attributes_for(:question)
         expect(assigns(:question)).to eq question
       end
-      
+
       it 'changes question attributes' do
-        patch :update, id: question, question: { title: 'new title', body: 'new body for question'}
+        patch :update, id: question, question: { title: 'new title', body: 'new body for question' }
         question.reload
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body for question'
       end
-      
+
       it 'redirects to the updated question' do
         patch :update, id: question, question: attributes_for(:question)
         expect(response).to redirect_to question
       end
     end
-    
+
     context 'with invalid attributes' do
-      before { patch :update, id: question, question: { title: 'new title', body: nil} }
+      before { patch :update, id: question, question: { title: 'new title', body: nil } }
       it 'does not change question attributes' do
         question.reload
         expect(question.title).to eq 'Hello world'
-        expect(question.body).to eq 'files took 7.21 seconds to load'
+        expect(question.body).to eq 'Best body question ever'
       end
-      
+
       it 're-renders edit view' do
         expect(response).to render_template :edit
       end
@@ -108,14 +110,30 @@ RSpec.describe QuestionsController do
   end
 
   describe 'Delete #destroy' do
-    it 'deletes question' do
-      question
-      expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+    context 'Author deletes own question' do
+      it 'deletes question' do
+        question
+        expect { delete :destroy, id: question }.to change(@user.questions, :count).by(-1)
+      end
+      it 'redirect to index view' do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
     end
-    
-    it 'redirect to index view' do
-      delete :destroy, id: question
-      expect(response).to redirect_to questions_path
+
+    context 'Author deletes another author question' do
+      let(:another_user) { create(:user) }
+      let(:another_question) { create(:question, user: another_user) }
+
+      it 'doesn\'t deletes a question' do
+        another_question
+        expect { delete :destroy, id: another_question }.to_not change(Question, :count)
+      end
+
+      it 'stay at current_path' do
+        delete :destroy, id: another_question
+        expect(response).to redirect_to question_path(assigns(:question))
+      end
     end
   end
 end

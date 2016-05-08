@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :answer do
-    body 'by best body answer in life'
+    sequence(:body) { |n| "My awesome answer body#{n}" }
     question
+    user
   end
 end
