@@ -8,7 +8,7 @@ feature 'Delete answer' do
 
   scenario 'Author deletes own answer' do
     sign_in user
-    answer # можно как то избавиться от постоянных вызовов answer, question?
+    answer
 
     visit question_path(question)
     click_on 'Remove answer'
@@ -22,10 +22,6 @@ feature 'Delete answer' do
     another_answer
 
     visit question_path(question)
-    click_on 'Remove answer'
-
-    expect(page).to have_content 'You cannot mess with another author\'s answer'
-    expect(page).to have_content(another_answer.body)
-    expect(current_path).to eq question_path(question)
+    expect(page).to_not have_link 'Remove answer'
   end
 end
