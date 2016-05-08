@@ -1,7 +1,15 @@
 FactoryGirl.define do
+  sequence :title do |n|
+    "My best question title#{n}"
+  end
+
+  sequence :body do |n|
+    "My awesome question body#{n}"
+  end
+
   factory :question do
-    title 'Hello world'
-    body 'files took 7.21 seconds to load'
+    title
+    body
     user
   end
 

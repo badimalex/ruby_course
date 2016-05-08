@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController do
   sign_in_user
-  let(:question) { create(:question, user: @user) }
+  let(:question) { create(:question, user: @user, title: 'Hello world', body: 'Best body question ever') }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -102,7 +102,7 @@ RSpec.describe QuestionsController do
       it 'does not change question attributes' do
         question.reload
         expect(question.title).to eq 'Hello world'
-        expect(question.body).to eq 'files took 7.21 seconds to load'
+        expect(question.body).to eq 'Best body question ever'
       end
 
       it 're-renders edit view' do

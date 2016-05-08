@@ -14,7 +14,6 @@ feature 'List question' do
 
   scenario 'User can view empty list of questions' do
     visit questions_path
-      expect(page).to have_content('Is no questions')
+    expect(page).to have_content('Is no questions')
   end
 end
-# здесь только один сценарий, еще какие то могут быть?
