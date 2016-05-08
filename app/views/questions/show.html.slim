@@ -12,4 +12,5 @@ p = @question.body
   = f.submit 'Post Your Answer'
 
 = link_to 'Add answer', new_question_answer_path(@question)
-= link_to 'Remove', question_path(@question), method: 'delete'
+- if current_user && current_user.author_of?(@question)
+  = link_to 'Remove', question_path(@question), method: 'delete'

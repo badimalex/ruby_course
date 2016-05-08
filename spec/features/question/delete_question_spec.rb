@@ -19,9 +19,6 @@ feature 'Delete question' do
     sign_in user
 
     visit question_path(another_question)
-    click_on 'Remove'
-    expect(page).to have_content(another_question.title)
-    expect(page).to have_content 'You cannot mess with another author\'s post'
-    expect(current_path).to eq question_path(another_question)
+    expect(page).to_not have_content 'Remove'
   end
 end
