@@ -31,7 +31,6 @@ RSpec.describe QuestionsController do
   end
 
   describe 'GET #new' do
-
     before { get :new }
 
     it 'assigns a new Question to @question' do
@@ -44,7 +43,6 @@ RSpec.describe QuestionsController do
   end
 
   describe 'GET #edit' do
-
     before { get :edit, id: question }
 
     it 'assigns the requested question to @question' do
@@ -122,7 +120,7 @@ RSpec.describe QuestionsController do
         expect(response).to redirect_to questions_path
       end
     end
-    
+
     context 'Author deletes another author question' do
       let(:another_user) { create(:user) }
       let(:another_question) { create(:question, user: another_user) }
@@ -132,13 +130,10 @@ RSpec.describe QuestionsController do
         expect { delete :destroy, id: another_question }.to_not change(Question, :count)
       end
 
-      # правильно ли сделана проверка, что юзер остается на текущей странице?
-      # или лучше проверять редирект на эту же страницу?
       it 'stay at current_path' do
         delete :destroy, id: another_question
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
-
   end
 end
