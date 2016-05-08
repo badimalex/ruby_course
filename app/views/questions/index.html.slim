@@ -1,8 +1,9 @@
 p= link_to 'Ask question', new_question_path
 - if @questions.empty?
+  p = 'Is no questions'
 - else
   table
-    - for question in @questions
+    - @questions.each do |question|
       tr
         td= link_to question.title, question
         td= question.body
