@@ -1,10 +1,10 @@
 h1 = @question.title
 p = @question.body
+- if current_user && current_user.author_of?(@question)
+  = link_to 'Remove', question_path(@question), method: 'delete'
+
 .answers
-  - @question.answers.each do |answer|
-    p = answer.body
-    - if current_user && current_user.author_of?(answer)
-      p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete'
+  = render 'answers'
 
 = form_for [@question, @answer], remote: true do |f|
   = f.label :body, 'Your Answer'
@@ -12,5 +12,3 @@ p = @question.body
   = f.submit 'Post Your Answer'
 
 = link_to 'Add answer', new_question_answer_path(@question)
-- if current_user && current_user.author_of?(@question)
-  = link_to 'Remove', question_path(@question), method: 'delete'

@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Answer a question' do
   given(:question) { create(:question) }
 
-  scenario 'User answer a question' do
+  scenario 'User answer a question', js: true do
     sign_in
 
     visit question_path(question)
