@@ -1,2 +1,4 @@
-$('.answers').html('<%= j render 'questions/answers' %>');
+$('.answers').append('<%= j render @answer %>');
+# на это тест нужно было писать? я ведь только изменил путь к файлу который рендериться
+# и вместо html вызывается append
 $('#answer_body').val('');

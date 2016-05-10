@@ -3,8 +3,8 @@ p = @question.body
 - if current_user && current_user.author_of?(@question)
   = link_to 'Remove', question_path(@question), method: 'delete'
 
-.answers
-  = render 'answers'
+div.answers
+  = render @question.answers
 
 = form_for [@question, @answer], remote: true do |f|
   = f.label :body, 'Your Answer'

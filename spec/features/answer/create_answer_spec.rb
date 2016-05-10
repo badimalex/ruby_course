@@ -12,7 +12,7 @@ feature 'Answer a question' do
     click_on 'Post Your Answer'
 
     expect(current_path).to eq question_path(question)
-    within('.answers') do
+    within '.answers' do
       expect(page).to have_content 'My awesome answer body'
     end
   end
