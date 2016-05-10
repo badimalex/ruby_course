@@ -6,7 +6,7 @@ div.answers
     - if current_user && current_user.author_of?(answer)
       p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete'
 
-= form_for [@question, @question.answers.build], remote: true do |f|
+= form_for [@question, @answer], remote: true do |f|
   = f.label :body, 'Your Answer'
   = f.text_area :body
   = f.submit 'Post Your Answer'

@@ -30,9 +30,9 @@ RSpec.describe AnswersController, type: :controller do
           .to_not change(Answer, :count)
       end
 
-      it 're-render new view' do
-        post :create, question_id: question, answer: { body: nil }
-        expect(response).to render_template 'questions/show'
+      it 'redirects to question show view' do
+        post :create, question_id: question, answer: attributes_for(:answer)
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
