@@ -12,7 +12,9 @@ feature 'Answer a question' do
     click_on 'Post Your Answer'
 
     expect(current_path).to eq question_path(question)
-    expect(page).to have_content 'My awesome answer body'
+    within('.answers') do
+      expect(page).to have_content 'My awesome answer body'
+    end
   end
 
   scenario 'Non-authenticated user tries to answer a question' do
