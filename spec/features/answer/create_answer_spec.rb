@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Answer a question' do
   given(:question) { create(:question) }
 
-  scenario 'User answer a question' do
+  scenario 'User answer a question', js: true do
     sign_in
 
     visit question_path(question)
@@ -12,7 +12,10 @@ feature 'Answer a question' do
     click_on 'Post Your Answer'
 
     expect(current_path).to eq question_path(question)
-    expect(page).to have_content 'My awesome answer body'
+    sleep(1)
+    within '.answers' do
+      expect(page).to have_content 'My awesome answer body'
+    end
   end
 
   scenario 'Non-authenticated user tries to answer a question' do
