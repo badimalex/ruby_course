@@ -43,6 +43,8 @@ group :test, :development do
   gem 'launchy'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
+  # gem 'capybara-webkit'
+  # todo скачать xcode
 end
 group :test do
   gem "shoulda-matchers", "~> 3.1",

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'Answer a question' do
   given(:question) { create(:question) }
@@ -12,7 +12,7 @@ feature 'Answer a question' do
     click_on 'Post Your Answer'
 
     expect(current_path).to eq question_path(question)
-    sleep(1)
+    sleep(1) #todo remove
     within '.answers' do
       expect(page).to have_content 'My awesome answer body'
     end
@@ -26,5 +26,14 @@ feature 'Answer a question' do
 
     expect(page).to_not have_content 'My awesome answer body'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  end
+
+  scenario 'User create invalid answer', js: true do
+    sign_in
+
+    visit question_path(question)
+
+    click_on 'Post Your Answer'
+    expect(page).to have_content "Body is too short (minimum is 10 characters)"
   end
 end

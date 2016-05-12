@@ -8,6 +8,7 @@ p = @question.body
 
 = form_for [@question, @answer], remote: true do |f|
   = f.label :body, 'Your Answer'
+  .answer-errors
   = f.text_area :body
   = f.submit 'Post Your Answer'
 
