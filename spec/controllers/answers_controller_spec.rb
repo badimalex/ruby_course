@@ -39,7 +39,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'Delete #destroy' do
     context 'Author deletes own answer' do
       it 'deletes answer' do
-        expect { delete :destroy, question_id: question, id: answer }.to change(@user.answers, :count).by(-1)
+        expect { delete :destroy, question_id: question, id: answer, format: :js }.to change(@user.answers, :count).by(-1)
       end
     end
 
@@ -48,13 +48,13 @@ RSpec.describe AnswersController, type: :controller do
       let!(:another_answer) { create(:answer, user: another_user, question: question) }
 
       it 'doesn\'t deletes an answer' do
-        expect { delete :destroy, question_id: question, id: another_answer }.to_not change(Answer, :count)
+        expect { delete :destroy, question_id: question, id: another_answer, format: :js }.to_not change(Answer, :count)
       end
     end
 
-    it 'redirects to question page' do
-      delete :destroy, question_id: question, id: answer
-      expect(response).to redirect_to question_path(assigns(:question))
+    it 'render update template' do
+      delete :destroy, question_id: question, id: answer, format: :js
+      expect(response).to render_template :destroy
     end
   end
 
