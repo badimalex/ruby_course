@@ -64,10 +64,23 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to eq answer
     end
 
-    it 'changes answer attributes' do
-      patch :update, id: answer, question_id: question, answer: { body: 'Edited answer body'}, format: :js
-      answer.reload
-      expect(answer.body).to eq 'Edited answer body'
+    context 'Author update other author answer' do
+      let(:another_user) { create(:user) }
+      let!(:another_answer) { create(:answer, body: 'Original answer body', user: another_user, question: question) }
+
+      it 'doesn\'t update an answer' do
+        patch :update, id: another_answer, question_id: question, answer: { body: 'Edited answer body'}, format: :js
+        another_answer.reload
+        expect(assigns(:answer).body).to eq 'Original answer body'
+      end
+    end
+
+    context 'Author deletes own answer' do
+      it 'update answer' do
+        patch :update, id: answer, question_id: question, answer: { body: 'Edited answer body'}, format: :js
+        answer.reload
+        expect(answer.body).to eq 'Edited answer body'
+      end
     end
 
     it 'render update template' do

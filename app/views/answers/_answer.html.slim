@@ -3,7 +3,7 @@ div { data-answer = answer.id }
   - if current_user && current_user.author_of?(answer)
     p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete'
   - if answer.persisted?
-    - if current_user
+    - if current_user && current_user.author_of?(answer)
       p = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       p
         = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|

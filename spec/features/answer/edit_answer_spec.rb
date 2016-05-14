@@ -2,8 +2,9 @@ require 'acceptance_helper'
 
 feature 'Answer editing' do
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
-  given!(:answer) { create(:answer, question: question) }
+  given(:question) { create(:question, user: user) }
+  given(:answer) { create(:answer, user: user, question: question) }
+  given(:another_answer) { create(:answer, user: create(:user), question: question) }
 
   scenario 'Non-authenticated user try to edit answer' do
     visit question_path(question)
@@ -16,6 +17,7 @@ feature 'Answer editing' do
   describe 'Authenticated user' do
     before do
       sign_in user
+      answer
       visit question_path(question)
     end
 
@@ -36,7 +38,13 @@ feature 'Answer editing' do
         expect(page).to_not have_selector 'textarea'
       end
     end
+  end
 
-    scenario 'try to edit other user answer'
+  scenario 'Author try to edit other author answer' do
+    sign_in user
+    another_answer
+
+    visit question_path(question)
+    expect(page).to_not have_link 'Edit'
   end
 end
