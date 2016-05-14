@@ -33,6 +33,6 @@ feature 'Answer a question' do
     visit question_path(question)
 
     click_on 'Post Your Answer'
-    expect(page).to have_content "Body is too short (minimum is 10 characters)"
+    expect(page).to have_content 'Body is too short (minimum is 10 characters)'
   end
 end

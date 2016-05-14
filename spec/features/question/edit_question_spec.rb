@@ -5,7 +5,14 @@ feature 'Question editing' do
   given(:question) { create(:question, user: user) }
   given(:another_question) { create(:question, user: create(:user)) }
 
-  scenario 'Non-authenticated user try to edit question'
+  scenario 'Non-authenticated user try to edit question' do
+    visit question_path(question)
+
+    within '.question' do
+      expect(page).to_not have_link 'Edit question'
+    end
+  end
+
   describe 'Authenticated user' do
     before do
       sign_in user
@@ -29,22 +36,12 @@ feature 'Question editing' do
       end
     end
   end
-  scenario 'Authenticated user try to edit other user question'
 
-  # scenario 'Author deletes own question' do
-  #   sign_in user
-  #
-  #   visit question_path(question)
-  #   click_on 'Remove'
-  #   expect(page).to have_content 'Your question successfully removed'
-  #   expect(page).to_not have_content(question.title)
-  #   expect(current_path).to eq questions_path
-  # end
-  #
-  # scenario 'Author deletes another author question' do
-  #   sign_in user
-  #
-  #   visit question_path(another_question)
-  #   expect(page).to_not have_content 'Remove'
-  # end
+  scenario 'Authenticated user try to edit other user question' do
+    sign_in user
+    another_question
+
+    visit question_path(another_question)
+    expect(page).to_not have_content 'Edit question'
+  end
 end

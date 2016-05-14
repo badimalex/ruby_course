@@ -107,7 +107,7 @@ RSpec.describe QuestionsController do
         expect(question.body).to eq 'Best body question ever'
       end
 
-      it 're-renders edit view', js: true  do
+      it 're-renders edit view', js: true do
         expect(response).to render_template :update
       end
     end
