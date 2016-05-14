@@ -10,7 +10,7 @@ feature 'Answer editing' do
     visit question_path(question)
 
     within '.answers' do
-      expect(page).to_not have_link 'Edit'
+      expect(page).to_not have_link 'Edit answer'
     end
   end
 
@@ -23,12 +23,12 @@ feature 'Answer editing' do
 
     scenario 'sees link to edit answer' do
       within '.answers' do
-        expect(page).to have_link 'Edit'
+        expect(page).to have_link 'Edit answer'
       end
     end
 
     scenario 'try to edit his answer', js: true do
-      click_on 'Edit'
+      click_on 'Edit answer'
       within '.answers' do
         fill_in 'Answer', with: 'My awesome edited answer body'
         click_on 'Save'
@@ -45,6 +45,6 @@ feature 'Answer editing' do
     another_answer
 
     visit question_path(question)
-    expect(page).to_not have_link 'Edit'
+    expect(page).to_not have_link 'Edit answer'
   end
 end
