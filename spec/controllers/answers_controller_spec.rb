@@ -77,7 +77,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'Author deletes own answer' do
+    context 'Author update own answer' do
       it 'update answer' do
         patch :update, id: answer, question_id: question, answer: { body: 'Edited answer body' }, format: :js
         answer.reload
