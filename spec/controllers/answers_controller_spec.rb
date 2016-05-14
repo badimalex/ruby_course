@@ -6,7 +6,6 @@ RSpec.describe AnswersController, type: :controller do
   let!(:answer) { create(:answer, user: @user, question: question) }
 
   describe 'POST #create' do
-    sign_in_user
     context 'with valid attributes' do
       it 'saves the new answer in database' do
         expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js  }
@@ -56,6 +55,24 @@ RSpec.describe AnswersController, type: :controller do
     it 'redirects to question page' do
       delete :destroy, question_id: question, id: answer
       expect(response).to redirect_to question_path(assigns(:question))
+    end
+  end
+
+  describe 'PATCH #update' do
+    it 'assigns the requested answer to @answer' do
+      patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'changes answer attributes' do
+      patch :update, id: answer, question_id: question, answer: { body: 'Edited answer body'}, format: :js
+      answer.reload
+      expect(answer.body).to eq 'Edited answer body'
+    end
+
+    it 'render update template' do
+      patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+      expect(response).to render_template :update
     end
   end
 end
