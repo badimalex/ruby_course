@@ -1,7 +1,7 @@
 div { data-answer = answer.id }
   p = answer.body
   - if current_user && current_user.author_of?(answer)
-    p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete'
+    p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete', remote: true
   - if answer.persisted?
     - if current_user && current_user.author_of?(answer)
       p = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'Delete answer' do
   given(:user) { create(:user) }
@@ -6,7 +6,7 @@ feature 'Delete answer' do
   given(:answer) { create(:answer, user: user, question: question) }
   given(:another_answer) { create(:answer, user: create(:user), question: question) }
 
-  scenario 'Author deletes own answer' do
+  scenario 'Author deletes own answer', js: true  do
     sign_in user
     answer
 

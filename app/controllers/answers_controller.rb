@@ -13,13 +13,8 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      flash[:notice] = 'Your answer successfully removed'
-    else
-      flash[:notice] = 'You cannot mess with another author\'s answer'
-    end
-    redirect_to question_path(@question)
+    return unless current_user.author_of?(@answer)
+    @answer.destroy
   end
 
   private
