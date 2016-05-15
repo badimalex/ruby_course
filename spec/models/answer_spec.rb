@@ -11,8 +11,9 @@ describe Answer do
   it { should_not allow_value(nil).for(:accepted) }
 
   let(:question) { create(:question) }
+  let!(:answers) { create_list(:answer, 2, question: question) }
   let(:answer) { create(:answer, question: question) }
-  let(:other_answer) { create(:answer, question: question, accepted: true) }
+  let(:accepted_answer) { create(:answer, question: question, accepted: true) }
 
   it 'should default accepted to false' do
     expect(answer.accepted).to eq false
@@ -24,7 +25,14 @@ describe Answer do
     end
 
     it 'set other answers.accepted to false' do
-      expect { answer.accept! }.to change { other_answer.reload.accepted }.from(true).to(false)
+      expect { answer.accept! }.to change { accepted_answer.reload.accepted }.from(true).to(false)
+    end
+  end
+
+  describe 'default scope' do
+    it 'orders by accepted' do
+      answers.push accepted_answer
+      Answer.first.should eq(accepted_answer)
     end
   end
 end

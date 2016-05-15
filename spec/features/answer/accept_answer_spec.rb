@@ -59,13 +59,13 @@ feature 'Accept answer' do
   end
 
 
-  # scenario 'Accepted answer is first in list' do
-  #   answers.push accepted_answer
-  #   visit question_path(question)
-  #   save_and_open_page
-  #   within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
-  #     expect(page).to have_content 'Accepted'
-  #     expect(page).to have_content 'Best answer is first'
-  #   end
-  # end
+  scenario 'Accepted answer is first in list' do
+    answers.push accepted_answer
+    visit question_path(question)
+    save_and_open_page
+    within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+      expect(page).to have_content 'Accepted'
+      expect(page).to have_content 'Best answer is first'
+    end
+  end
 end

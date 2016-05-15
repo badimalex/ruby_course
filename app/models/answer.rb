@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+  default_scope order('accepted DESC')
+
   belongs_to :question
   belongs_to :user
 
