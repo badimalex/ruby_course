@@ -7,6 +7,9 @@ class Answer < ActiveRecord::Base
   validates :accepted, :inclusion => {:in => [true, false]}
 
   def accept!
-    self.accepted = true
+    transaction do
+      question.answers.where(accepted: true).update_all(accepted: false)
+      update_attribute(:accepted, true)
+    end
   end
 end

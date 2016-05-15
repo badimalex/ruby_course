@@ -1,11 +1,9 @@
 RubyCourse::Application.routes.draw do
   devise_for :users
   resources :questions do
-    resources :answers
-  end
-
-  resources :answers do
-    patch 'accept', on: :member
+    resources :answers do
+      post :accept, on: :member
+    end
   end
 
   root to: "questions#index"

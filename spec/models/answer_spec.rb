@@ -12,14 +12,19 @@ describe Answer do
 
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
+  let(:other_answer) { create(:answer, question: question, accepted: true) }
 
   it 'should default accepted to false' do
-    answer.accepted.should be false
+    expect(answer.accepted).to eq false
   end
 
   describe '#accept!' do
     it 'accept answer' do
       expect { answer.accept! }.to change { answer.accepted }.from(false).to(true)
+    end
+
+    it 'set other answers.accepted to false' do
+      expect { answer.accept! }.to change { other_answer.reload.accepted }.from(true).to(false)
     end
   end
 end

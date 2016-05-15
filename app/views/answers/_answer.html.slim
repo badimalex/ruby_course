@@ -11,4 +11,5 @@ div { data-answer = answer.id }
           = f.label :body, 'Answer'
           = f.text_area :body
           = f.submit 'Save'
-    p = link_to 'Accept answer', accept_answer_path(answer), class: 'accept-answer-link', method: 'patch', remote: true
+    - if current_user && current_user.author_of?(@question)
+      p = link_to 'Accept answer', accept_question_answer_path(@question, answer), class: 'accept-answer-link', method: 'post', remote: true

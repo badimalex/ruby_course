@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
   before_action :load_answer, only: [:destroy, :update, :accept]
-  before_action :load_question, only: [:create, :update]
+  before_action :load_question, only: [:create, :update, :accept]
 
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))
@@ -18,6 +18,7 @@ class AnswersController < ApplicationController
   end
 
   def accept
+    return unless current_user.author_of?(@question)
     @answer.accept!
   end
 
