@@ -1,3 +1,4 @@
+/ todo отрефакторить проверки
 div { data-answer = answer.id }
   p = answer.body
   - if current_user && current_user.author_of?(answer)
@@ -10,3 +11,4 @@ div { data-answer = answer.id }
           = f.label :body, 'Answer'
           = f.text_area :body
           = f.submit 'Save'
+    p = link_to 'Accept answer', accept_answer_path(answer), class: 'accept-answer-link', method: 'patch', remote: true

@@ -6,4 +6,7 @@ class Answer < ActiveRecord::Base
   validates :body, length: { minimum: 10 }
   validates :accepted, :inclusion => {:in => [true, false]}
 
+  def accept!
+    self.accepted = true
+  end
 end

@@ -16,4 +16,10 @@ describe Answer do
   it 'should default accepted to false' do
     answer.accepted.should be false
   end
+
+  describe '#accept!' do
+    it 'accept answer' do
+      expect { answer.accept! }.to change { answer.accepted }.from(false).to(true)
+    end
+  end
 end

@@ -58,6 +58,14 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #accept' do
+    it 'set answer accepted' do
+      patch :accept, question_id: question, id: answer, format: :js
+      answer.reload
+      expect(assigns(:answer).accepted).to be true
+    end
+  end
+
   describe 'PATCH #update' do
     it 'assigns the requested answer to @answer' do
       patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
