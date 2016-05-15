@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20160515131303) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.boolean  "accepted"
+    t.boolean  "accepted",    default: false
   end
 
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
