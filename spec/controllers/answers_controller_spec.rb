@@ -58,11 +58,35 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'PATCH #accept' do
-    it 'set answer accepted' do
-      patch :accept, question_id: question, id: answer, format: :js
-      answer.reload
-      expect(assigns(:answer).accepted).to be true
+  describe 'POST #accept' do
+    it 'assigns the requested answer to @answer' do
+      post :accept, question_id: question, id: answer
+      expect(assigns(:answer)).to eq answer
+    end
+
+    context 'Author accept own question answer' do
+      it 'mark answer as accepted' do
+        post :accept, question_id: question, id: answer
+        answer.reload
+        expect(assigns(:answer).accepted).to be true
+      end
+    end
+
+    context 'Author accept answer other author question' do
+      let(:another_user) { create(:user) }
+      let!(:another_question) { create(:question, user: another_user) }
+      let!(:another_answer) { create(:answer, user: another_user, question: another_question) }
+
+      it 'doesn\'t accept answer' do
+        post :accept, question_id: another_question, id: another_answer
+        another_answer.reload
+        expect(assigns(:answer).accepted).to be false
+      end
+    end
+
+    it 'redirects to question show view' do
+      post :accept, question_id: question, id: answer
+      expect(response).to redirect_to question_path(assigns(:question))
     end
   end
 
