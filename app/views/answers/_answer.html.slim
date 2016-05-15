@@ -1,6 +1,8 @@
 / todo отрефакторить проверки
 div { data-answer = answer.id }
   p = answer.body
+  - if answer.accepted?
+    span = 'Accepted'
   - if current_user && current_user.author_of?(answer)
     p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete', remote: true
   - if answer.persisted?

@@ -3,10 +3,13 @@ require 'acceptance_helper'
 feature 'Accept answer' do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
+
   given(:other_question) { create(:question, user: create(:user)) }
-  given(:answers) { create_list(:answer, 2, question: question) }
+  given!(:answers) { create_list(:answer, 2, question: question) }
   given(:other_answers) { create_list(:answer, 2, question: other_question) }
-  given(:accepted_answer) { create(:answer, body: 'Best answer is first', question: question, accepted: true) }
+
+  given!(:accepted_answer) { create(:answer, body: 'Best answer is first', question: question, accepted: true) }
+  given(:sorted_answers) { answers.push(accepted_answer)}
 
   describe 'Authorized user visit own question' do
     before do
@@ -58,12 +61,11 @@ feature 'Accept answer' do
     end
   end
 
-
   scenario 'Accepted answer is first in list' do
-    answers.push accepted_answer
+    sign_in user
+    sorted_answers
     visit question_path(question)
-    save_and_open_page
-    within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+    within '.answers [data-answer]:first' do
       expect(page).to have_content 'Accepted'
       expect(page).to have_content 'Best answer is first'
     end
