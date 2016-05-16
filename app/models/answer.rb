@@ -6,7 +6,6 @@ class Answer < ActiveRecord::Base
 
   validates :question_id, :user_id, :body, presence: true
   validates :body, length: { minimum: 10 }
-  validates :accepted, inclusion: { in: [true, false] }
 
   def accept!
     transaction do
