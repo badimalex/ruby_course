@@ -99,6 +99,20 @@ RSpec.describe QuestionsController do
       end
     end
 
+    context 'Author try to edit other user question' do
+      let(:another_user) { create(:user) }
+      let(:another_question) { create(:question, user: another_user, body: 'Original question body') }
+
+      it 'doesn\'t accept answer' do
+        another_question
+        patch :update, id: another_question, question: { title: 'new title', body: 'new body for question' }
+
+        another_question.reload
+        expect(another_question.body).to eq 'Original question body'
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
     context 'with invalid attributes' do
       before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
       it 'does not change question attributes' do

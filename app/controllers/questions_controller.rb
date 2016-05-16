@@ -27,7 +27,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(questions_params)
+    if current_user.author_of?(@question)
+      @question.update(questions_params)
+    else
+      render status: :forbidden
+    end
   end
 
   def create
