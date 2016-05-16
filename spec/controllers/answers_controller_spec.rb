@@ -49,6 +49,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'doesn\'t deletes an answer' do
         expect { delete :destroy, question_id: question, id: another_answer, format: :js }.to_not change(Answer, :count)
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -81,6 +82,7 @@ RSpec.describe AnswersController, type: :controller do
         post :accept, question_id: another_question, id: another_answer, format: :js
         another_answer.reload
         expect(assigns(:answer).accepted).to be false
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
@@ -105,7 +107,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'doesn\'t update an answer' do
         patch :update, id: another_answer, question_id: question, answer: { body: 'Edited answer body' }, format: :js
         another_answer.reload
-        expect(flash[:notice]).to eq 'You cannot mess with another author\'s post'
+        expect(response).to have_http_status(:forbidden)
         expect(assigns(:answer).body).to eq 'Original answer body'
       end
     end

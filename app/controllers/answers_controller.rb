@@ -11,18 +11,24 @@ class AnswersController < ApplicationController
     if current_user.author_of?(@answer)
       @answer.update(answer_params)
     else
-      flash[:notice] = 'You cannot mess with another author\'s post'
+      render status: :forbidden
     end
   end
 
   def destroy
-    return unless current_user.author_of?(@answer)
-    @answer.destroy
+    if current_user.author_of?(@answer)
+      @answer.destroy
+    else
+      render status: :forbidden
+    end
   end
 
   def accept
-    return unless current_user.author_of?(@question)
-    @answer.accept!
+    if current_user.author_of?(@question)
+      @answer.accept!
+    else
+      render status: :forbidden
+    end
   end
 
   private
