@@ -10,7 +10,7 @@ class Answer < ActiveRecord::Base
   def accept!
     transaction do
       question.answers.where(accepted: true).update_all(accepted: false)
-      update_attribute(:accepted, true)
+      update!(accepted: true)
     end
   end
 end
