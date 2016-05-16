@@ -8,8 +8,11 @@ class AnswersController < ApplicationController
   end
 
   def update
-    return unless current_user.author_of?(@answer)
-    @answer.update(answer_params)
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+    else
+      flash[:notice] = 'You cannot mess with another author\'s post'
+    end
   end
 
   def destroy

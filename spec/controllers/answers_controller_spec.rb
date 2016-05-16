@@ -105,6 +105,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'doesn\'t update an answer' do
         patch :update, id: another_answer, question_id: question, answer: { body: 'Edited answer body' }, format: :js
         another_answer.reload
+        expect(flash[:notice]).to eq 'You cannot mess with another author\'s post'
         expect(assigns(:answer).body).to eq 'Original answer body'
       end
     end
