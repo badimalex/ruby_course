@@ -82,33 +82,47 @@ RSpec.describe QuestionsController do
   describe 'PATCH #update' do
     context 'valid attributes' do
       it 'assigns the requested question to @question' do
-        patch :update, id: question, question: attributes_for(:question)
+        patch :update, id: question, question: attributes_for(:question), format: :js
         expect(assigns(:question)).to eq question
       end
 
       it 'changes question attributes' do
-        patch :update, id: question, question: { title: 'new title', body: 'new body for question' }
+        patch :update, id: question, question: { title: 'new title', body: 'new body for question' }, format: :js
         question.reload
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body for question'
       end
 
       it 'redirects to the updated question' do
-        patch :update, id: question, question: attributes_for(:question)
-        expect(response).to redirect_to question
+        patch :update, id: question, question: attributes_for(:question), format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'Author try to edit other user question' do
+      let(:another_user) { create(:user) }
+      let(:another_question) { create(:question, user: another_user, body: 'Original question body') }
+
+      it 'doesn\'t accept answer' do
+        another_question
+        patch :update, id: another_question, question: { title: 'new title', body: 'new body for question' }
+
+        another_question.reload
+        expect(another_question.body).to eq 'Original question body'
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
     context 'with invalid attributes' do
-      before { patch :update, id: question, question: { title: 'new title', body: nil } }
+      before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
       it 'does not change question attributes' do
         question.reload
         expect(question.title).to eq 'Hello world'
         expect(question.body).to eq 'Best body question ever'
       end
 
-      it 're-renders edit view' do
-        expect(response).to render_template :edit
+      it 're-renders edit view', js: true do
+        expect(response).to render_template :update
       end
     end
   end

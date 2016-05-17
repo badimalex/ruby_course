@@ -1,20 +1,34 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
-  before_action :load_answer, only: [:destroy]
-  before_action :load_question
+  before_action :load_answer, only: [:destroy, :update, :accept]
+  before_action :load_question, only: [:create, :update, :accept]
 
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
 
+  def update
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+    else
+      render status: :forbidden
+    end
+  end
+
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-      flash[:notice] = 'Your answer successfully removed'
     else
-      flash[:notice] = 'You cannot mess with another author\'s answer'
+      render status: :forbidden
     end
-    redirect_to question_path(@question)
+  end
+
+  def accept
+    if current_user.author_of?(@question)
+      @answer.accept!
+    else
+      render status: :forbidden
+    end
   end
 
   private

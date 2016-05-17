@@ -1,5 +1,6 @@
-h1 = @question.title
-p = @question.body
+.question
+  = render @question
+
 - if current_user && current_user.author_of?(@question)
   = link_to 'Remove', question_path(@question), method: 'delete'
 
@@ -8,7 +9,6 @@ p = @question.body
 
 = form_for [@question, @answer], remote: true do |f|
   = f.label :body, 'Your Answer'
+  .answer-errors
   = f.text_area :body
   = f.submit 'Post Your Answer'
-
-= link_to 'Add answer', new_question_answer_path(@question)
