@@ -9,7 +9,7 @@ feature 'Accept answer' do
   given(:other_answers) { create_list(:answer, 2, question: other_question) }
 
   given!(:accepted_answer) { create(:answer, body: 'Best answer is first', question: question, accepted: true) }
-  given(:sorted_answers) { answers.push(accepted_answer)}
+  given(:sorted_answers) { answers.push(accepted_answer) }
 
   describe 'Authorized user visit own question' do
     before do
