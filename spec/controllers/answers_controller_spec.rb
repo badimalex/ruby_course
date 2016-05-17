@@ -39,7 +39,8 @@ RSpec.describe AnswersController, type: :controller do
   describe 'Delete #destroy' do
     context 'Author deletes own answer' do
       it 'deletes answer' do
-        expect { delete :destroy, question_id: question, id: answer, format: :js }.to change(@user.answers, :count).by(-1)
+        expect { delete :destroy, question_id: question, id: answer, format: :js }
+          .to change(@user.answers, :count).by(-1)
       end
     end
 
@@ -48,8 +49,8 @@ RSpec.describe AnswersController, type: :controller do
       let!(:another_answer) { create(:answer, user: another_user, question: question) }
 
       it 'doesn\'t deletes an answer' do
-        expect { delete :destroy, question_id: question, id: another_answer, format: :js }.to_not change(Answer, :count)
         expect(response).to have_http_status(:forbidden)
+        expect { delete :destroy, question_id: question, id: another_answer, format: :js }.to_not change(Answer, :count)
       end
     end
 
@@ -82,7 +83,6 @@ RSpec.describe AnswersController, type: :controller do
         post :accept, question_id: another_question, id: another_answer, format: :js
         another_answer.reload
         expect(assigns(:answer).accepted).to be false
-        expect(response).to have_http_status(:forbidden)
       end
     end
 
