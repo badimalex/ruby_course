@@ -83,6 +83,7 @@ RSpec.describe AnswersController, type: :controller do
         post :accept, question_id: another_question, id: another_answer, format: :js
         another_answer.reload
         expect(assigns(:answer).accepted).to be false
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
