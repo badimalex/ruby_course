@@ -11,4 +11,6 @@ describe Question do
 
   it { should validate_length_of(:title).is_at_least(5) }
   it { should validate_length_of(:body).is_at_least(15) }
+
+  it { should accept_nested_attributes_for :attachments }
 end
