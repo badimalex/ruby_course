@@ -1,5 +1,10 @@
 h1 = @question.title
 p = @question.body
+p Attachments:
+ul
+  - @question.attachments.each do |a|
+    li = a.file.file.filename
+
 - if current_user && current_user.author_of?(question)
   p = link_to 'Edit question', '', class: 'edit-question-link'
 = form_for @question, remote: true, html: { id: 'edit-question' } do |f|
