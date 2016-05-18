@@ -49,8 +49,8 @@ RSpec.describe AnswersController, type: :controller do
       let!(:another_answer) { create(:answer, user: another_user, question: question) }
 
       it 'doesn\'t deletes an answer' do
-        expect(response).to have_http_status(:forbidden)
         expect { delete :destroy, question_id: question, id: another_answer, format: :js }.to_not change(Answer, :count)
+        expect(response).to have_http_status(:forbidden)
       end
     end
 
