@@ -29,13 +29,17 @@ gem 'jbuilder', '~> 1.2'
 
 gem 'slim-rails'
 gem 'carrierwave'
+gem 'remotipart'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
+
 group :development do
   gem 'guard-rubocop'
 end
+
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
@@ -44,6 +48,7 @@ group :test, :development do
   gem 'database_cleaner'
   gem 'capybara-webkit'
 end
+
 group :test do
   gem "shoulda-matchers", "~> 3.1",
     require: false

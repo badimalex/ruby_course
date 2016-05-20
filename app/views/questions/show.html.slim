@@ -11,4 +11,8 @@
   = f.label :body, 'Your Answer'
   .answer-errors
   = f.text_area :body
+  p
+    = f.fields_for :attachments do |a|
+      = a.label :file
+      = a.file_field :file
   = f.submit 'Post Your Answer'
