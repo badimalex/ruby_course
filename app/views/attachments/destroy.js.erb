@@ -1,1 +1,1 @@
-$('.attachments li[data-id=<%= @attachment.id %>]').remove();
+$('.<%= @attachment.attachmentable_type.downcase %>-attachments li[data-id=<%= @attachment.id %>]').remove();

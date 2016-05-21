@@ -1,7 +1,7 @@
 h1 = @question.title
 p = @question.body
 h3 Attachments:
-ul.attachments
+ul.question-attachments
   - @question.attachments.each do |a|
     li { data-id = a.id }
       = link_to a.file.identifier, a.file.url

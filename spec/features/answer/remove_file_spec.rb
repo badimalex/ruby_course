@@ -1,18 +1,20 @@
 require 'acceptance_helper'
 
-feature 'Add files to question' do
+feature 'Remove answer files' do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
+  given(:answer) { create(:answer, user: user, question: question) }
   given(:attachment) { create(:attachment) }
 
   given(:other_question) { create(:question, user: create(:user)) }
+  given(:another_answer) { create(:answer, user: create(:user), question: question) }
   given(:other_attachment) { create(:attachment) }
 
-  scenario 'Non-authorized user cant delete file', js: true do
+  xscenario 'Non-authorized user cant delete file', js: true do
     question.attachments.push attachment
     visit question_path(question)
-
-    expect(page).to_not have_link('Remove attachment')
+    save_and_open_page
+    expect(page).to_not have_link('Add file')
   end
 
   describe 'Authorized user visit own question' do
@@ -20,21 +22,21 @@ feature 'Add files to question' do
       sign_in user
     end
     scenario 'User remove file from your question', js: true do
-      question.attachments.push attachment
+      answer.attachments.push attachment
       visit question_path(question)
 
-      within '.question-attachments' do
+      within '.answers' do
         expect(page).to have_content('spec_helper')
         click_on 'Remove attachment'
         expect(page).to_not have_content('spec_helper')
       end
     end
 
-    scenario 'User try to remove other user file', js: true do
+    xscenario 'User try to remove other user file', js: true do
       other_question.attachments.push other_attachment
       visit question_path(other_question)
 
-      within '.question-attachments' do
+      within '.attachments' do
         expect(page).to have_content('spec_helper')
         expect(page).to_not have_link('Remove attachment')
       end
