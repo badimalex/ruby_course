@@ -38,6 +38,5 @@ feature 'Add files to question' do
 
     expect(page).to have_link 'spec_helper.rb', href: /spec_helper.rb/
     expect(page).to have_link 'rails_helper.rb', href: /rails_helper.rb/
-
   end
 end
