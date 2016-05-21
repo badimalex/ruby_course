@@ -9,13 +9,33 @@ feature 'Add files to answer' do
     visit question_path(question)
   end
 
-  scenario 'User adds file when asks question', js: true do
+  scenario 'User adds file when answer', js: true do
     fill_in 'Your Answer', with: 'My body answer'
-    attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
-    click_on 'Post Your Answer'
+    within '.answer_form' do
+      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+      click_on 'Post Your Answer'
+    end
+    expect(page).to have_link 'spec_helper.rb', href: /spec_helper.rb/
+  end
 
+  scenario 'User attach many files when answer', js: true do
+    fill_in 'Your Answer', with: 'My body answer'
+    within '.answer_form' do
+      within '.files li:nth-child(1)' do
+        attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
+      end
+
+      click_on 'Add file'
+
+      within '.files li:nth-child(2)' do
+        attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+      end
+
+      click_on 'Post Your Answer'
+    end
     within '.answers' do
-      expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
+      expect(page).to have_link 'spec_helper.rb', href: /spec_helper.rb/
+      expect(page).to have_link 'rails_helper.rb', href: /rails_helper.rb/
     end
   end
 end
