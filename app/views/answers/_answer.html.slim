@@ -1,14 +1,14 @@
 / todo отрефакторить проверки
 div { data-answer = answer.id }
   p = answer.body
-  ul
-    - answer.attachments.each do |a|
-      li= link_to a.file.filename, a.file.url
   - if answer.accepted?
     span = 'Accepted'
-  - if current_user && current_user.author_of?(answer)
-    p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete', remote: true
   - if answer.persisted?
+    ul
+      - answer.attachments.each do |a|
+        li= link_to a.file.filename, a.file.url
+    - if current_user && current_user.author_of?(answer)
+      p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete', remote: true
     - if current_user && current_user.author_of?(answer)
       p = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       p
