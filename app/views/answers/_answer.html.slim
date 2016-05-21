@@ -10,7 +10,8 @@ div { data-answer = answer.id }
         li { data-id = a.id }
           = link_to a.file.filename, a.file.url
           = ' '
-          = link_to 'Remove attachment', destroy_attachment_path(a), method: 'delete', remote: true
+          - if current_user && current_user.author_of?(answer)
+            = link_to 'Remove attachment', destroy_attachment_path(a), method: 'delete', remote: true
 
     - if current_user
       - if current_user.author_of?(answer)
