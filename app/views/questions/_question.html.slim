@@ -6,7 +6,8 @@ ul.attachments
     li { data-id = a.id }
       = link_to a.file.identifier, a.file.url
       = ' '
-      = link_to 'Remove attachment', destroy_attachment_path(a), method: 'delete', remote: true
+      - if current_user.author_of?(question)
+        = link_to 'Remove attachment', destroy_attachment_path(a), method: 'delete', remote: true
 
 - if current_user && current_user.author_of?(question)
   p = link_to 'Edit question', '', class: 'edit-question-link'
