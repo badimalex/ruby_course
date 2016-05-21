@@ -3,9 +3,9 @@
   = f.text_field :title
   = f.label :body
   = f.text_area :body
-  p Attachments:
-  p
-    = f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file
+  h3 Attachments:
+  ul.files
+    = f.fields_for :attachments do |attachment|
+      = render 'attachment_fields', f: attachment
+    li = link_to_add_association 'Add file', f, :attachments
   = f.submit 'Create'

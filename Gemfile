@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'slim-rails'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'cocoon'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
