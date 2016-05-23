@@ -3,6 +3,9 @@ class Answer < ActiveRecord::Base
 
   belongs_to :question
   belongs_to :user
+  has_many :attachments, as: :attachmentable
+
+  accepts_nested_attributes_for :attachments, reject_if: :all_blank
 
   validates :question_id, :user_id, :body, presence: true
   validates :body, length: { minimum: 10 }

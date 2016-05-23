@@ -39,7 +39,8 @@ RSpec.describe AnswersController, type: :controller do
   describe 'Delete #destroy' do
     context 'Author deletes own answer' do
       it 'deletes answer' do
-        expect { delete :destroy, question_id: question, id: answer, format: :js }.to change(@user.answers, :count).by(-1)
+        expect { delete :destroy, question_id: question, id: answer, format: :js }
+          .to change(@user.answers, :count).by(-1)
       end
     end
 

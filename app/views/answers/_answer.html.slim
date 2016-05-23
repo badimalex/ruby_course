@@ -1,17 +1,27 @@
-/ todo отрефакторить проверки
 div { data-answer = answer.id }
   p = answer.body
+
   - if answer.accepted?
     span = 'Accepted'
-  - if current_user && current_user.author_of?(answer)
-    p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete', remote: true
+
   - if answer.persisted?
-    - if current_user && current_user.author_of?(answer)
-      p = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-      p
-        = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
-          = f.label :body, 'Answer'
-          = f.text_area :body
-          = f.submit 'Save'
-    - if current_user && current_user.author_of?(@question)
-      p = link_to 'Accept answer', accept_question_answer_path(@question, answer), class: 'accept-answer-link', method: 'post', remote: true
+    ul.answer-attachments
+      - answer.attachments.each do |a|
+        li { data-id = a.id }
+          = link_to a.file.filename, a.file.url
+          = ' '
+          - if current_user && current_user.author_of?(answer)
+            = link_to 'Remove attachment', destroy_attachment_path(a), method: 'delete', remote: true
+
+    - if current_user
+      - if current_user.author_of?(answer)
+        p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete', remote: true
+        p = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+
+      - if current_user.author_of?(@question)
+        p = link_to 'Accept answer', accept_question_answer_path(@question, answer), class: 'accept-answer-link', method: 'post', remote: true
+
+      = form_for [@question, answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
+        = f.label :body, 'Answer'
+        = f.text_area :body
+        = f.submit 'Save'

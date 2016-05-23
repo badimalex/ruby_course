@@ -7,8 +7,13 @@
 .answers
   = render @question.answers
 
-= form_for [@question, @answer], remote: true do |f|
-  = f.label :body, 'Your Answer'
-  .answer-errors
-  = f.text_area :body
-  = f.submit 'Post Your Answer'
+.answer_form
+  = form_for [@question, @answer], remote: true do |f|
+    = f.label :body, 'Your Answer'
+    .answer-errors
+    = f.text_area :body
+    ul.files
+      = f.fields_for :attachments do |a|
+        = render 'attachment_fields', f: a
+      li = link_to_add_association 'Add file', f, :attachments
+    = f.submit 'Post Your Answer'
