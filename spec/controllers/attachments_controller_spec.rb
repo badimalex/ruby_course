@@ -12,7 +12,7 @@ RSpec.describe AttachmentsController, type: :controller do
   describe 'Delete #destroy' do
     context 'Author deletes own question file' do
       before do
-        question.attachments.push attachment
+        question.attachments << attachment
       end
 
       it 'assign attachment to @attachment' do
@@ -27,7 +27,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
     context 'Author delete other author question file' do
       before do
-        other_question.attachments.push other_attachment
+        other_question.attachments << other_attachment
       end
 
       it 'doesnt deletes file' do
@@ -42,7 +42,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
     context 'Author delete own answer file' do
       before do
-        answer.attachments.push attachment
+        answer.attachments << attachment
       end
 
       it 'deletes file' do
@@ -52,7 +52,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
     context 'Author delete other answer file' do
       before do
-        other_answer.attachments.push other_attachment
+        other_answer.attachments << other_attachment
       end
 
       it 'doesnt deletes file' do
