@@ -8,18 +8,6 @@ feature 'Add files to question' do
     visit new_question_path
   end
 
-  scenario 'User adds file when asks question' do
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'My awesome question body'
-
-    within '.files li:nth-child(1)' do
-      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
-    end
-
-    click_on 'Create'
-    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
-  end
-
   scenario 'User adds many files to question', js: true do
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'My awesome question body'
