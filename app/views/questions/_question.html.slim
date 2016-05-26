@@ -1,5 +1,11 @@
 h1 = @question.title
 p = @question.body
+
+p = link_to 'Up vote'
+
+.vote_count
+  = @question.votes
+
 h3 Attachments:
 ul.question-attachments
   - @question.attachments.each do |a|
