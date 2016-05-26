@@ -1,6 +1,5 @@
 require 'rails_helper'
-# todo test attach file with fixture_file_upload
-# todo remove test doubles
+
 RSpec.describe AttachmentsController, type: :controller do
   sign_in_user
   let!(:question) { create(:question, user: @user) }
