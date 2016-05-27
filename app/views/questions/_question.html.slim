@@ -3,7 +3,7 @@ p = @question.body
 
 p = link_to 'Upvote'
 .vote-count-post
-  = '0'
+  = @question.score
 
 h3 Attachments:
 ul.question-attachments
