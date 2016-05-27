@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
-  include PublicIndex, PublicShow
+  include PublicIndex, PublicShow, Voted
 
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :upvote]
 
   def index
     @questions = Question.all

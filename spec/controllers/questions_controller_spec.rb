@@ -66,6 +66,16 @@ RSpec.describe QuestionsController do
     end
   end
 
+  describe 'POST #upvote' do
+    context 'Authorized user upvote question' do
+      it 'increment score value' do
+        post :upvote, id: question, question: attributes_for(:question)
+
+        expect { question.reload }.to change { question.score }.by 1
+      end
+    end
+  end
+
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves the new question in the database' do
