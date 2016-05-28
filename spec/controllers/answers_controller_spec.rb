@@ -128,13 +128,23 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #upvote' do
-    context 'Authorized user upvote answer' do
+    context 'Authorized user upvote own answer' do
+      let(:another_user) { create(:user) }
+      let!(:another_answer) { create(:answer, user: another_user, question: question) }
+
+      it 'doesnt increment score value', js: true do
+        post :upvote, id: another_answer, question_id: question, answer: attributes_for(:answer), format: :js
+
+        expect { another_answer.reload }.to change { another_answer.score }.by 1
+      end
+    end
+
+    context 'Authorized user upvote other answer' do
       it 'increment score value', js: true do
         post :upvote, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
 
-        expect { answer.reload }.to change { answer.score }.by 1
+        expect { answer.reload }.to_not change { answer.score }
       end
     end
   end
 end
-
