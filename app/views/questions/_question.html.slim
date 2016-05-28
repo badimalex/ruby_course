@@ -1,10 +1,7 @@
 h1 = @question.title
 p = @question.body
 
-p = link_to 'Upvote', upvote_question_path, method: :post, remote: true, class: 'upvote'
-
-.vote-count-post
-  = @question.score
+= render 'questions/upvote'
 
 h3 Attachments:
 ul.question-attachments

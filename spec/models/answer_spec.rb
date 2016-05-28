@@ -9,8 +9,10 @@ describe Answer do
   it { should validate_presence_of(:user_id) }
   it { should validate_presence_of(:body) }
   it { should validate_length_of(:body).is_at_least(10) }
+  it { should validate_presence_of(:score) }
 
   it { should accept_nested_attributes_for :attachments }
+  it { should validate_numericality_of(:score) }
 
   let(:question) { create(:question) }
   let!(:answers) { create_list(:answer, 2, question: question) }
@@ -35,6 +37,12 @@ describe Answer do
     it 'orders by accepted' do
       answers.push accepted_answer
       Answer.first.should eq(accepted_answer)
+    end
+  end
+
+  describe '#upvote!' do
+    it 'increment score by 1' do
+      expect { answer.upvote! }.to change { answer.score }.from(0).to(1)
     end
   end
 end

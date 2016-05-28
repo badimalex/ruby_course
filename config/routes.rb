@@ -12,6 +12,7 @@ RubyCourse::Application.routes.draw do
   end
 
   resources :questions, concerns: :voted
+  resources :answers, concerns: :voted
 
   delete 'attachments/:id', to: 'attachments#destroy', as: 'destroy_attachment'
 

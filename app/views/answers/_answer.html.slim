@@ -5,6 +5,11 @@ div { data-answer = answer.id }
     span = 'Accepted'
 
   - if answer.persisted?
+    .voting
+      p = link_to 'Upvote', upvote_answer_path(answer), method: :post, remote: true, class: 'upvote'
+      .vote-score
+        = answer.score
+
     ul.answer-attachments
       - answer.attachments.each do |a|
         li { data-id = a.id }

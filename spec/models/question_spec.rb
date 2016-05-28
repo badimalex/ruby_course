@@ -15,4 +15,12 @@ describe Question do
   it { should validate_numericality_of(:score) }
 
   it { should accept_nested_attributes_for :attachments }
+
+  let(:question) { create(:question) }
+
+  describe '#upvote!' do
+    it 'increment score by 1' do
+      expect { question.upvote! }.to change { question.score }.from(0).to(1)
+    end
+  end
 end

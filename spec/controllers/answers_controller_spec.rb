@@ -126,4 +126,15 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :update
     end
   end
+
+  describe 'POST #upvote' do
+    context 'Authorized user upvote answer' do
+      it 'increment score value', js: true do
+        post :upvote, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+
+        expect { answer.reload }.to change { answer.score }.by 1
+      end
+    end
+  end
 end
+

@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  include PublicIndex, PublicShow
+  include PublicIndex, PublicShow, Voted
 
   before_action :load_answer, only: [:destroy, :update, :accept]
   before_action :load_question, only: [:create, :update, :accept]

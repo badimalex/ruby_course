@@ -6,7 +6,3 @@ $ ->
     event.preventDefault();
     $(this).hide();
     $('form#edit-question').show();
-
-  $('.upvote').bind 'ajax:success', (e, data, status, xhr) ->
-    votable = $.parseJSON(xhr.responseText)
-    $('.vote-count-post').html(votable.score)

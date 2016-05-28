@@ -1,13 +1,14 @@
 class Answer < ActiveRecord::Base
-  include Attachable
+  include Attachable, Votable
 
   default_scope order('accepted DESC')
 
   belongs_to :question
   belongs_to :user
 
-  validates :question_id, :user_id, :body, presence: true
+  validates :question_id, :user_id, :body, :score, presence: true
   validates :body, length: { minimum: 10 }
+  validates_numericality_of :score
 
   def accept!
     transaction do
