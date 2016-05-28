@@ -79,7 +79,7 @@ RSpec.describe QuestionsController do
     end
 
     context 'Authorized user upvote own question' do
-      it 'increment score value', js: true do
+      it 'doesnt increment score value', js: true do
         post :upvote, id: question, question: attributes_for(:question)
 
         expect { question.reload }.to_not change { question.score }
