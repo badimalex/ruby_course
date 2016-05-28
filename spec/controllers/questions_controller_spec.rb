@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController do
   sign_in_user
+  let(:another_user) { create(:user) }
   let(:question) { create(:question, user: @user, title: 'Hello world', body: 'Best body question ever') }
 
   describe 'GET #index' do
@@ -67,11 +68,21 @@ RSpec.describe QuestionsController do
   end
 
   describe 'POST #upvote' do
-    context 'Authorized user upvote question' do
+    context 'Authorized user upvote other question' do
+      let(:another_question) { create(:question, user: another_user) }
+      it 'increment score value', js: true do
+        another_question
+        post :upvote, id: another_question, question: attributes_for(:question)
+
+        expect { another_question.reload }.to change { another_question.score }.by 1
+      end
+    end
+
+    context 'Authorized user upvote own question' do
       it 'increment score value', js: true do
         post :upvote, id: question, question: attributes_for(:question)
 
-        expect { question.reload }.to change { question.score }.by 1
+        expect { question.reload }.to_not change { question.score }
       end
     end
   end
@@ -118,7 +129,6 @@ RSpec.describe QuestionsController do
     end
 
     context 'Author try to edit other user question' do
-      let(:another_user) { create(:user) }
       let(:another_question) { create(:question, user: another_user, body: 'Original question body') }
 
       it 'doesn\'t accept answer' do

@@ -6,8 +6,10 @@ module Voted
   end
 
   def upvote
-    @votable.upvote!
-    render json: @votable
+    unless current_user.author_of?(@votable)
+      @votable.upvote!
+      render json: @votable
+    end
   end
 
   private

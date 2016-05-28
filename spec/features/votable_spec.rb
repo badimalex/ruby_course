@@ -6,10 +6,10 @@ feature 'Vote question' do
   given(:answers) { create_list(:answer, 2, question: question) }
   given(:other_question) { create(:question, user: create(:user)) }
 
-  describe 'Authorized user vote question' do
+  describe 'Authorized user vote other question' do
     before do
       sign_in user
-      visit question_path(question)
+      visit question_path(other_question)
     end
 
     scenario 'can view vote button for question' do
@@ -27,7 +27,6 @@ feature 'Vote question' do
       end
     end
   end
-
 
   describe 'Authorized user vote answer' do
     before do
@@ -49,6 +48,30 @@ feature 'Vote question' do
         expect(find('.vote-score')).to have_content '0'
         click_on 'Upvote'
         expect(find('.vote-score')).to have_content '1'
+      end
+    end
+  end
+
+  describe 'Authorized user visit own question' do
+    before do
+      sign_in user
+      answers
+      visit question_path(question)
+    end
+
+    scenario 'cant upvote question', js: true do
+      within ".question" do
+        expect(find('.vote-score')).to have_content '0'
+        click_on 'Upvote'
+        expect(find('.vote-score')).to have_content '0'
+      end
+    end
+
+    scenario 'cant upvote answer', js: true do
+      within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+        expect(find('.vote-score')).to have_content '0'
+        click_on 'Upvote'
+        expect(find('.vote-score')).to have_content '0'
       end
     end
   end
