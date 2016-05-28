@@ -16,7 +16,7 @@ feature 'Vote question' do
         end
       end
 
-      scenario 'can upvote question' do
+      scenario 'can upvote question', js: true do
         within ".question" do
           expect(page).to have_link 'Upvote'
 

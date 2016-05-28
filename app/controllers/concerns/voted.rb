@@ -7,6 +7,8 @@ module Voted
 
   def upvote
     @votable.increment!(:score, 1)
+
+    render json: @votable
   end
 
   private

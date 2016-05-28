@@ -68,7 +68,7 @@ RSpec.describe QuestionsController do
 
   describe 'POST #upvote' do
     context 'Authorized user upvote question' do
-      it 'increment score value' do
+      it 'increment score value', js: true do
         post :upvote, id: question, question: attributes_for(:question)
 
         expect { question.reload }.to change { question.score }.by 1
