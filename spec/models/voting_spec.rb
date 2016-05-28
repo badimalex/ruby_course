@@ -17,7 +17,7 @@ RSpec.describe Voting, type: :model do
       expect(question.upvoted?).to be false
     end
 
-    it 'should return true if already upvoted' do
+    it 'should return true if upvoted' do
       voting
       expect(question.upvoted?).to be true
     end
