@@ -15,9 +15,10 @@ describe Answer do
   it { should accept_nested_attributes_for :attachments }
   it { should validate_numericality_of(:score) }
 
+  let(:user) { create(:user) }
   let(:question) { create(:question) }
   let!(:answers) { create_list(:answer, 2, question: question) }
-  let(:answer) { create(:answer, question: question) }
+  let(:answer) { create(:answer, question: question, user: user) }
   let(:accepted_answer) { create(:answer, question: question, accepted: true) }
 
   it 'should default accepted to false' do
@@ -44,6 +45,12 @@ describe Answer do
   describe '#upvote!' do
     it 'increment score by 1' do
       expect { answer.upvote! }.to change { answer.score }.from(0).to(1)
+    end
+
+    it 'update votings vote' do
+      answer.upvote!
+      voting = Voting.where(voteable_type: 'Answer', voteable_id: answer.id, user: user ).first
+      expect(voting.vote).to eq 1
     end
   end
 end
