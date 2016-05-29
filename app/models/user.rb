@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
+  include Voter
+
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
+  has_many :votings, dependent: :destroy
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -10,4 +13,5 @@ class User < ActiveRecord::Base
   def author_of?(entity)
     id == entity.user_id
   end
+
 end
