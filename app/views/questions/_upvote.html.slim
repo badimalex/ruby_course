@@ -1,4 +1,5 @@
 .voting
   p = link_to 'Upvote', upvote_question_path, method: :post, remote: true, class: 'upvote'
+  .voting-errors
   .vote-score
     = @question.score

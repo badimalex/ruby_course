@@ -148,6 +148,7 @@ RSpec.describe AnswersController, type: :controller do
 
         send_upvote
         expect { another_answer.reload }.to_not change { another_answer.score }
+        expect(response).to have_http_status(:forbidden)
       end
     end
 

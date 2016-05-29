@@ -6,11 +6,9 @@ module Voteable
   end
 
   def upvote!
-    unless upvoted?
-      increment!(:score, 1)
-      voting = Voting.new(voteable_type: self.class.to_s, voteable_id: id, user: user, vote: 1)
-      voting.save!
-    end
+    increment!(:score, 1)
+    voting = Voting.new(voteable_type: self.class.to_s, voteable_id: id, user: user, vote: 1)
+    voting.save!
   end
 
   def upvoted?

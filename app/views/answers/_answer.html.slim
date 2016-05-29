@@ -7,6 +7,7 @@ div { data-answer = answer.id }
   - if answer.persisted?
     .voting
       p = link_to 'Upvote', upvote_answer_path(answer), method: :post, remote: true, class: 'upvote'
+      .voting-errors
       .vote-score
         = answer.score
 

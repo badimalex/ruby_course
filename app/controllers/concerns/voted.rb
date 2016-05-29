@@ -6,9 +6,13 @@ module Voted
   end
 
   def upvote
-    unless current_user.author_of?(@voteable)
-      @voteable.upvote!
-      render json: @voteable
+    if @voteable.upvoted?
+      render json: { error: 'You can not vote twice' }, status: :forbidden
+    else
+      unless current_user.author_of?(@voteable)
+        @voteable.upvote!
+        render json: @voteable
+      end
     end
   end
 
