@@ -38,6 +38,22 @@ RSpec.describe Voting, type: :model do
     end
   end
 
+  describe '#sum_score' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let(:voting1) { create(:voting, user: create(:user), voteable: question, vote: -1) }
+    let(:voting2) { create(:voting, user: create(:user), voteable: question, vote: 1) }
+    let(:voting3) { create(:voting, user: create(:user), voteable: question, vote: 1) }
+
+    it 'should update question score' do
+      voting1
+      voting2
+      voting3
+
+      expect(question.sum_score).to eq 1
+    end
+  end
+
   describe '#last_vote_by' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
@@ -57,7 +73,7 @@ RSpec.describe Voting, type: :model do
       question.vote!(user, 1)
       question.cancelvote!(user)
       voting = Voting.where(voteable_type: 'Question', voteable_id: question.id, user: user ).first
-      expect(voting.vote).to eq 0
+      expect(voting.nil?).to be true
     end
 
     it 'reset question score by last vote' do
@@ -87,6 +103,7 @@ RSpec.describe Voting, type: :model do
         question.vote!(user, -1)
         count = Voting.where(voteable_type: 'Question', voteable_id: question.id, user: user ).count
         expect(count).to eq 1
+        expect(question.score).to eq 1
       end
     end
   end

@@ -10,9 +10,9 @@ module Voteable
   end
 
   def cancelvote!(user)
-    last_vote = last_vote_by(user).vote
-    increment!(:score, last_vote * -1)
-    vote!(user, 0)
+    last_vote = last_vote_by(user)
+    increment!(:score, last_vote.vote * -1)
+    last_vote.destroy!
   end
 
   def downvote!(user)
@@ -38,15 +38,19 @@ module Voteable
   end
 
   def vote!(user, score)
-    increment!(:score, score)
-
     if upvoted?(user) or downvoted?(user)
       voting = fetch_voting(user)
       voting.vote = score
     else
       voting = Voting.new(voteable_type: self.class.to_s, voteable_id: id, user: user, vote: score)
     end
-      voting.save!
+
+    voting.save!
+    update!(score: sum_score)
+  end
+
+  def sum_score
+    Voting.where(voteable_type: self.class.to_s, voteable_id: id).sum(:vote)
   end
 
   private
