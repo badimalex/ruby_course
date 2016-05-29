@@ -7,6 +7,7 @@ div { data-answer = answer.id }
   - if answer.persisted?
     .voting
       p = link_to 'Upvote', upvote_answer_path(answer), method: :post, remote: true
+      p = link_to 'Cancel vote', cancelvote_answer_path(answer), method: :post, remote: true
       p = link_to 'Downvote', downvote_answer_path(answer), method: :post, remote: true
       .voting-errors
       .vote-score

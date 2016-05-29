@@ -38,6 +38,35 @@ RSpec.describe Voting, type: :model do
     end
   end
 
+  describe '#last_vote_by' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    let(:current_user) { create(:user) }
+
+    it 'should return last user vote' do
+      question.vote!(current_user, 1)
+      expect(question.last_vote_by(current_user).vote).to eq 1
+    end
+  end
+
+  describe '#cancelvote!' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+
+    it 'reset vote column' do
+      question.vote!(user, 1)
+      question.cancelvote!(user)
+      voting = Voting.where(voteable_type: 'Question', voteable_id: question.id, user: user ).first
+      expect(voting.vote).to eq 0
+    end
+
+    it 'reset question score by last vote' do
+      question.vote!(user, 1)
+      question.cancelvote!(user)
+      expect(question.score).to eq 0
+    end
+  end
+
   describe '#vote!' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }

@@ -44,6 +44,20 @@ feature 'Vote question' do
         expect(page).to have_content 'You can not vote twice'
       end
     end
+
+    scenario 'can cancel vote', js: true do
+      within ".question" do
+        expect(find('.vote-score')).to have_content '0'
+
+        click_on 'Upvote'
+        expect(find('.vote-score')).to have_content '1'
+
+        click_on 'Cancel vote'
+
+        click_on 'Downvote'
+        expect(find('.vote-score')).to have_content '-1'
+      end
+    end
   end
 
   describe 'Authorized user vote answer' do
@@ -84,6 +98,20 @@ feature 'Vote question' do
         click_on 'Downvote'
         expect(find('.vote-score')).to have_content '-1'
         expect(page).to have_content 'You can not vote twice'
+      end
+    end
+
+    scenario 'can cancel vote', js: true do
+      within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+        expect(find('.vote-score')).to have_content '0'
+
+        click_on 'Upvote'
+        expect(find('.vote-score')).to have_content '1'
+
+        click_on 'Cancel vote'
+
+        click_on 'Downvote'
+        expect(find('.vote-score')).to have_content '-1'
       end
     end
   end

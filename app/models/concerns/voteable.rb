@@ -9,6 +9,12 @@ module Voteable
     vote!(user, 1)
   end
 
+  def cancelvote!(user)
+    last_vote = last_vote_by(user).vote
+    increment!(:score, last_vote * -1)
+    vote!(user, 0)
+  end
+
   def downvote!(user)
     vote!(user, -1)
   end
@@ -25,6 +31,10 @@ module Voteable
     return false if voting.nil?
     return true if voting.vote == -1
     false
+  end
+
+  def last_vote_by(user)
+    Voting.where(voteable_type: self.class.to_s, voteable_id: id, user: user).first
   end
 
   def vote!(user, score)

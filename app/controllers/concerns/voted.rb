@@ -2,7 +2,7 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_voteable, only: [:upvote, :downvote]
+    before_action :set_voteable, only: [:upvote, :downvote, :cancelvote]
   end
 
   def downvote
@@ -25,6 +25,10 @@ module Voted
         render json: @voteable
       end
     end
+  end
+
+  def cancelvote
+    @voteable.cancelvote!(current_user)
   end
 
   private

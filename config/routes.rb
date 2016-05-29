@@ -4,6 +4,7 @@ RubyCourse::Application.routes.draw do
   concern :voted do
     post :upvote, on: :member
     post :downvote, on: :member
+    post :cancelvote, on: :member
   end
 
   resources :questions do

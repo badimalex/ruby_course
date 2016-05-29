@@ -87,6 +87,33 @@ RSpec.describe QuestionsController do
     end
   end
 
+  describe 'POST #cancelvote' do
+    def send_upvote
+      post :upvote, id: another_question, question: attributes_for(:question), js: true
+    end
+
+    def send_downvote
+      post :downvote, id: another_question, question: attributes_for(:question), js: true
+    end
+
+
+    context 'User try to cancel vote' do
+      let(:another_user) { create(:user) }
+      let!(:another_question) { create(:question, user: another_user) }
+
+      it 'cancel and allow to re-vote' do
+        send_upvote
+        expect { another_question.reload }.to change { another_question.score }.by 1
+
+        post :cancelvote, id: another_question, question: attributes_for(:question), js: true
+        expect(response).to have_http_status(:ok)
+
+        send_downvote
+        expect(another_question.reload.score).to eq -1
+      end
+    end
+  end
+
   describe 'POST #downvote' do
     def send_downvote
       post :downvote, id: another_question, question: attributes_for(:question), js: true
