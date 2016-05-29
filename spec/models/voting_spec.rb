@@ -22,5 +22,4 @@ RSpec.describe Voting, type: :model do
       expect(question.upvoted?).to be true
     end
   end
-
 end

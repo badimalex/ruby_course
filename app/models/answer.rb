@@ -1,5 +1,5 @@
 class Answer < ActiveRecord::Base
-  include Attachable, Votable
+  include Attachable, Voteable
 
   default_scope order('accepted DESC')
 
