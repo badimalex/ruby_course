@@ -1,10 +1,20 @@
 RubyCourse::Application.routes.draw do
   devise_for :users
+
+  concern :voted do
+    post :upvote, on: :member
+    post :downvote, on: :member
+    post :cancelvote, on: :member
+  end
+
   resources :questions do
     resources :answers do
       post :accept, on: :member
     end
   end
+
+  resources :questions, concerns: :voted
+  resources :answers, concerns: :voted
 
   delete 'attachments/:id', to: 'attachments#destroy', as: 'destroy_attachment'
 

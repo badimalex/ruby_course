@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController do
   sign_in_user
+  let(:another_user) { create(:user) }
   let(:question) { create(:question, user: @user, title: 'Hello world', body: 'Best body question ever') }
 
   describe 'GET #index' do
@@ -66,6 +67,79 @@ RSpec.describe QuestionsController do
     end
   end
 
+  describe 'POST #upvote' do
+    context 'Authorized user upvote other question' do
+      let(:another_question) { create(:question, user: another_user) }
+      it 'increment score value', js: true do
+        another_question
+        post :upvote, id: another_question, question: attributes_for(:question)
+
+        expect { another_question.reload }.to change { another_question.score }.by 1
+      end
+    end
+
+    context 'Authorized user upvote own question' do
+      it 'doesnt increment score value', js: true do
+        post :upvote, id: question, question: attributes_for(:question)
+
+        expect { question.reload }.to_not change { question.score }
+      end
+    end
+  end
+
+  describe 'POST #cancelvote' do
+    def send_upvote
+      post :upvote, id: another_question, question: attributes_for(:question), js: true
+    end
+
+    def send_downvote
+      post :downvote, id: another_question, question: attributes_for(:question), js: true
+    end
+
+
+    context 'User try to cancel vote' do
+      let(:another_user) { create(:user) }
+      let!(:another_question) { create(:question, user: another_user) }
+
+      it 'cancel and allow to re-vote' do
+        send_upvote
+        expect { another_question.reload }.to change { another_question.score }.by 1
+
+        post :cancelvote, id: another_question, question: attributes_for(:question), js: true
+        expect(response).to have_http_status(:ok)
+
+        send_downvote
+        expect(another_question.reload.score).to eq -1
+      end
+    end
+  end
+
+  describe 'POST #downvote' do
+    def send_downvote
+      post :downvote, id: another_question, question: attributes_for(:question), js: true
+    end
+
+    context 'Authorized user downvote other question' do
+      let(:another_user) { create(:user) }
+      let!(:another_question) { create(:question, user: another_user) }
+
+      it 'increment score value', js: true do
+        send_downvote
+
+        expect { another_question.reload }.to change { another_question.score }.by -1
+      end
+
+      it 'doesnt increment twice score value' do
+        send_downvote
+        expect { another_question.reload }.to change { another_question.score }.by -1
+
+        send_downvote
+        expect { another_question.reload }.to_not change { another_question.score }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves the new question in the database' do
@@ -108,7 +182,6 @@ RSpec.describe QuestionsController do
     end
 
     context 'Author try to edit other user question' do
-      let(:another_user) { create(:user) }
       let(:another_question) { create(:question, user: another_user, body: 'Original question body') }
 
       it 'doesn\'t accept answer' do

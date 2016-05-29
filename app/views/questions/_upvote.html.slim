@@ -1,0 +1,7 @@
+.voting
+  p = link_to 'Upvote', upvote_question_path, method: :post, remote: true
+  p = link_to 'Cancel vote', cancelvote_question_path, method: :post, remote: true
+  p = link_to 'Downvote', downvote_question_path, method: :post, remote: true
+  .voting-errors
+  .vote-score
+    = @question.score

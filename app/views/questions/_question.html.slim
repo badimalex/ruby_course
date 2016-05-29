@@ -1,5 +1,8 @@
 h1 = @question.title
 p = @question.body
+
+= render 'questions/upvote'
+
 h3 Attachments:
 ul.question-attachments
   - @question.attachments.each do |a|
