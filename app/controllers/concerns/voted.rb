@@ -2,15 +2,26 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_voteable, only: [:upvote]
+    before_action :set_voteable, only: [:upvote, :downvote]
   end
 
-  def upvote
-    if @voteable.upvoted?
+  def downvote
+    if @voteable.downvoted?(current_user)
       render json: { error: 'You can not vote twice' }, status: :forbidden
     else
       unless current_user.author_of?(@voteable)
-        @voteable.upvote!
+        @voteable.downvote!(current_user)
+        render json: @voteable
+      end
+    end
+  end
+
+  def upvote
+    if @voteable.upvoted?(current_user)
+      render json: { error: 'You can not vote twice' }, status: :forbidden
+    else
+      unless current_user.author_of?(@voteable)
+        @voteable.upvote!(current_user)
         render json: @voteable
       end
     end

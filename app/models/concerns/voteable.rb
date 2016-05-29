@@ -5,21 +5,44 @@ module Voteable
     has_one :voting, as: :voteable
   end
 
-  def upvote!
-    increment!(:score, 1)
-    voting = Voting.new(voteable_type: self.class.to_s, voteable_id: id, user: user, vote: 1)
-    voting.save!
+  def upvote!(user)
+    vote!(user, 1)
   end
 
-  def upvoted?
-    voting = fetch_voting
+  def downvote!(user)
+    vote!(user, -1)
+  end
+
+  def upvoted?(user)
+    voting = fetch_voting(user)
     return false if voting.nil?
-    return true if fetch_voting.vote == 1
+    return true if voting.vote == 1
     false
   end
 
+  def downvoted?(user)
+    voting = fetch_voting(user)
+    return false if voting.nil?
+    return true if voting.vote == -1
+    false
+  end
+
+  def vote!(user, score)
+    increment!(:score, score)
+
+    if upvoted?(user) or downvoted?(user)
+      voting = fetch_voting(user)
+      voting.vote = score
+    else
+      voting = Voting.new(voteable_type: self.class.to_s, voteable_id: id, user: user, vote: score)
+    end
+      voting.save!
+  end
+
   private
-  def fetch_voting
-    Voting.where(voteable_type: self.class.to_s, voteable_id: id, user: user ).first
+
+  def fetch_voting(user)
+    Voting.where(voteable_type: self.class.to_s, voteable_id: id, user: user).first
   end
 end
+

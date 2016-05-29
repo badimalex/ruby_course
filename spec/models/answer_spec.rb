@@ -16,6 +16,7 @@ describe Answer do
   it { should validate_numericality_of(:score) }
 
   let(:user) { create(:user) }
+  let(:current_user) { create(:user) }
   let(:question) { create(:question) }
   let!(:answers) { create_list(:answer, 2, question: question) }
   let(:answer) { create(:answer, question: question, user: user) }
@@ -44,12 +45,12 @@ describe Answer do
 
   describe '#upvote!' do
     it 'increment score by 1' do
-      expect { answer.upvote! }.to change { answer.score }.from(0).to(1)
+      expect { answer.upvote!(current_user) }.to change { answer.score }.from(0).to(1)
     end
 
     it 'update votings vote' do
-      answer.upvote!
-      voting = Voting.where(voteable_type: 'Answer', voteable_id: answer.id, user: user ).first
+      answer.upvote!(current_user)
+      voting = Voting.where(voteable_type: 'Answer', voteable_id: answer.id, user: current_user ).first
       expect(voting.vote).to eq 1
     end
   end

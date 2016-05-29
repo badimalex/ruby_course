@@ -87,6 +87,32 @@ RSpec.describe QuestionsController do
     end
   end
 
+  describe 'POST #downvote' do
+    def send_downvote
+      post :downvote, id: another_question, question: attributes_for(:question), js: true
+    end
+
+    context 'Authorized user downvote other question' do
+      let(:another_user) { create(:user) }
+      let!(:another_question) { create(:question, user: another_user) }
+
+      it 'increment score value', js: true do
+        send_downvote
+
+        expect { another_question.reload }.to change { another_question.score }.by -1
+      end
+
+      it 'doesnt increment twice score value' do
+        send_downvote
+        expect { another_question.reload }.to change { another_question.score }.by -1
+
+        send_downvote
+        expect { another_question.reload }.to_not change { another_question.score }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves the new question in the database' do

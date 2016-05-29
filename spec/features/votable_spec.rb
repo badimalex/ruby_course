@@ -15,6 +15,7 @@ feature 'Vote question' do
     scenario 'can view vote button for question' do
       within ".question" do
         expect(page).to have_link 'Upvote'
+        expect(page).to have_link 'Downvote'
       end
     end
 
@@ -27,6 +28,19 @@ feature 'Vote question' do
 
         click_on 'Upvote'
         expect(find('.vote-score')).to have_content '1'
+        expect(page).to have_content 'You can not vote twice'
+      end
+    end
+
+    scenario 'can downvote question', js: true do
+      within ".question" do
+        expect(find('.vote-score')).to have_content '0'
+
+        click_on 'Downvote'
+        expect(find('.vote-score')).to have_content '-1'
+
+        click_on 'Downvote'
+        expect(find('.vote-score')).to have_content '-1'
         expect(page).to have_content 'You can not vote twice'
       end
     end
@@ -59,6 +73,19 @@ feature 'Vote question' do
         expect(page).to have_content 'You can not vote twice'
       end
     end
+
+    scenario 'can downvote answer', js: true do
+      within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+        expect(find('.vote-score')).to have_content '0'
+
+        click_on 'Downvote'
+        expect(find('.vote-score')).to have_content '-1'
+
+        click_on 'Downvote'
+        expect(find('.vote-score')).to have_content '-1'
+        expect(page).to have_content 'You can not vote twice'
+      end
+    end
   end
 
   describe 'Authorized user visit own question' do
@@ -85,4 +112,3 @@ feature 'Vote question' do
     end
   end
 end
-

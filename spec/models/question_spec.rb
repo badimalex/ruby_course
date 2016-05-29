@@ -17,11 +17,25 @@ describe Question do
 
   it { should accept_nested_attributes_for :attachments }
 
-  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let!(:current_user) { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe '#upvote!' do
     it 'increment score by 1' do
-      expect { question.upvote! }.to change { question.score }.from(0).to(1)
+      expect { question.upvote!(current_user) }.to change { question.score }.from(0).to(1)
+    end
+  end
+
+  describe '#downvote!' do
+    it 'increment score by 1' do
+      expect { question.downvote!(current_user) }.to change { question.score }.from(0).to(-1)
+    end
+
+    it 'update votings vote' do
+      question.downvote!(current_user)
+      voting = Voting.where(voteable_type: 'Question', voteable_id: question.id, user: current_user ).first
+      expect(voting.vote).to eq -1
     end
   end
 end
