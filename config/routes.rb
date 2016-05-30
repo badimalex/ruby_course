@@ -1,6 +1,8 @@
 RubyCourse::Application.routes.draw do
   devise_for :users
+
   resources :questions do
+    post :up_vote, on: :member
     resources :answers do
       post :accept, on: :member
     end

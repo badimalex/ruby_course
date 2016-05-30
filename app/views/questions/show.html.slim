@@ -1,5 +1,9 @@
 .question
   = render @question
+  .vote
+    = link_to 'Up vote', up_vote_question_path(@question), method: 'post', remote: true
+    .vote-score
+      = @question.up_votes
 
 - if current_user && current_user.author_of?(@question)
   = link_to 'Remove', question_path(@question), method: 'delete'

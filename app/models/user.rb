@@ -10,4 +10,9 @@ class User < ActiveRecord::Base
   def author_of?(entity)
     id == entity.user_id
   end
+
+  def up_vote(voteable)
+    voteable.up_votes += 1
+    voteable.save!
+  end
 end

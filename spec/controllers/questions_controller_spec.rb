@@ -162,4 +162,18 @@ RSpec.describe QuestionsController do
       end
     end
   end
+
+  describe 'Post #up_vote' do
+    context 'as authorized user' do
+      before { post :up_vote, id: question }
+
+      it 'increment question up_vote value' do
+        expect(question.reload.up_votes).to eq 1
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 end

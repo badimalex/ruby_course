@@ -21,4 +21,15 @@ RSpec.describe User do
       expect(user).to_not be_author_of(another_question)
     end
   end
+
+  describe '#up_vote' do
+    let(:question) { create(:question) }
+    let(:user) { create(:user) }
+
+    it 'should increase up votes of voteable by one' do
+      expect(question.up_votes).to eq 0
+      user.up_vote(question)
+      expect(question.up_votes).to eq 1
+    end
+  end
 end
