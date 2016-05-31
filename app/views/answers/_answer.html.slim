@@ -7,7 +7,7 @@ div { data-answer = answer.id }
   - if answer.persisted?
 
     .vote
-      .vote-score
+      .vote-up-votes
         = answer.up_votes
       = link_to 'Up vote', up_vote_answer_path(answer), method: 'post', remote: true
       .errors

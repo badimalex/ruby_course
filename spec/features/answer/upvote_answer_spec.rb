@@ -22,9 +22,9 @@ feature 'Up vote answer' do
 
     scenario 'can up vote answer', js: true do
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
-        expect(find('.vote-score')).to have_content '0'
+        expect(find('.vote-up-votes')).to have_content '0'
         click_on 'Up vote'
-        expect(find('.vote-score')).to have_content '1'
+        expect(find('.vote-up-votes')).to have_content '1'
       end
     end
   end
@@ -40,9 +40,9 @@ feature 'Up vote answer' do
 
     scenario 'cant up vote question', js: true do
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
-        expect(find('.vote-score')).to have_content '0'
+        expect(find('.vote-up-votes')).to have_content '0'
         click_on 'Up vote'
-        expect(find('.vote-score')).to have_content '0'
+        expect(find('.vote-up-votes')).to have_content '0'
         expect(find('.errors')).to have_content 'The voteable cannot be voted by the owner.'
       end
     end
@@ -54,10 +54,10 @@ feature 'Up vote answer' do
       answers
       visit question_path(question)
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
-        expect(find('.vote-score')).to have_content '0'
+        expect(find('.vote-up-votes')).to have_content '0'
         click_on 'Up vote'
 
-        expect(find('.vote-score')).to have_content '0'
+        expect(find('.vote-up-votes')).to have_content '0'
         expect(find('.errors')).to have_content 'Only autorized user can vote'
       end
     end

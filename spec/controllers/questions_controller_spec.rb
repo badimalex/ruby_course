@@ -179,7 +179,6 @@ RSpec.describe QuestionsController do
   end
 
   describe 'Post #up_vote' do
-
     context 'current user is not the question author' do
       sign_in_user
       let(:question) { create(:question) }
@@ -223,6 +222,58 @@ RSpec.describe QuestionsController do
 
       it 'not increment question up_vote value' do
         expect(question.reload.up_votes).to eq 0
+      end
+
+      it 'return forbidden' do
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe 'Post #down_vote' do
+    context 'current user is not the question author' do
+      sign_in_user
+      let(:question) { create(:question) }
+
+      before do
+        post :down_vote, id: question
+      end
+
+      it 'should decrease down votes of question by one' do
+        expect(question.reload.down_votes).to eq -1
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'question author is the current user' do
+      sign_in_user
+      let(:question) { create(:question, user: @user) }
+
+      before do
+        post :down_vote, id: question
+      end
+
+      it 'not decrease down votes of question' do
+        expect(question.reload.down_votes).to eq 0
+      end
+
+      it 'return forbidden' do
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'as non-authorized user' do
+      let(:question) { create(:question) }
+
+      before do
+        post :down_vote, id: question
+      end
+
+      it 'not decrease down votes of question' do
+        expect(question.reload.down_votes).to eq 0
       end
 
       it 'return forbidden' do

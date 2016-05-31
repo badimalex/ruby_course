@@ -2,8 +2,11 @@
   = render @question
   .vote
     = link_to 'Up vote', up_vote_question_path(@question), method: 'post', remote: true
-    .vote-score
+    = link_to 'Down vote', down_vote_question_path(@question), method: 'post', remote: true
+    .vote-up-votes
       = @question.up_votes
+    .vote-down-votes
+      = @question.down_votes
     .errors
 
 - if current_user && current_user.author_of?(@question)

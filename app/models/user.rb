@@ -19,4 +19,13 @@ class User < ActiveRecord::Base
       voteable.save!
     end
   end
+
+  def down_vote(voteable)
+    if voteable.user_id == id
+      raise Exception.new('The voteable cannot be voted by the owner.')
+    else
+      voteable.down_votes -= 1
+      voteable.save!
+    end
+  end
 end
