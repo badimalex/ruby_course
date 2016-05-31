@@ -4,8 +4,12 @@ class AnswersController < ApplicationController
   before_action :load_question, only: [:create, :update, :accept]
 
   def up_vote
-    current_user.up_vote(@answer)
-    render json: @answer
+    unless current_user
+      render json: { error: 'Only autorized user can vote' }, status: :forbidden
+    else
+      current_user.up_vote(@answer)
+      render json: @answer
+    end
   end
 
   def create

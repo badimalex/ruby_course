@@ -5,7 +5,7 @@ feature 'Up vote answer' do
   given(:question) { create(:question, user: user) }
   given!(:answers) { create_list(:answer, 2, question: question) }
 
-  describe 'Authorized user' do
+  describe 'Authorized user try up vote answer' do
     before do
       sign_in user
       visit question_path(question)
@@ -24,6 +24,19 @@ feature 'Up vote answer' do
         expect(find('.vote-score')).to have_content '0'
         click_on 'Up vote'
         expect(find('.vote-score')).to have_content '1'
+      end
+    end
+  end
+
+  describe 'Non-authorized user try up vote answer' do
+    scenario 'cant up vote question', js: true do
+      visit question_path(question)
+      within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+        expect(find('.vote-score')).to have_content '0'
+        click_on 'Up vote'
+
+        expect(find('.vote-score')).to have_content '0'
+        expect(find('.errors')).to have_content 'Only autorized user can vote'
       end
     end
   end

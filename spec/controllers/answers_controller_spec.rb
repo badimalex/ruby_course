@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  sign_in_user
-  let(:question) { create(:question, user: @user) }
-  let!(:answer) { create(:answer, user: @user, question: question) }
 
   describe 'POST #create' do
+    sign_in_user
+    let(:question) { create(:question, user: @user) }
+    let(:answer) { create(:answer, user: @user, question: question) }
+
     context 'with valid attributes' do
       it 'saves the new answer in database' do
         expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js  }
@@ -37,6 +38,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'Delete #destroy' do
+    sign_in_user
+    let(:question) { create(:question, user: @user) }
+    let!(:answer) { create(:answer, user: @user, question: question) }
+
     context 'Author deletes own answer' do
       it 'deletes answer' do
         expect { delete :destroy, question_id: question, id: answer, format: :js }
@@ -61,6 +66,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #accept' do
+    sign_in_user
+    let(:question) { create(:question, user: @user) }
+    let(:answer) { create(:answer, user: @user, question: question) }
+
     it 'assigns the requested answer to @answer' do
       post :accept, question_id: question, id: answer, format: :js
       expect(assigns(:answer)).to eq answer
@@ -94,6 +103,10 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    sign_in_user
+    let(:question) { create(:question, user: @user) }
+    let(:answer) { create(:answer, user: @user, question: question) }
+
     it 'assigns the requested answer to @answer' do
       patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
       expect(assigns(:answer)).to eq answer
@@ -129,6 +142,8 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'Post #up_vote' do
     context 'as authorized user' do
+      sign_in_user
+      let(:answer) { create(:answer) }
       before { post :up_vote, id: answer }
 
       it 'increment answer up_vote value' do
@@ -137,6 +152,20 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'return ok' do
         expect(response).to have_http_status(:ok)
+      end
+    end
+
+
+    context 'as non-authorized user' do
+      let(:answer) { create(:answer) }
+      before { post :up_vote, id: answer }
+
+      it 'not increment answer up_vote value' do
+        expect(answer.reload.up_votes).to eq 0
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

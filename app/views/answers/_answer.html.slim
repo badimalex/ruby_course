@@ -10,6 +10,7 @@ div { data-answer = answer.id }
       .vote-score
         = answer.up_votes
       = link_to 'Up vote', up_vote_answer_path(answer), method: 'post', remote: true
+      .errors
 
     ul.answer-attachments
       - answer.attachments.each do |a|

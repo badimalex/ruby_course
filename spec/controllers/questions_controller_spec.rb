@@ -202,7 +202,7 @@ RSpec.describe QuestionsController do
         post :up_vote, id: question
       end
 
-      it 'increment question up_vote value' do
+      it 'not increment question up_vote value' do
         expect(question.reload.up_votes).to eq 0
       end
 
