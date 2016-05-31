@@ -37,7 +37,7 @@ feature 'Vote question' do
     end
   end
 
-  describe 'Authorized user tries to up vote own question' do
+  describe 'Authorized user try to vote own question' do
     given(:question) { create(:question, user: user) }
 
     before do
@@ -45,26 +45,38 @@ feature 'Vote question' do
       visit question_path(question)
     end
 
-    scenario 'cant up vote question', js: true do
+    scenario 'cant down or up vote question', js: true do
       within vote do
+        expect(find('.vote-down-votes')).to have_content '0'
         expect(find('.vote-up-votes')).to have_content '0'
+
         click_on 'Up vote'
         expect(find('.vote-up-votes')).to have_content '0'
+        expect(find('.errors')).to have_content 'The voteable cannot be voted by the owner.'
+
+
+        click_on 'Down vote'
+        expect(find('.vote-down-votes')).to have_content '0'
         expect(find('.errors')).to have_content 'The voteable cannot be voted by the owner.'
       end
     end
   end
 
-  describe 'Non-authorized user try up vote question' do
+  describe 'Non-authorized user try vote question' do
     given(:question) { create(:question, user: user) }
 
-    scenario 'cant up vote question', js: true do
+    scenario 'cant down or up vote question', js: true do
       visit question_path(question)
         within vote do
           expect(find('.vote-up-votes')).to have_content '0'
-          click_on 'Up vote'
+          expect(find('.vote-down-votes')).to have_content '0'
 
+          click_on 'Up vote'
           expect(find('.vote-up-votes')).to have_content '0'
+          expect(find('.errors')).to have_content 'Only autorized user can vote'
+
+          click_on 'Down vote'
+          expect(find('.vote-down-votes')).to have_content '0'
           expect(find('.errors')).to have_content 'Only autorized user can vote'
         end
     end
