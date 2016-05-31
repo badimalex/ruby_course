@@ -34,6 +34,12 @@ RSpec.describe User do
       expect(question.up_votes).to eq 1
     end
 
+    it 'should create user vote' do
+      expect(Vote.count).to eq 0
+      user.up_vote(question)
+      expect(Vote.count).to eq 1
+    end
+
     it 'should increase up votes for answer' do
       expect(answer.up_votes).to eq 0
       user.up_vote(answer)

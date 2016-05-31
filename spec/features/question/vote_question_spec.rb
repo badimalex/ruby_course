@@ -28,6 +28,20 @@ feature 'Vote question' do
       end
     end
 
+    scenario 'try up vote twice', js: true do
+      within vote do
+        expect(find('.vote-up-votes')).to have_content '0'
+
+        click_on 'Up vote'
+        expect(find('.vote-up-votes')).to have_content '1'
+
+        click_on 'Up vote'
+        wait_for_ajax
+        expect(find('.vote-up-votes')).to have_content '1'
+        expect(find('.errors')).to have_content 'The voteable was already voted by the voter.'
+      end
+    end
+
     scenario 'can down vote question', js: true do
       within vote do
         expect(find('.vote-down-votes')).to have_content '0'
