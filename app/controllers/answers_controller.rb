@@ -1,7 +1,12 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
-  before_action :load_answer, only: [:destroy, :update, :accept]
+  before_action :load_answer, only: [:destroy, :update, :accept, :up_vote]
   before_action :load_question, only: [:create, :update, :accept]
+
+  def up_vote
+    current_user.up_vote(@answer)
+    render json: @answer
+  end
 
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))

@@ -60,7 +60,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'PATCH #accept' do
+  describe 'POST #accept' do
     it 'assigns the requested answer to @answer' do
       post :accept, question_id: question, id: answer, format: :js
       expect(assigns(:answer)).to eq answer
@@ -124,6 +124,20 @@ RSpec.describe AnswersController, type: :controller do
     it 'render update template' do
       patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
       expect(response).to render_template :update
+    end
+  end
+
+  describe 'Post #up_vote' do
+    context 'as authorized user' do
+      before { post :up_vote, id: answer }
+
+      it 'increment answer up_vote value' do
+        expect(answer.reload.up_votes).to eq 1
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:ok)
+      end
     end
   end
 end

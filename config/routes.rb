@@ -8,6 +8,7 @@ RubyCourse::Application.routes.draw do
     end
   end
 
+  post 'answers/:id/up_vote', to: 'answers#up_vote', as: 'up_vote_answer'
   delete 'attachments/:id', to: 'attachments#destroy', as: 'destroy_attachment'
 
   root to: "questions#index"

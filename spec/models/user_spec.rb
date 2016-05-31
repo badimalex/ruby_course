@@ -24,12 +24,19 @@ RSpec.describe User do
 
   describe '#up_vote' do
     let(:question) { create(:question) }
+    let(:answer) { create(:answer) }
     let(:user) { create(:user) }
 
-    it 'should increase up votes of voteable by one' do
+    it 'should increase up votes for question' do
       expect(question.up_votes).to eq 0
       user.up_vote(question)
       expect(question.up_votes).to eq 1
+    end
+
+    it 'should increase up votes for answer' do
+      expect(answer.up_votes).to eq 0
+      user.up_vote(answer)
+      expect(answer.up_votes).to eq 1
     end
   end
 end
