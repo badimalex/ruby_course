@@ -3,9 +3,10 @@ require 'acceptance_helper'
 feature 'Up vote answer' do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given!(:answers) { create_list(:answer, 2, question: question) }
 
-  describe 'Authorized user try up vote answer' do
+  describe 'Authorized user try up vote other answer' do
+    given!(:answers) { create_list(:answer, 2, question: question, user: create(:user)) }
+
     before do
       sign_in user
       visit question_path(question)
@@ -28,8 +29,29 @@ feature 'Up vote answer' do
     end
   end
 
-  describe 'Non-authorized user try up vote answer' do
+  describe 'Authorized user tries to up vote own answer' do
+    given!(:answers) { create_list(:answer, 2, question: question, user: user) }
+
+    before do
+      sign_in user
+      answers
+      visit question_path(question)
+    end
+
     scenario 'cant up vote question', js: true do
+      within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+        expect(find('.vote-score')).to have_content '0'
+        click_on 'Up vote'
+        expect(find('.vote-score')).to have_content '0'
+        expect(find('.errors')).to have_content 'The voteable cannot be voted by the owner.'
+      end
+    end
+  end
+
+  describe 'Non-authorized user try up vote answer' do
+    given!(:answers) { create_list(:answer, 2, question: question) }
+    scenario 'cant up vote question', js: true do
+      answers
       visit question_path(question)
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
         expect(find('.vote-score')).to have_content '0'
