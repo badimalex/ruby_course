@@ -3,8 +3,12 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy, :up_vote]
 
   def up_vote
-    current_user.up_vote(@question)
-    render json: @question
+    unless current_user
+      render json: { error: 'Only autorized user can vote' }, status: :forbidden
+    else
+      current_user.up_vote(@question)
+      render json: @question
+    end
   end
 
   def index

@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController do
-  sign_in_user
-  let(:question) { create(:question, user: @user, title: 'Hello world', body: 'Best body question ever') }
-
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
 
@@ -19,6 +16,8 @@ RSpec.describe QuestionsController do
   end
 
   describe 'GET #show' do
+    let(:question) { create(:question, user: create(:user), title: 'Hello world', body: 'Best body question ever') }
+
     before { get :show, id: question }
 
     it 'assigns the requested question to @question' do
@@ -39,7 +38,11 @@ RSpec.describe QuestionsController do
   end
 
   describe 'GET #new' do
-    before { get :new }
+    sign_in_user
+
+    before do
+      get :new
+    end
 
     it 'assigns a new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
@@ -55,7 +58,12 @@ RSpec.describe QuestionsController do
   end
 
   describe 'GET #edit' do
-    before { get :edit, id: question }
+    sign_in_user
+    let(:question) { create(:question) }
+
+    before do
+      get :edit, id: question
+    end
 
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
@@ -67,6 +75,7 @@ RSpec.describe QuestionsController do
   end
 
   describe 'POST #create' do
+    sign_in_user
     context 'with valid attributes' do
       it 'saves the new question in the database' do
         expect { post :create, question: attributes_for(:question) }.to change(@user.questions, :count).by(1)
@@ -88,6 +97,9 @@ RSpec.describe QuestionsController do
   end
 
   describe 'PATCH #update' do
+    sign_in_user
+    let(:question) { create(:question, user: @user, title: 'First question title', body: 'First question body') }
+
     context 'valid attributes' do
       it 'assigns the requested question to @question' do
         patch :update, id: question, question: attributes_for(:question), format: :js
@@ -125,8 +137,8 @@ RSpec.describe QuestionsController do
       before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'Hello world'
-        expect(question.body).to eq 'Best body question ever'
+        expect(question.title).to eq 'First question title'
+        expect(question.body).to eq 'First question body'
       end
 
       it 're-renders edit view', js: true do
@@ -136,6 +148,9 @@ RSpec.describe QuestionsController do
   end
 
   describe 'Delete #destroy' do
+    sign_in_user
+    let(:question) { create(:question, user: @user) }
+
     context 'Author deletes own question' do
       it 'deletes question' do
         question
@@ -164,8 +179,14 @@ RSpec.describe QuestionsController do
   end
 
   describe 'Post #up_vote' do
+    let(:question) { create(:question) }
+
     context 'as authorized user' do
-      before { post :up_vote, id: question }
+      sign_in_user
+
+      before do
+        post :up_vote, id: question
+      end
 
       it 'increment question up_vote value' do
         expect(question.reload.up_votes).to eq 1
@@ -173,6 +194,20 @@ RSpec.describe QuestionsController do
 
       it 'return ok' do
         expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'as non-authorized user' do
+      before do
+        post :up_vote, id: question
+      end
+
+      it 'increment question up_vote value' do
+        expect(question.reload.up_votes).to eq 0
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

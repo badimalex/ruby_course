@@ -6,7 +6,7 @@ feature 'Up vote question' do
 
   vote = '.question>.vote'
 
-  describe 'Authorized user' do
+  describe 'Authorized user try up vote question' do
     before do
       sign_in user
       visit question_path(question)
@@ -24,6 +24,19 @@ feature 'Up vote question' do
         click_on 'Up vote'
         expect(find('.vote-score')).to have_content '1'
       end
+    end
+  end
+
+  describe 'Non-authorized user try up vote question' do
+    scenario 'cant up vote question', js: true do
+      visit question_path(question)
+        within vote do
+          expect(find('.vote-score')).to have_content '0'
+          click_on 'Up vote'
+
+          expect(find('.vote-score')).to have_content '0'
+          expect(find('.errors')).to have_content 'Only autorized user can vote'
+        end
     end
   end
 end
