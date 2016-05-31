@@ -185,4 +185,96 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'Post #up_vote' do
+    context 'current user is not the answer author' do
+      sign_in_user
+      let(:answer) { create(:answer) }
+      before { post :up_vote, id: answer }
+
+      it 'increment answer up_vote value' do
+        expect(answer.reload.up_votes).to eq 1
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'answer author is the current user' do
+      sign_in_user
+      let(:answer) { create(:answer, user: @user) }
+
+      before do
+        post :up_vote, id: answer
+      end
+
+      it 'not increment question up_vote value' do
+        expect(answer.reload.up_votes).to eq 0
+      end
+
+      it 'return forbidden' do
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'as non-authorized user' do
+      let(:answer) { create(:answer) }
+      before { post :up_vote, id: answer }
+
+      it 'not increment answer up_vote value' do
+        expect(answer.reload.up_votes).to eq 0
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe 'Post #down_vote' do
+    context 'current user is not the answer author' do
+      sign_in_user
+      let(:answer) { create(:answer) }
+      before { post :down_vote, id: answer }
+
+      it 'should decrease down votes of answer by one' do
+        expect(answer.reload.down_votes).to eq -1
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'answer author is the current user' do
+      sign_in_user
+      let(:answer) { create(:answer, user: @user) }
+
+      before do
+        post :down_vote, id: answer
+      end
+
+      it 'not increment question up_vote value' do
+        expect(answer.reload.down_votes).to eq 0
+      end
+
+      it 'return forbidden' do
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'as non-authorized user' do
+      let(:answer) { create(:answer) }
+      before { post :down_vote, id: answer }
+
+      it 'not decrease down votes of question' do
+        expect(answer.reload.down_votes).to eq 0
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+  end
 end

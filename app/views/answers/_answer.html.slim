@@ -9,7 +9,10 @@ div { data-answer = answer.id }
     .vote
       .vote-up-votes
         = answer.up_votes
+      .vote-down-votes
+        = answer.down_votes
       = link_to 'Up vote', up_vote_answer_path(answer), method: 'post', remote: true
+      = link_to 'Down vote', down_vote_answer_url(answer), method: 'post', remote: true
       .errors
 
     ul.answer-attachments

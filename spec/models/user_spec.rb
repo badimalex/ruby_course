@@ -48,12 +48,19 @@ RSpec.describe User do
   describe '#down_vote' do
     let(:user) { create(:user) }
     let(:question) { create(:question) }
+    let(:answer) { create(:answer) }
     let(:own_question) { create(:question, user: user) }
 
     it 'should decrease down votes of question by one' do
       expect(question.down_votes).to eq 0
       user.down_vote(question)
       expect(question.down_votes).to eq -1
+    end
+
+    it 'should decrease down votes of answer by one' do
+      expect(answer.down_votes).to eq 0
+      user.down_vote(answer)
+      expect(answer.down_votes).to eq -1
     end
 
     it 'should raise error if user try to vote own question' do

@@ -1,10 +1,19 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
-  before_action :load_answer, only: [:destroy, :update, :accept, :up_vote]
+  before_action :load_answer, only: [:destroy, :update, :accept, :up_vote, :down_vote]
   before_action :load_question, only: [:create, :update, :accept]
 
   rescue_from 'Exception' do |exception|
     render json: { error: exception.to_s }, status: :forbidden
+  end
+
+  def down_vote
+    unless current_user
+      render json: { error: 'Only autorized user can vote' }, status: :forbidden
+    else
+      current_user.down_vote(@answer)
+      render json: @answer
+    end
   end
 
   def up_vote
