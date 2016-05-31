@@ -12,7 +12,11 @@ class User < ActiveRecord::Base
   end
 
   def up_vote(voteable)
-    voteable.up_votes += 1
-    voteable.save!
+    if voteable.user_id == id
+      raise Exception.new('The voteable cannot be voted by the owner.')
+    else
+      voteable.up_votes += 1
+      voteable.save!
+    end
   end
 end

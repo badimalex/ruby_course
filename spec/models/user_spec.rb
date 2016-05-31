@@ -23,9 +23,10 @@ RSpec.describe User do
   end
 
   describe '#up_vote' do
-    let(:question) { create(:question) }
-    let(:answer) { create(:answer) }
     let(:user) { create(:user) }
+    let(:question) { create(:question) }
+    let(:own_question) { create(:question, user: user) }
+    let(:answer) { create(:answer) }
 
     it 'should increase up votes for question' do
       expect(question.up_votes).to eq 0
@@ -37,6 +38,10 @@ RSpec.describe User do
       expect(answer.up_votes).to eq 0
       user.up_vote(answer)
       expect(answer.up_votes).to eq 1
+    end
+
+    it 'should raise error if user try to vote own question' do
+      expect { user.up_vote(own_question) }.to raise_error('The voteable cannot be voted by the owner.')
     end
   end
 end
