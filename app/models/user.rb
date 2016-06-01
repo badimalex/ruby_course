@@ -15,8 +15,18 @@ class User < ActiveRecord::Base
     if voteable.user_id == id
       raise Exception.new('The voteable cannot be voted by the owner.')
     else
+      vote = Vote.where(voteable: voteable, user_id: id).first
+      if vote
+        if vote.score == 1
+          raise Exception.new('The voteable was already voted by the voter.')
+        end
+      else
+        vote = Vote.create(voteable: voteable, user_id: id)
+      end
+      vote.score = 1
       voteable.up_votes += 1
       voteable.save!
+      vote.save!
     end
   end
 

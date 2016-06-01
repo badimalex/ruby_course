@@ -34,12 +34,6 @@ RSpec.describe User do
       expect(question.up_votes).to eq 1
     end
 
-    it 'should create user vote' do
-      expect(Vote.count).to eq 0
-      user.up_vote(question)
-      expect(Vote.count).to eq 1
-    end
-
     it 'should increase up votes for answer' do
       expect(answer.up_votes).to eq 0
       user.up_vote(answer)
@@ -49,6 +43,23 @@ RSpec.describe User do
     it 'should raise error if user try to vote own question' do
       expect { user.up_vote(own_question) }.to raise_error('The voteable cannot be voted by the owner.')
     end
+
+    it 'should create user vote' do
+      expect(Vote.count).to eq 0
+      user.up_vote(question)
+      expect(Vote.count).to eq 1
+
+      vote = Vote.first
+      expect(vote.voteable). to eq question
+      expect(vote.user).to eq user
+      expect(vote.score).to eq 1
+    end
+
+    it 'should allow user to up vote question only once' do
+      user.up_vote(question)
+      expect { user.up_vote(question) }.to raise_error('The voteable was already voted by the voter.')
+    end
+
   end
 
   describe '#down_vote' do

@@ -36,7 +36,6 @@ feature 'Vote question' do
         expect(find('.vote-up-votes')).to have_content '1'
 
         click_on 'Up vote'
-        wait_for_ajax
         expect(find('.vote-up-votes')).to have_content '1'
         expect(find('.errors')).to have_content 'The voteable was already voted by the voter.'
       end
