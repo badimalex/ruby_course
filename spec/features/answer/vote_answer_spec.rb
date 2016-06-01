@@ -29,11 +29,35 @@ feature 'Vote answer' do
       end
     end
 
+    scenario 'cant up vote answer twice', js: true do
+      within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+        expect(find('.vote-up-votes')).to have_content '0'
+        click_on 'Up vote'
+        expect(find('.vote-up-votes')).to have_content '1'
+        click_on 'Up vote'
+        expect(find('.vote-up-votes')).to have_content '1'
+        expect(find('.errors')).to have_content 'The voteable was already voted by the voter.'
+      end
+    end
+
     scenario 'can down vote answer', js: true do
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
         expect(find('.vote-down-votes')).to have_content '0'
         click_on 'Down vote'
         expect(find('.vote-down-votes')).to have_content '-1'
+      end
+    end
+
+    scenario 'cant down vote answer twice', js: true do
+      within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
+        expect(find('.vote-down-votes')).to have_content '0'
+
+        click_on 'Down vote'
+        expect(find('.vote-down-votes')).to have_content '-1'
+
+        click_on 'Down vote'
+        expect(find('.vote-down-votes')).to have_content '-1'
+        expect(find('.errors')).to have_content 'The voteable was already voted by the voter.'
       end
     end
   end
