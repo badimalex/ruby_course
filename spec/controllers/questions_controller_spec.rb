@@ -302,5 +302,27 @@ RSpec.describe QuestionsController do
         expect(response).to have_http_status(:forbidden)
       end
     end
+
+    context 'when down voting twice' do
+      sign_in_user
+      let(:question) { create(:question) }
+
+      def send_down_vote
+        post :down_vote, id: question
+      end
+
+      before do
+        send_down_vote
+        send_down_vote
+      end
+
+      it 'not increment question up_vote twice' do
+        expect(question.reload.down_votes).to eq -1
+      end
+
+      it 'return forbidden' do
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
   end
 end

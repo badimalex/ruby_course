@@ -44,8 +44,13 @@ feature 'Vote question' do
     scenario 'can down vote question', js: true do
       within vote do
         expect(find('.vote-down-votes')).to have_content '0'
+
         click_on 'Down vote'
         expect(find('.vote-down-votes')).to have_content '-1'
+
+        click_on 'Down vote'
+        expect(find('.vote-down-votes')).to have_content '-1'
+        expect(find('.errors')).to have_content 'The voteable was already voted by the voter.'
       end
     end
   end
