@@ -5,6 +5,7 @@ RubyCourse::Application.routes.draw do
     member do
       post :up_vote
       post :down_vote
+      post :un_vote
     end
     resources :answers do
       post :accept, on: :member

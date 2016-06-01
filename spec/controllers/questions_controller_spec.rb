@@ -252,6 +252,44 @@ RSpec.describe QuestionsController do
     end
   end
 
+  describe 'Post #un_vote' do
+    context 'when up voted first' do
+      sign_in_user
+      let(:question) { create(:question) }
+
+      before do
+        post :up_vote, id: question
+        post :un_vote, id: question
+      end
+
+      it 'reset question up_votes' do
+        expect(question.reload.up_votes).to eq 0
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when down voted first' do
+      sign_in_user
+      let(:question) { create(:question) }
+
+      before do
+        post :down_vote, id: question
+        post :un_vote, id: question
+      end
+
+      it 'reset question down_votes' do
+        expect(question.reload.down_votes).to eq 0
+      end
+
+      it 'return ok' do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
   describe 'Post #down_vote' do
     context 'current user is not the question author' do
       sign_in_user
@@ -261,8 +299,8 @@ RSpec.describe QuestionsController do
         post :down_vote, id: question
       end
 
-      it 'should decrease down votes of question by one' do
-        expect(question.reload.down_votes).to eq -1
+      it 'should increase down votes of question by one' do
+        expect(question.reload.down_votes).to eq 1
       end
 
       it 'return ok' do
@@ -278,7 +316,7 @@ RSpec.describe QuestionsController do
         post :down_vote, id: question
       end
 
-      it 'not decrease down votes of question' do
+      it 'not increase down votes of question' do
         expect(question.reload.down_votes).to eq 0
       end
 
@@ -294,7 +332,7 @@ RSpec.describe QuestionsController do
         post :down_vote, id: question
       end
 
-      it 'not decrease down votes of question' do
+      it 'not increase down votes of question' do
         expect(question.reload.down_votes).to eq 0
       end
 
@@ -317,7 +355,7 @@ RSpec.describe QuestionsController do
       end
 
       it 'not increment question up_vote twice' do
-        expect(question.reload.down_votes).to eq -1
+        expect(question.reload.down_votes).to eq 1
       end
 
       it 'return forbidden' do

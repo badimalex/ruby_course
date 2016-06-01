@@ -11,6 +11,17 @@ class User < ActiveRecord::Base
     id == entity.user_id
   end
 
+  def un_vote(voteable)
+    vote = Vote.where(voteable: voteable, user_id: id).first
+    if vote.score == 1
+      voteable.up_votes -=1
+    else
+      voteable.down_votes -=1
+    end
+    voteable.save!
+    vote.destroy!
+  end
+
   def up_vote(voteable)
     if voteable.user_id == id
       raise Exception.new('The voteable cannot be voted by the owner.')
@@ -39,9 +50,13 @@ class User < ActiveRecord::Base
         vote = Vote.create(voteable: voteable, user_id: id)
       end
       vote.score = -1
-      voteable.down_votes -= 1
+      voteable.down_votes += 1
       voteable.save!
       vote.save!
     end
+  end
+
+  def voted?(voteable)
+    !Vote.where(voteable: voteable, user_id: id).first.nil?
   end
 end

@@ -46,19 +46,45 @@ feature 'Vote question' do
         expect(find('.vote-down-votes')).to have_content '0'
 
         click_on 'Down vote'
-        expect(find('.vote-down-votes')).to have_content '-1'
+        expect(find('.vote-down-votes')).to have_content '1'
       end
     end
 
-    scenario 'cant down vote twice' do
+    scenario 'cant down vote twice', js: true do
       expect(find('.vote-down-votes')).to have_content '0'
 
       click_on 'Down vote'
-      expect(find('.vote-down-votes')).to have_content '-1'
+      expect(find('.vote-down-votes')).to have_content '1'
 
       click_on 'Down vote'
-      expect(find('.vote-down-votes')).to have_content '-1'
+      expect(find('.vote-down-votes')).to have_content '1'
       expect(find('.errors')).to have_content 'The voteable was already voted by the voter.'
+    end
+  end
+
+
+  describe 'Authorized user tries to cancel vote' do
+    given(:question) { create(:question, user: create(:user)) }
+
+    before do
+      sign_in user
+      visit question_path(question)
+    end
+
+    scenario 'when not voted cannot view cancel link' do
+      expect(page).to_not have_link 'Cancel vote'
+    end
+
+    scenario 'can cancel vote after up vote question', js: true do
+      within '.question' do
+        expect(find('.vote-up-votes')).to have_content '0'
+        click_on 'Up vote'
+        visit question_path(question)
+        expect(page).to have_link 'Cancel vote'
+        expect(find('.vote-up-votes')).to have_content '1'
+        click_on 'Cancel vote'
+        expect(find('.vote-up-votes')).to have_content '0'
+      end
     end
   end
 
@@ -72,17 +98,8 @@ feature 'Vote question' do
 
     scenario 'cant down or up vote question', js: true do
       within vote do
-        expect(find('.vote-down-votes')).to have_content '0'
-        expect(find('.vote-up-votes')).to have_content '0'
-
-        click_on 'Up vote'
-        expect(find('.vote-up-votes')).to have_content '0'
-        expect(find('.errors')).to have_content 'The voteable cannot be voted by the owner.'
-
-
-        click_on 'Down vote'
-        expect(find('.vote-down-votes')).to have_content '0'
-        expect(find('.errors')).to have_content 'The voteable cannot be voted by the owner.'
+        expect(page).to_not have_link 'Up vote'
+        expect(page).to_not have_link 'Down vote'
       end
     end
   end
@@ -93,16 +110,8 @@ feature 'Vote question' do
     scenario 'cant down or up vote question', js: true do
       visit question_path(question)
         within vote do
-          expect(find('.vote-up-votes')).to have_content '0'
-          expect(find('.vote-down-votes')).to have_content '0'
-
-          click_on 'Up vote'
-          expect(find('.vote-up-votes')).to have_content '0'
-          expect(find('.errors')).to have_content 'Only autorized user can vote'
-
-          click_on 'Down vote'
-          expect(find('.vote-down-votes')).to have_content '0'
-          expect(find('.errors')).to have_content 'Only autorized user can vote'
+          expect(page).to_not have_link 'Up vote'
+          expect(page).to_not have_link 'Down vote'
         end
     end
   end
