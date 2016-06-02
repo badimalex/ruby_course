@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
   has_many :answers, dependent: :destroy
   has_many :attachments, as: :attachmentable
+  has_many :votes, as: :voteable
   belongs_to :user
 
   validates :title, :body, :user_id, :up_votes, :down_votes, presence: true

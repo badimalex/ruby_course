@@ -3,15 +3,17 @@
   .vote
     - if current_user
       - unless current_user.author_of?(@question)
-        = link_to 'Up vote', up_vote_question_path(@question), method: 'post', remote: true
-        = link_to 'Down vote', down_vote_question_path(@question), method: 'post', remote: true
+        - if current_user.voted?(@question)
+          = link_to 'Cancel vote', un_vote_question_path(@question), method: 'post', remote: true
+        - else
+          = link_to 'Up vote', up_vote_question_path(@question), method: 'post', remote: true
+          = link_to 'Down vote', down_vote_question_path(@question), method: 'post', remote: true
+
     .vote-up-votes
       = @question.up_votes
     .vote-down-votes
       = @question.down_votes
     .errors
-    - if current_user && current_user.voted?(@question)
-      = link_to 'Cancel vote', un_vote_question_path(@question), method: 'post', remote: true
 
 - if current_user && current_user.author_of?(@question)
   = link_to 'Remove', question_path(@question), method: 'delete'
