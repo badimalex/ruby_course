@@ -11,7 +11,7 @@ class QuestionsController < ApplicationController
       render json: { error: 'Only autorized user can vote' }, status: :forbidden
     else
       current_user.un_vote(@question)
-      render json: @question
+      render json: @question, methods: [:rating]
     end
   end
 
@@ -20,7 +20,7 @@ class QuestionsController < ApplicationController
       render json: { error: 'Only autorized user can vote' }, status: :forbidden
     else
       current_user.down_vote(@question)
-      render json: @question
+      render json: @question, methods: [:rating]
     end
   end
 
@@ -29,7 +29,7 @@ class QuestionsController < ApplicationController
       render json: { error: 'Only autorized user can vote' }, status: :forbidden
     else
       current_user.up_vote(@question)
-      render json: @question
+      render json: @question, methods: [:rating]
     end
   end
 

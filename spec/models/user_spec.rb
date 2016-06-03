@@ -33,6 +33,7 @@ RSpec.describe User do
       expect(question.up_votes).to eq 0
       user.up_vote(question)
       expect(question.up_votes).to eq 1
+      expect(question.rating).to eq 1
     end
 
     it 'should increase up votes for answer' do
@@ -88,6 +89,7 @@ RSpec.describe User do
       expect(question.down_votes).to eq 0
       user.down_vote(question)
       expect(question.down_votes).to eq 1
+      expect(question.rating).to eq -1
     end
 
     it 'should increase down votes of answer by one' do
