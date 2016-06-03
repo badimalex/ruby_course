@@ -2,7 +2,6 @@ require 'acceptance_helper'
 
 feature 'Vote question' do
   given(:user) { create(:user) }
-  given(:vote) { create(:vote) }
 
   describe 'Authorized user tries to vote other question' do
     given(:question) { create(:question, user: create(:user)) }
@@ -63,8 +62,9 @@ feature 'Vote question' do
 
 
   describe 'Authorized user tries to cancel vote' do
-    given(:question) { create(:question, user: create(:user)) }
+    given(:question) { create(:question, up_votes: 1, user: create(:user)) }
     given(:other_question) { create(:question, user: create(:user)) }
+    given(:vote) { create(:vote) }
 
     before do
       question.votes<<vote
@@ -80,8 +80,8 @@ feature 'Vote question' do
 
     scenario 'when up voted can cancel vote', js: true do
       visit question_path(question)
-
       within '.question' do
+        expect(find('.vote-up-votes')).to have_content '1'
         click_on 'Cancel vote'
         expect(find('.vote-up-votes')).to have_content '0'
       end

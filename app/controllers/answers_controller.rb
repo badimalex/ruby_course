@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
-  before_action :load_answer, only: [:destroy, :update, :accept, :up_vote, :down_vote]
+  before_action :load_answer, only: [:destroy, :update, :accept, :up_vote, :down_vote, :un_vote]
   before_action :load_question, only: [:create, :update, :accept]
 
   rescue_from 'Exception' do |exception|

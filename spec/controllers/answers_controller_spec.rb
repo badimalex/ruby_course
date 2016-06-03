@@ -283,23 +283,21 @@ RSpec.describe AnswersController, type: :controller do
       let(:answer) { create(:answer) }
 
       context 'when already up voted' do
-        before do
-          post :up_vote, id: answer
-          post :un_vote, id: answer
-        end
-
         it 'reset question up_votes' do
+          post :up_vote, id: answer
+          expect(answer.reload.up_votes).to eq 1
+
+          post :un_vote, id: answer
           expect(answer.reload.up_votes).to eq 0
         end
       end
 
       context 'when already down voted' do
-        before do
-          post :down_vote, id: answer
-          post :un_vote, id: answer
-        end
-
         it 'reset question up_votes' do
+          post :down_vote, id: answer
+          expect(answer.reload.down_votes).to eq 1
+          post :un_vote, id: answer
+
           expect(answer.reload.down_votes).to eq 0
         end
       end

@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 20160531215833) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.boolean  "accepted",    default: false
-    t.integer  "score",       default: 0
     t.integer  "up_votes",    default: 0
     t.integer  "down_votes",  default: 0
   end
@@ -47,15 +46,11 @@ ActiveRecord::Schema.define(version: 20160531215833) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.integer  "votes",      default: 0
-    t.integer  "score",      default: 0
     t.integer  "up_votes",   default: 0
     t.integer  "down_votes", default: 0
   end
 
-  add_index "questions", ["score"], name: "index_questions_on_score", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
-  add_index "questions", ["votes"], name: "index_questions_on_votes", using: :btree
 
   create_table "users", force: true do |t|
     t.datetime "created_at"
@@ -85,17 +80,5 @@ ActiveRecord::Schema.define(version: 20160531215833) do
   end
 
   add_index "votes", ["voteable_type", "voteable_id"], name: "index_votes_on_voteable_type_and_voteable_id", using: :btree
-
-  create_table "votings", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "voteable_id"
-    t.string   "voteable_type"
-    t.integer  "vote",          default: 0
-    t.integer  "user_id"
-  end
-
-  add_index "votings", ["user_id"], name: "index_votings_on_user_id", using: :btree
-  add_index "votings", ["voteable_id", "voteable_type"], name: "index_votings_on_voteable_id_and_voteable_type", using: :btree
 
 end
