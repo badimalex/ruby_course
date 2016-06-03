@@ -1,0 +1,13 @@
+.vote
+    - if current_user
+      - unless current_user.author_of?(voteable)
+        - if current_user.voted?(voteable)
+          = link_to 'Cancel vote', polymorphic_url([:un_vote, voteable]), method: 'post', remote: true
+        - else
+          = link_to 'Up vote', polymorphic_url([:up_vote, voteable]), method: 'post', remote: true
+          = link_to 'Down vote', polymorphic_url([:down_vote, voteable]), method: 'post', remote: true
+    .vote-up-votes
+      = voteable.up_votes
+    .vote-down-votes
+      = voteable.down_votes
+    .errors

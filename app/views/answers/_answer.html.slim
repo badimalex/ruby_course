@@ -6,19 +6,7 @@ div { data-answer = answer.id }
 
   - if answer.persisted?
 
-    .vote
-      - if current_user
-        - unless current_user.author_of?(answer)
-          - if current_user.voted?(answer)
-            = link_to 'Cancel vote', un_vote_answer_path(answer), method: 'post', remote: true
-          - else
-            = link_to 'Up vote', up_vote_answer_path(answer), method: 'post', remote: true
-            = link_to 'Down vote', down_vote_answer_url(answer), method: 'post', remote: true
-        .vote-up-votes
-          = answer.up_votes
-        .vote-down-votes
-          = answer.down_votes
-        .errors
+    = render 'questions/vote', voteable: answer
 
     ul.answer-attachments
       - answer.attachments.each do |a|
