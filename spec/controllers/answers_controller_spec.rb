@@ -239,7 +239,7 @@ RSpec.describe AnswersController, type: :controller do
       before { post :down_vote, id: answer }
 
       it 'should decrease down votes of answer by one' do
-        expect(answer.reload.down_votes).to eq -1
+        expect(answer.reload.down_votes).to eq 1
       end
 
       it 'return ok' do
@@ -277,4 +277,31 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+    describe 'Post #un_vote' do
+      sign_in_user
+      let(:answer) { create(:answer) }
+
+      context 'when already up voted' do
+        before do
+          post :up_vote, id: answer
+          post :un_vote, id: answer
+        end
+
+        it 'reset question up_votes' do
+          expect(answer.reload.up_votes).to eq 0
+        end
+      end
+
+      context 'when already down voted' do
+        before do
+          post :down_vote, id: answer
+          post :un_vote, id: answer
+        end
+
+        it 'reset question up_votes' do
+          expect(answer.reload.down_votes).to eq 0
+        end
+      end
+    end
 end

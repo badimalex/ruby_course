@@ -44,7 +44,7 @@ feature 'Vote answer' do
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
         expect(find('.vote-down-votes')).to have_content '0'
         click_on 'Down vote'
-        expect(find('.vote-down-votes')).to have_content '-1'
+        expect(find('.vote-down-votes')).to have_content '1'
       end
     end
 
@@ -53,10 +53,10 @@ feature 'Vote answer' do
         expect(find('.vote-down-votes')).to have_content '0'
 
         click_on 'Down vote'
-        expect(find('.vote-down-votes')).to have_content '-1'
+        expect(find('.vote-down-votes')).to have_content '1'
 
         click_on 'Down vote'
-        expect(find('.vote-down-votes')).to have_content '-1'
+        expect(find('.vote-down-votes')).to have_content '1'
         expect(find('.errors')).to have_content 'The voteable was already voted by the voter.'
       end
     end
@@ -73,37 +73,20 @@ feature 'Vote answer' do
 
     scenario 'cant down or up vote answer', js: true do
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
-        expect(find('.vote-up-votes')).to have_content '0'
-        expect(find('.vote-down-votes')).to have_content '0'
-
-        click_on 'Up vote'
-        expect(find('.vote-up-votes')).to have_content '0'
-        expect(find('.errors')).to have_content 'The voteable cannot be voted by the owner.'
-
-
-        click_on 'Down vote'
-        expect(find('.vote-down-votes')).to have_content '0'
-        expect(find('.errors')).to have_content 'The voteable cannot be voted by the owner.'
+          expect(page).to_not have_link 'Up vote'
+          expect(page).to_not have_link 'Down vote'
       end
     end
   end
 
   describe 'Non-authorized user try vote answer' do
     given!(:answers) { create_list(:answer, 2, question: question) }
-    scenario 'cant up vote question', js: true do
+    scenario 'cant up vote answer', js: true do
       answers
       visit question_path(question)
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
-        expect(find('.vote-up-votes')).to have_content '0'
-        expect(find('.vote-down-votes')).to have_content '0'
-
-        click_on 'Up vote'
-        expect(find('.vote-up-votes')).to have_content '0'
-        expect(find('.errors')).to have_content 'Only autorized user can vote'
-
-        click_on 'Down vote'
-        expect(find('.vote-down-votes')).to have_content '0'
-        expect(find('.errors')).to have_content 'Only autorized user can vote'
+          expect(page).to_not have_link 'Up vote'
+          expect(page).to_not have_link 'Down vote'
       end
     end
   end

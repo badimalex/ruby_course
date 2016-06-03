@@ -14,6 +14,7 @@ RubyCourse::Application.routes.draw do
 
   post 'answers/:id/up_vote', to: 'answers#up_vote', as: 'up_vote_answer'
   post 'answers/:id/down_vote', to: 'answers#down_vote', as: 'down_vote_answer'
+  post 'answers/:id/un_vote', to: 'answers#un_vote', as: 'un_vote_answer'
   delete 'attachments/:id', to: 'attachments#destroy', as: 'destroy_attachment'
 
   root to: "questions#index"

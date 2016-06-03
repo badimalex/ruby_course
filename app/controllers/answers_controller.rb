@@ -7,6 +7,15 @@ class AnswersController < ApplicationController
     render json: { error: exception.to_s }, status: :forbidden
   end
 
+  def un_vote
+    unless current_user
+      render json: { error: 'Only autorized user can vote' }, status: :forbidden
+    else
+      current_user.un_vote(@answer)
+      render json: @answer
+    end
+  end
+
   def down_vote
     unless current_user
       render json: { error: 'Only autorized user can vote' }, status: :forbidden
