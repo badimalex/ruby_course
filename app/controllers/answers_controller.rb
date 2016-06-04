@@ -1,38 +1,8 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
-  before_action :load_answer, only: [:destroy, :update, :accept, :up_vote, :down_vote, :un_vote]
+  include PublicIndex, PublicShow, Voted
+
+  before_action :load_answer, only: [:destroy, :update, :accept]
   before_action :load_question, only: [:create, :update, :accept]
-
-  rescue_from 'Exception' do |exception|
-    render json: { error: exception.to_s }, status: :forbidden
-  end
-
-  def un_vote
-    unless current_user
-      render json: { error: 'Only autorized user can vote' }, status: :forbidden
-    else
-      current_user.un_vote(@answer)
-      render json: @answer, methods: [:rating]
-    end
-  end
-
-  def down_vote
-    unless current_user
-      render json: { error: 'Only autorized user can vote' }, status: :forbidden
-    else
-      current_user.down_vote(@answer)
-      render json: @answer, methods: [:rating]
-    end
-  end
-
-  def up_vote
-    unless current_user
-      render json: { error: 'Only autorized user can vote' }, status: :forbidden
-    else
-      current_user.up_vote(@answer)
-      render json: @answer, methods: [:rating]
-    end
-  end
 
   def create
     @answer = @question.answers.create(answer_params.merge(user: current_user))
