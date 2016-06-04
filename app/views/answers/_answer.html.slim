@@ -5,6 +5,9 @@ div { data-answer = answer.id }
     span = 'Accepted'
 
   - if answer.persisted?
+
+    = render 'questions/vote', voteable: answer
+
     ul.answer-attachments
       - answer.attachments.each do |a|
         li { data-id = a.id }
