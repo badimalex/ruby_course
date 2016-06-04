@@ -43,7 +43,7 @@ RSpec.describe User do
     end
 
     it 'should raise error if user try to vote own question' do
-      expect { user.up_vote(own_question) }.to raise_error('The voteable cannot be voted by the owner.')
+      expect { user.up_vote(own_question) }.to raise_error(Exceptions::OwnerVotedError)
     end
 
     it 'when up vote, should create user vote' do
@@ -70,12 +70,12 @@ RSpec.describe User do
 
     it 'should allow user to up vote question only once' do
       user.up_vote(question)
-      expect { user.up_vote(question) }.to raise_error('The voteable was already voted by the voter.')
+      expect { user.up_vote(question) }.to raise_error(Exceptions::AlreadyVotedError)
     end
 
     it 'should allow user to up vote question only once' do
       user.down_vote(question)
-      expect { user.down_vote(question) }.to raise_error('The voteable was already voted by the voter.')
+      expect { user.down_vote(question) }.to raise_error(Exceptions::AlreadyVotedError)
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe User do
     end
 
     it 'should raise error if user try to vote own question' do
-      expect { user.down_vote(own_question) }.to raise_error('The voteable cannot be voted by the owner.')
+      expect { user.down_vote(own_question) }.to raise_error(Exceptions::OwnerVotedError)
     end
   end
 

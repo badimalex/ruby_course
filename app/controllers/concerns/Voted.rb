@@ -1,10 +1,11 @@
 module Voted
+  include Exceptions
   extend ActiveSupport::Concern
 
   included do
     before_action :set_voteable, only: [:up_vote, :down_vote, :un_vote]
 
-    rescue_from 'Exception' do |exception|
+    rescue_from OwnerVotedError, AlreadyVotedError do |exception|
       render json: { error: exception.to_s }, status: :forbidden
     end
   end

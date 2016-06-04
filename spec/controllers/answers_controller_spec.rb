@@ -171,19 +171,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to have_http_status(:forbidden)
       end
     end
-
-    context 'as non-authorized user' do
-      let(:answer) { create(:answer) }
-      before { post :up_vote, id: answer }
-
-      it 'not increment answer up_vote value' do
-        expect(answer.reload.up_votes).to eq 0
-      end
-
-      it 'return ok' do
-        expect(response).to have_http_status(:forbidden)
-      end
-    end
   end
 
   describe 'Post #up_vote' do
@@ -217,19 +204,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to have_http_status(:forbidden)
       end
     end
-
-    context 'as non-authorized user' do
-      let(:answer) { create(:answer) }
-      before { post :up_vote, id: answer }
-
-      it 'not increment answer up_vote value' do
-        expect(answer.reload.up_votes).to eq 0
-      end
-
-      it 'return ok' do
-        expect(response).to have_http_status(:forbidden)
-      end
-    end
   end
 
   describe 'Post #down_vote' do
@@ -260,19 +234,6 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'return forbidden' do
-        expect(response).to have_http_status(:forbidden)
-      end
-    end
-
-    context 'as non-authorized user' do
-      let(:answer) { create(:answer) }
-      before { post :down_vote, id: answer }
-
-      it 'not decrease down votes of question' do
-        expect(answer.reload.down_votes).to eq 0
-      end
-
-      it 'return ok' do
         expect(response).to have_http_status(:forbidden)
       end
     end

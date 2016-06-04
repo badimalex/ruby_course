@@ -25,11 +25,11 @@ class User < ActiveRecord::Base
 
   def up_vote(voteable)
     if voteable.user_id == id
-      raise Exception.new('The voteable cannot be voted by the owner.')
+      raise Exceptions::OwnerVotedError
     else
       vote = Vote.where(voteable: voteable, user_id: id).first
       if vote
-        raise Exception.new('The voteable was already voted by the voter.')
+        raise Exceptions::AlreadyVotedError
       else
         vote = Vote.create(voteable: voteable, user_id: id)
       end
@@ -42,11 +42,11 @@ class User < ActiveRecord::Base
 
   def down_vote(voteable)
     if voteable.user_id == id
-      raise Exception.new('The voteable cannot be voted by the owner.')
+      raise Exceptions::OwnerVotedError
     else
       vote = Vote.where(voteable: voteable, user_id: id).first
       if vote
-        raise Exception.new('The voteable was already voted by the voter.')
+        raise Exceptions::AlreadyVotedError
       else
         vote = Vote.create(voteable: voteable, user_id: id)
       end
