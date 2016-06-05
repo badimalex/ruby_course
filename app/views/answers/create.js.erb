@@ -7,7 +7,5 @@
 <% publish_to "/questions/#{@question.id}/answers" do %>
   $('.answers').append('<%= j render @answer %>');
 <% end %>
-
-//$('form.new_answer #answer_body').val('');
-
+$('form.new_answer #answer_body').val('');
 <% end %>
