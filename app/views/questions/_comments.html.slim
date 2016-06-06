@@ -1,0 +1,11 @@
+p = 'lorem'
+
+.comments
+  - @question.comments.each do |comment|
+    p= comment.body
+
+.comments-form
+  = form_for [@question, @comment] do |f|
+    = f.label :body, 'Your comment'
+    = f.text_area :body
+    = f.submit 'Create'
