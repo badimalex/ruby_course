@@ -5,6 +5,7 @@ describe Answer do
   it { should belong_to(:question) }
   it { should have_many(:attachments) }
   it { should have_many :votes }
+  it { should have_many(:comments) }
 
   it { should validate_presence_of(:question_id) }
   it { should validate_presence_of(:user_id) }
