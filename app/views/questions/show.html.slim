@@ -1,7 +1,7 @@
 .question
   = render @question
   = render 'vote', voteable: @question
-  = render 'comments'
+  = render 'comments', commentable: @question
 
 - if current_user && current_user.author_of?(@question)
   = link_to 'Remove', question_path(@question), method: 'delete'

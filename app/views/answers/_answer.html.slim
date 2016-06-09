@@ -7,6 +7,7 @@ div { data-answer = answer.id }
   - if answer.persisted?
 
     = render 'questions/vote', voteable: answer
+    = render 'questions/comments', commentable: answer
 
     ul.answer-attachments
       - answer.attachments.each do |a|

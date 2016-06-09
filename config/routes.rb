@@ -13,6 +13,7 @@ RubyCourse::Application.routes.draw do
     resources :comments
   end
 
+  post 'question/:id/comments', to: 'comments#create', as: 'questions_comments'
 
   post 'answers/:id/up_vote', to: 'answers#up_vote', as: 'up_vote_answer'
   post 'answers/:id/down_vote', to: 'answers#down_vote', as: 'down_vote_answer'
