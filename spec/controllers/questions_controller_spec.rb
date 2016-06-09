@@ -244,6 +244,17 @@ RSpec.describe QuestionsController do
     end
   end
 
+  describe 'Post #add_comment' do
+    context 'with valid attributes' do
+      sign_in_user
+      let(:question) { create(:question) }
+      it 'saves the new comment in database' do
+        expect { post :add_comment, id: question, comment: attributes_for(:comment) }
+            .to change(question.comments, :count).by(1)
+      end
+    end
+  end
+
   describe 'Post #un_vote' do
     context 'when up voted first' do
       sign_in_user
