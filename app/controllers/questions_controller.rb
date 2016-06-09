@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  include PublicIndex, PublicShow, Voted
+  include PublicIndex, PublicShow, Voted, Commented
 
   before_action :load_question, only: [:show, :edit, :update, :destroy, :add_comment]
 
@@ -9,7 +9,6 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = @question.answers.build
-    @comment = @question.comments.build
     @answer.attachments.build
   end
 
@@ -49,11 +48,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def add_comment
-    @comment = @question.comments.new(comment_params)
-    @comment.save
-  end
-
   private
 
   def load_question
@@ -62,9 +56,5 @@ class QuestionsController < ApplicationController
 
   def questions_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file])
-  end
-
-  def comment_params
-    params.require(:comment).permit(:body)
   end
 end

@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  include PublicIndex, PublicShow, Voted
+  include PublicIndex, PublicShow, Voted, Commented
 
   before_action :load_answer, only: [:destroy, :update, :accept, :add_comment]
   before_action :load_question, only: [:create, :update, :accept]
@@ -32,11 +32,6 @@ class AnswersController < ApplicationController
     end
   end
 
-  def add_comment
-    @comment = @answer.comments.new(comment_params)
-    @comment.save
-  end
-
   private
 
   def answer_params
@@ -49,9 +44,5 @@ class AnswersController < ApplicationController
 
   def load_answer
     @answer = Answer.find(params[:id])
-  end
-
-  def comment_params
-    params.require(:comment).permit(:body)
   end
 end
