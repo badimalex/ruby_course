@@ -1,0 +1,4 @@
+<% publish_to "/questions/#{@question.id}/comments" do %>
+  $('.question>.comments').append('<%= @comment.body %>');
+<% end %>
+$('.question>.comments-form textarea').val('');

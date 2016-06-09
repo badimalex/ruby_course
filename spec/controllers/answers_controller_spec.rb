@@ -269,10 +269,9 @@ RSpec.describe AnswersController, type: :controller do
       sign_in_user
       let(:answer) { create(:answer) }
       it 'saves the new comment in database' do
-        expect { post :add_comment, id: answer, comment: attributes_for(:comment) }
-            .to change(answer.comments, :count).by(1)
+        expect { post :add_comment, id: answer, comment: attributes_for(:comment), format: :js }
+            .to change(answer.reload.comments, :count).by(1)
       end
     end
   end
 end
-

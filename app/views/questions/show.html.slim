@@ -8,7 +8,10 @@
 
 .answers data={question_id: "#{@question.id}"}
   = render @question.answers
+
 = subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/questions/#{@question.id}/comments"
+= subscribe_to '/answers/comments'
 
 .answer_form
   = form_for [@question, @answer], remote: true do |f|

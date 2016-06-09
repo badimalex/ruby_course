@@ -11,7 +11,6 @@ class QuestionsController < ApplicationController
     @answer = @question.answers.build
     @comment = @question.comments.build
     @answer.attachments.build
-    @answer.comments.build
   end
 
   def new

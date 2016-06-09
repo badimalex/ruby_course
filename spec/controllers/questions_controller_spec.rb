@@ -36,10 +36,6 @@ RSpec.describe QuestionsController do
       expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
     end
 
-    it 'build new comment for answer' do
-      expect(assigns(:answer).comments.first).to be_a_new(Comment)
-    end
-
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -249,7 +245,7 @@ RSpec.describe QuestionsController do
       sign_in_user
       let(:question) { create(:question) }
       it 'saves the new comment in database' do
-        expect { post :add_comment, id: question, comment: attributes_for(:comment) }
+        expect { post :add_comment, id: question, comment: attributes_for(:comment), format: :js }
             .to change(question.comments, :count).by(1)
       end
     end

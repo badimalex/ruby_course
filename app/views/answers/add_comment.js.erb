@@ -1,0 +1,4 @@
+<% publish_to "/answers/comments" do %>
+  $('[data-answer='+ <%= @comment.commentable_id %> +'] .comments').append('<%= @comment.body %>');
+<% end %>
+$('[data-answer='+ <%= @comment.commentable_id %> +'] .comments-form textarea').val('');
