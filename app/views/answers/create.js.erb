@@ -3,6 +3,8 @@
     $('.answer-errors').html('<%= j message %>');
   <% end %>
 <% else %>
-  $('.answers').append('<%= j render @answer %>');
-  $('#answer_body').val('');
+  <% publish_to "/questions/#{@question.id}/answers" do %>
+    $('.answers').append('<%= j render @answer %>');
+  <% end %>
+  $('form.new_answer #answer_body').val('');
 <% end %>
