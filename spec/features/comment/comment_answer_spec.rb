@@ -10,12 +10,12 @@ feature 'Add comment to question' do
     answer
     visit question_path(question)
 
-    within :xpath, "//div[@data-answer=\"#{answer.id}\"]>.comments-form" do
+    within :xpath, "//div[@data-answer=\"#{answer.id}\"] .comments-form" do
       fill_in 'Your comment', with: 'My comment text'
       click_on 'Create'
     end
 
-    within :xpath, "//div[@data-answer=\"#{answer.id}\"]>.comments" do
+    within :xpath, "//div[@data-answer=\"#{answer.id}\"] .comments" do
       expect(page).to have_content 'My comment text'
     end
   end

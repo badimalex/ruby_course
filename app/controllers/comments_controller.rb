@@ -1,7 +1,8 @@
 class CommentsController < ApplicationController
+  before_action :set_commentable, only: [:create]
+
   def create
-    @question = Question.find(params[:question_id])
-    @comment = @question.comments.new(comment_params)
+    @comment = @commentable.comments.new(comment_params)
     if @comment.save
       redirect_to question_path(@comment.commentable)
     else
@@ -11,5 +12,18 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body)
+  end
+
+  def set_commentable
+    @commentable = find_commentable
+  end
+
+  def find_commentable
+    params.each do |name, value|
+      if name =~ /(.+)_id$/
+        return $1.classify.constantize.find(value)
+      end
+    end
+    nil
   end
 end
