@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
-  include PublicIndex, PublicShow, Voted
+  include PublicIndex, PublicShow, Voted, Commented
 
-  before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy, :add_comment]
 
   def index
     @questions = Question.all
@@ -40,6 +40,7 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.new(questions_params)
     if @question.save
+      PrivatePub.publish_to "/questions", question: @question.to_json
       flash[:notice] = 'Your question successfully created.'
       redirect_to @question
     else

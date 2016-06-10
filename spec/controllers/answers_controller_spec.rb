@@ -239,28 +239,39 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-    describe 'Post #un_vote' do
-      sign_in_user
-      let(:answer) { create(:answer) }
+  describe 'Post #un_vote' do
+    sign_in_user
+    let(:answer) { create(:answer) }
 
-      context 'when already up voted' do
-        it 'reset question up_votes' do
-          post :up_vote, id: answer
-          expect(answer.reload.up_votes).to eq 1
+    context 'when already up voted' do
+      it 'reset question up_votes' do
+        post :up_vote, id: answer
+        expect(answer.reload.up_votes).to eq 1
 
-          post :un_vote, id: answer
-          expect(answer.reload.up_votes).to eq 0
-        end
-      end
-
-      context 'when already down voted' do
-        it 'reset question up_votes' do
-          post :down_vote, id: answer
-          expect(answer.reload.down_votes).to eq 1
-          post :un_vote, id: answer
-
-          expect(answer.reload.down_votes).to eq 0
-        end
+        post :un_vote, id: answer
+        expect(answer.reload.up_votes).to eq 0
       end
     end
+
+    context 'when already down voted' do
+      it 'reset question up_votes' do
+        post :down_vote, id: answer
+        expect(answer.reload.down_votes).to eq 1
+        post :un_vote, id: answer
+
+        expect(answer.reload.down_votes).to eq 0
+      end
+    end
+  end
+
+  describe 'Post #add_comment' do
+    context 'with valid attributes' do
+      sign_in_user
+      let(:answer) { create(:answer) }
+      it 'saves the new comment in database' do
+        expect { post :add_comment, id: answer, comment: attributes_for(:comment), format: :js }
+            .to change(answer.reload.comments, :count).by(1)
+      end
+    end
+  end
 end
