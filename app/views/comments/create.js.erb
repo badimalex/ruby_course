@@ -1,0 +1,8 @@
+<% publish_to "/questions/#{@comment.commentable_id}/comments" do %>
+  <% if  @comment.commentable_type == 'Question' %>
+  $('.question>.comments').append('<%= @comment.body %>');
+  <% else %>
+  var commentable = $('[data-<%= @comment.commentable_type.downcase %>=<%= @comment.commentable_id %>]');
+  commentable.find('.comments').append('<%= @comment.body %>');
+  <% end %>
+<% end %>

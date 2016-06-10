@@ -3,11 +3,8 @@ class CommentsController < ApplicationController
 
   def create
     @comment = @commentable.comments.new(comment_params)
-    if @comment.save
-      redirect_to question_path(@comment.commentable)
-    else
-      render :new
-    end
+    @comment.save
+    render :create
   end
 
   def comment_params

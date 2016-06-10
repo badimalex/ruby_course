@@ -5,18 +5,20 @@ feature 'Add comment to question' do
   given(:question) { create(:question) }
   given(:answer) { create(:answer, question: question) }
 
-  scenario 'Authenticated user comment answer' do
+  scenario 'Authenticated user comment answer', js: true do
     sign_in user
     answer
     visit question_path(question)
 
-    within :xpath, "//div[@data-answer=\"#{answer.id}\"] .comments-form" do
-      fill_in 'Your comment', with: 'My comment text'
-      click_on 'Create'
-    end
+    within '.answers' do
+      within '.comments-form' do
+        fill_in 'Your comment', with: 'My comment text'
+        click_on 'Create'
+      end
 
-    within :xpath, "//div[@data-answer=\"#{answer.id}\"] .comments" do
-      expect(page).to have_content 'My comment text'
+      within '.comments' do
+        expect(page).to have_content 'My comment text'
+      end
     end
   end
 end

@@ -22,7 +22,7 @@ describe Question do
 
   describe '#rating' do
     let(:user) { create(:user) }
-    let(:question) { create(:question, up_votes:5, down_votes: 3) }
+    let(:question) { create(:question, up_votes: 5, down_votes: 3) }
 
     it 'should return correct voteable rating' do
       expect(question.rating).to eq(2)

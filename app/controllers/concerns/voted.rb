@@ -20,7 +20,7 @@ module Voted
   end
 
   def up_vote
-    unless current_user
+    if !current_user
       render json: { error: 'Only autorized user can vote' }, status: :forbidden
     else
       current_user.up_vote(@voteable)
@@ -29,7 +29,7 @@ module Voted
   end
 
   def un_vote
-    unless current_user
+    if !current_user
       render json: { error: 'Only autorized user can vote' }, status: :forbidden
     else
       current_user.un_vote(@voteable)

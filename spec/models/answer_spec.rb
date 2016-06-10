@@ -46,7 +46,7 @@ describe Answer do
 
   describe '#rating' do
     let(:user) { create(:user) }
-    let(:answer) { create(:answer, up_votes:5, down_votes: 3) }
+    let(:answer) { create(:answer, up_votes: 5, down_votes: 3) }
 
     it 'should return correct answer rating' do
       expect(answer.rating).to eq(2)

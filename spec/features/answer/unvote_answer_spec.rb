@@ -21,8 +21,8 @@ feature 'Vote answer' do
     end
 
     scenario 'when up voted can cancel vote', js: true do
-      answer.votes<<vote
-      user.votes<<vote
+      answer.votes << vote
+      user.votes << vote
       visit question_path(question)
 
       within :xpath, "//div[@data-answer=\"#{answer.id}\"]" do

@@ -9,6 +9,6 @@ module Voteable
   end
 
   def rating
-    up_votes-down_votes;
+    up_votes - down_votes
   end
 end
