@@ -6,12 +6,15 @@ RubyCourse::Application.routes.draw do
       post :up_vote
       post :down_vote
       post :un_vote
+      post :add_comment
     end
     resources :answers do
       post :accept, on: :member
     end
+    resources :comments
   end
 
+  post 'answers/:id/add_comment', to: 'answers#add_comment', as: 'answer_comments'
   post 'answers/:id/up_vote', to: 'answers#up_vote', as: 'up_vote_answer'
   post 'answers/:id/down_vote', to: 'answers#down_vote', as: 'down_vote_answer'
   post 'answers/:id/un_vote', to: 'answers#un_vote', as: 'un_vote_answer'
