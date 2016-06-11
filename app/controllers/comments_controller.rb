@@ -4,7 +4,6 @@ class CommentsController < ApplicationController
   def create
     @comment = @commentable.comments.new(comment_params)
     @comment.save
-    render :create
   end
 
   def comment_params
