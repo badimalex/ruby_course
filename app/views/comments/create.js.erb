@@ -1,6 +1,6 @@
-// ниже проверка
-// если type = question то это комментарий к вопросу, иначе к ответу
 <% publish_to "/questions/#{@comment.commentable_id}/comments" do %>
+// ниже проверка
+// если commentable_type = Question то это комментарий к вопросу, иначе к ответу
   <% if  @comment.commentable_type == 'Question' %>
   $('.question>.comments').append('<%= @comment.body %>');
   <% else %>
