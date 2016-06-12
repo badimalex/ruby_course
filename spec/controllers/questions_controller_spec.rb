@@ -28,8 +28,16 @@ RSpec.describe QuestionsController do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
+    it 'assigns new comment for question' do
+      expect(assigns(:comment)).to be_a_new(Comment)
+    end
+
     it 'build new attachment for answer' do
       expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
+    end
+
+    it 'build new comment for answer' do
+      expect(assigns(:answer).comments.first).to be_a_new(Comment)
     end
 
     it 'renders show view' do

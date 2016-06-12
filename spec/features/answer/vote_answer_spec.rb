@@ -73,8 +73,8 @@ feature 'Vote answer' do
 
     scenario 'cant down or up vote answer', js: true do
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
-          expect(page).to_not have_link 'Up vote'
-          expect(page).to_not have_link 'Down vote'
+        expect(page).to_not have_link 'Up vote'
+        expect(page).to_not have_link 'Down vote'
       end
     end
   end
@@ -85,8 +85,8 @@ feature 'Vote answer' do
       answers
       visit question_path(question)
       within :xpath, "//div[@data-answer=\"#{answers[0].id}\"]" do
-          expect(page).to_not have_link 'Up vote'
-          expect(page).to_not have_link 'Down vote'
+        expect(page).to_not have_link 'Up vote'
+        expect(page).to_not have_link 'Down vote'
       end
     end
   end

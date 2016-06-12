@@ -67,8 +67,8 @@ feature 'Vote question' do
     given(:vote) { create(:vote) }
 
     before do
-      question.votes<<vote
-      user.votes<<vote
+      question.votes << vote
+      user.votes << vote
       sign_in user
     end
 

@@ -10,7 +10,13 @@ RubyCourse::Application.routes.draw do
     resources :answers do
       post :accept, on: :member
     end
+    resources :comments
   end
+
+  resources :answers do
+    resources :comments
+  end
+
 
   post 'answers/:id/up_vote', to: 'answers#up_vote', as: 'up_vote_answer'
   post 'answers/:id/down_vote', to: 'answers#down_vote', as: 'down_vote_answer'

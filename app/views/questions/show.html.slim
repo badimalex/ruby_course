@@ -1,12 +1,15 @@
 .question
   = render @question
   = render 'vote', voteable: @question
+  = render 'comments', commentable: @question
 
 - if current_user && current_user.author_of?(@question)
   = link_to 'Remove', question_path(@question), method: 'delete'
 
-.answers
+.answers data={question_id: "#{@question.id}"}
   = render @question.answers
+= subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/questions/#{@question.id}/comments"
 
 .answer_form
   = form_for [@question, @answer], remote: true do |f|

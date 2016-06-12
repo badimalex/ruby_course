@@ -5,6 +5,7 @@ describe Question do
   it { should have_many :attachments }
   it { should have_many :votes }
   it { should have_many(:answers).dependent(:destroy) }
+  it { should have_many(:comments) }
 
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:body) }
@@ -21,7 +22,7 @@ describe Question do
 
   describe '#rating' do
     let(:user) { create(:user) }
-    let(:question) { create(:question, up_votes:5, down_votes: 3) }
+    let(:question) { create(:question, up_votes: 5, down_votes: 3) }
 
     it 'should return correct voteable rating' do
       expect(question.rating).to eq(2)
