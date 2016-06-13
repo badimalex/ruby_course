@@ -276,6 +276,7 @@ DEPENDENCIES
   private_pub
   rails (= 4.0.2)
   remotipart
+  responders
   rspec-rails
   sass-rails (~> 4.0.0)
   sdoc
