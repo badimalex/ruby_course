@@ -3,33 +3,24 @@ class AnswersController < ApplicationController
 
   before_action :load_answer, only: [:destroy, :update, :accept]
   before_action :load_question, only: [:create, :update, :accept]
+  before_action :check_author, only: [:destroy, :update, :accept]
+
+  respond_to :js
 
   def create
-    @answer = @question.answers.create(answer_params.merge(user: current_user))
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
-    if current_user.author_of?(@answer)
-      @answer.update(answer_params)
-    else
-      render status: :forbidden
-    end
+    respond_with(@answer.update(answer_params))
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-    else
-      render status: :forbidden
-    end
+    respond_with(@answer.destroy)
   end
 
   def accept
-    if current_user.author_of?(@question)
-      @answer.accept!
-    else
-      render status: :forbidden
-    end
+    respond_with(@answer.accept!)
   end
 
   private
@@ -44,5 +35,11 @@ class AnswersController < ApplicationController
 
   def load_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def check_author
+    unless current_user.author_of?(@answer)
+      render status: :forbidden
+    end
   end
 end
