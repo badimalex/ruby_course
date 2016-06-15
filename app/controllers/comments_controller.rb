@@ -1,10 +1,12 @@
 class CommentsController < ApplicationController
   before_action :set_commentable, only: [:create]
+  respond_to :js
 
   def create
-    @comment = @commentable.comments.new(comment_params)
-    @comment.save
+    respond_with(@comment = @commentable.comments.create(comment_params))
   end
+
+  private
 
   def comment_params
     params.require(:comment).permit(:body)
