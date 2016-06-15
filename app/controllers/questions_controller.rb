@@ -4,6 +4,10 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: [:show, :edit, :update, :destroy]
   before_action :build_answer, only: :show
   before_action :build_comment, only: :show
+  before_action :check_author, only: [:destroy, :update]
+  after_action :publish_question, only: :create
+
+  respond_to :js
 
   def index
     respond_with(@questions = Question.all)
@@ -21,30 +25,15 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      flash[:notice] = 'Your question successfully removed'
-    else
-      flash[:notice] = 'You cannot mess with another author\'s post'
-    end
-    respond_with @question
+    respond_with(@question.destroy)
   end
 
   def update
-    if current_user.author_of?(@question)
-      @question.update(questions_params)
-    else
-      render status: :forbidden
-    end
+    respond_with(@question.update(questions_params))
   end
 
   def create
-    @question = current_user.questions.new(questions_params)
-    if @question.save
-      PrivatePub.publish_to '/questions', question: @question.to_json
-      flash[:notice] = 'Your question successfully created.'
-    end
-    respond_with @question
+    respond_with (@question = current_user.questions.create(questions_params))
   end
 
   private
@@ -63,5 +52,15 @@ class QuestionsController < ApplicationController
 
   def build_comment
     @comment = @question.comments.build
+  end
+
+  def check_author
+    unless current_user.author_of?(@question)
+      redirect_to @question
+    end
+  end
+
+  def publish_question
+    PrivatePub.publish_to '/questions', question: @question.to_json
   end
 end

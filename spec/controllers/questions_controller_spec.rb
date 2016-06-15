@@ -121,7 +121,6 @@ RSpec.describe QuestionsController do
 
         another_question.reload
         expect(another_question.body).to eq 'Original question body'
-        expect(response).to have_http_status(:forbidden)
       end
     end
 
