@@ -2,52 +2,38 @@ class QuestionsController < ApplicationController
   include PublicIndex, PublicShow, Voted
 
   before_action :load_question, only: [:show, :edit, :update, :destroy]
+  before_action :build_answer, only: :show
+  before_action :build_comment, only: :show
+  before_action :check_author, only: [:destroy, :update]
+  after_action :publish_question, only: :create
+
+  respond_to :js
 
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.build
-    @comment = @question.comments.build
-    @answer.attachments.build
-    @answer.comments.build
+    respond_with(@question)
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def edit
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question successfully removed'
-    else
-      redirect_to @question, notice: 'You cannot mess with another author\'s post'
-    end
+    respond_with(@question.destroy)
   end
 
   def update
-    if current_user.author_of?(@question)
-      @question.update(questions_params)
-    else
-      render status: :forbidden
-    end
+    respond_with(@question.update(questions_params))
   end
 
   def create
-    @question = current_user.questions.new(questions_params)
-    if @question.save
-      PrivatePub.publish_to '/questions', question: @question.to_json
-      flash[:notice] = 'Your question successfully created.'
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with (@question = current_user.questions.create(questions_params))
   end
 
   private
@@ -58,5 +44,23 @@ class QuestionsController < ApplicationController
 
   def questions_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file])
+  end
+
+  def build_answer
+    @answer = @question.answers.build
+  end
+
+  def build_comment
+    @comment = @question.comments.build
+  end
+
+  def check_author
+    unless current_user.author_of?(@question)
+      redirect_to @question
+    end
+  end
+
+  def publish_question
+    PrivatePub.publish_to '/questions', question: @question.to_json
   end
 end

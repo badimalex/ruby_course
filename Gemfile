@@ -33,6 +33,7 @@ gem 'remotipart'
 gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
+gem 'responders'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

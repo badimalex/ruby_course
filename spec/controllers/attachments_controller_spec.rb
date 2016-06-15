@@ -35,7 +35,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'stay at current_path' do
         delete :destroy, id: other_attachment, format: :js
-        expect(response).to have_http_status(:forbidden)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 

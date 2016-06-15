@@ -1,10 +1,21 @@
 class AttachmentsController < ApplicationController
+  before_action :load_entity
+  before_action :check_author
+  respond_to :js
+
   def destroy
-    @attachment = Attachment.find(params[:id])
-    if current_user.author_of?(@attachment.attachmentable)
-      @attachment.destroy
-    else
-      render status: :forbidden
+    respond_with(@attachment.destroy)
+  end
+
+  private
+
+  def check_author
+    unless current_user.author_of?(@attachment.attachmentable)
+      render status: :unprocessable_entity
     end
+  end
+
+  def load_entity
+    @attachment = Attachment.find(params[:id])
   end
 end

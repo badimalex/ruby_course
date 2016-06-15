@@ -17,7 +17,7 @@
     .answer-errors
     = f.text_area :body
     ul.files
-      = f.fields_for :attachments do |a|
+      = f.fields_for :attachments, @answer.attachments.build do |a|
         = render 'attachment_fields', f: a
       li = link_to_add_association 'Add file', f, :attachments
     = f.submit 'Post Your Answer'
