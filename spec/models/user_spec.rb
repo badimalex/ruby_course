@@ -166,4 +166,8 @@ RSpec.describe User do
       expect(user.voted?(voteable)).to be true
     end
   end
+
+  describe '.find_for_oauth' do
+
+  end
 end
