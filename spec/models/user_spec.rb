@@ -168,6 +168,13 @@ RSpec.describe User do
   end
 
   describe '.find_for_oauth' do
+    let!(:user) { create(:user) }
 
+    context 'user already has authorization' do
+      it 'returns the user' do
+        user.authorizations.create(provider: 'facebook', uid: '123456')
+        expect(User.find_for_oauth()).to eq user
+      end
+    end
   end
 end
