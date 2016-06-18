@@ -237,4 +237,20 @@ RSpec.describe User do
       end
     end
   end
+
+  describe '#email_verified?' do
+    let(:twitter_user) { create(:user, email: 'new@user.com') }
+    let(:user) { create(:user) }
+    context 'when email verified' do
+      it 'return false' do
+        expect(twitter_user.email_verified?).to eq(false)
+      end
+    end
+
+    context 'when email was not verified' do
+      it 'return true' do
+        expect(user.email_verified?).to eq(true)
+      end
+    end
+  end
 end

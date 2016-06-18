@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  TEMP_EMAIL_REGEX = /\Anew@user/
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
   has_many :votes
@@ -62,6 +63,10 @@ class User < ActiveRecord::Base
 
   def voted?(voteable)
     !Vote.where(voteable: voteable, user_id: id).first.nil?
+  end
+
+  def email_verified?
+    self.email && self.email !~ TEMP_EMAIL_REGEX
   end
 
   def self.find_for_oauth(auth)
