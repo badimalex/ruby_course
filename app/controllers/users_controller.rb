@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
 
   def finish_signup
-    if request.patch? && params[:user]
+    if params.include?(:user)
       @user.update(user_params)
       redirect_to root_path, notice: 'Successfully authenticated.'
     end
