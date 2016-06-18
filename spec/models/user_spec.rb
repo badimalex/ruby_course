@@ -203,6 +203,7 @@ RSpec.describe User do
 
       context 'user does not exist' do
         let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: 'new@user.com' }) }
+        let(:twitter_auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { }) }
 
         it 'creates new user' do
           expect { User.find_for_oauth(auth) }.to change(User, :count).by(1)
@@ -215,6 +216,11 @@ RSpec.describe User do
         it 'fills user email' do
           user = User.find_for_oauth(auth)
           expect(user.email).to eq auth.info.email
+        end
+
+        it 'generates user email if is empty' do
+          user = User.find_for_oauth(twitter_auth)
+          expect(user.email).to_not be_empty
         end
 
         it 'creates authorization for user' do

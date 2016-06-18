@@ -8,24 +8,19 @@ RSpec.describe OmniauthCallbacksController do
         set_omniauth
         get :twitter
       end
-      it 'render form fill email' do
-        expect(response).to render_template 'fill_email'
-      end
-    end
-  end
+      it { response.should redirect_to finish_signup_path(assigns(:user).id) }
 
-  describe 'POST #twitter' do
-    before do
-      set_omniauth
-      get :twitter
-      post :twitter, email: 'new@user.com'
+      it 'assign user' do
+        expect(assigns(:user)).to be_a(User)
+      end
+
     end
-    it { response.should redirect_to root_path }
   end
 end
 
 def set_omniauth
-  request.env['devise.mapping'] = Devise.mappings[:user]
   OmniAuth.config.test_mode = true
   OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(provider: 'twitter', uid: '123456', info: { })
+  request.env['devise.mapping'] = Devise.mappings[:user]
+  request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:twitter]
 end
