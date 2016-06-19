@@ -3,12 +3,18 @@ require 'rails_helper'
 RSpec.describe UsersController do
   describe 'PATCH #finish_signup' do
     sign_in_user
-    before { patch :finish_signup, id: @user, user: { email: 'new@user.com' } }
+    before { patch :finish_signup, id: @user, user: { email: 'updated@user.email' } }
 
-    it 'update user email' do
-      expect(@user.reload.email).to eq 'new@user.com'
+    it 'send email notification' do
+      expect{
+        patch :finish_signup, id: @user, user: { email: 'updated@user.email' }
+      }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
 
-    it { response.should redirect_to root_path }
+    it 'update user email' do
+      expect(@user.reload.unconfirmed_email).to eq 'updated@user.email'
+    end
+
+    it { response.should redirect_to confirm_email_path }
   end
 end

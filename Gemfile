@@ -35,8 +35,10 @@ gem 'private_pub'
 gem 'thin'
 gem 'responders'
 gem 'omniauth'
+gem 'letter_opener'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
+gem 'capybara-email'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

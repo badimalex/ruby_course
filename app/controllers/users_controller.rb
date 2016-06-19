@@ -4,9 +4,13 @@ class UsersController < ApplicationController
 
   def finish_signup
     if params.include?(:user)
-      @user.update(user_params)
-      redirect_to root_path, notice: 'Successfully authenticated.'
+      @user.update_attributes!(unconfirmed_email: user_params[:email])
+      @user.send_confirmation_instructions
+      redirect_to confirm_email_path
     end
+  end
+
+  def confirm_email
   end
 
   private

@@ -18,6 +18,7 @@ RubyCourse::Application.routes.draw do
   end
 
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+  get '/users/confirm_email', to: 'users#confirm_email', as: 'confirm_email'
   post 'answers/:id/up_vote', to: 'answers#up_vote', as: 'up_vote_answer'
   post 'answers/:id/down_vote', to: 'answers#down_vote', as: 'down_vote_answer'
   post 'answers/:id/un_vote', to: 'answers#un_vote', as: 'un_vote_answer'

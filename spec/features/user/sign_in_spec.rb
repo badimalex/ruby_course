@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 feature 'User sign in' do
-  given(:user) { create(:user, email: 'new@user.com') }
+  given(:confirmed_user) { create(:user) }
 
   scenario 'Registered user try to sign in' do
-    sign_in
+    sign_in confirmed_user
 
     expect(page).to have_content 'Signed in successfully.'
     expect(current_path).to eq root_path
@@ -18,10 +18,5 @@ feature 'User sign in' do
 
     expect(page).to have_content 'Invalid Email or password.'
     expect(current_path).to eq new_user_session_path
-  end
-
-  scenario 'when email is not verified' do
-    sign_in user
-    expect(page).to have_content 'Add Email'
   end
 end

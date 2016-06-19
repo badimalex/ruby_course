@@ -9,6 +9,7 @@ RSpec.describe OmniauthCallbacksController do
         set_request
         get :twitter
       end
+
       it { response.should redirect_to finish_signup_path(assigns(:user).id) }
 
       it 'assign user' do
