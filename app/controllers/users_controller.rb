@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     if params.include?(:user)
       @user.update_attributes!(unconfirmed_email: user_params[:email])
       @user.send_confirmation_instructions
-      flash[:notice] = 'We are sending message to you, please look your mailbox'
+      flash[:notice] = 'Please find confirmation link at your email box.'
     end
   end
 

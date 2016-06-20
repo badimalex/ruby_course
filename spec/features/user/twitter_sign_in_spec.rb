@@ -11,7 +11,7 @@ feature 'Twitter sign in' do
       fill_in 'Email', with: 'new@user.com'
       click_on 'Continue'
 
-      expect(page).to have_content 'Please confirm email.'
+      expect(page).to have_content 'Please find confirmation link at your email box.'
 
       open_email('new@user.com')
 
