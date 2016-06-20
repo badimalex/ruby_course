@@ -1,5 +1,5 @@
 RubyCourse::Application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
   resources :questions do
     member do
@@ -17,7 +17,7 @@ RubyCourse::Application.routes.draw do
     resources :comments
   end
 
-
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
   post 'answers/:id/up_vote', to: 'answers#up_vote', as: 'up_vote_answer'
   post 'answers/:id/down_vote', to: 'answers#down_vote', as: 'down_vote_answer'
   post 'answers/:id/un_vote', to: 'answers#un_vote', as: 'un_vote_answer'

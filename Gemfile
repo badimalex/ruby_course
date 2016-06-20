@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.2'
+gem 'rails', '4.1.0'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -34,6 +34,11 @@ gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
 gem 'responders'
+gem 'omniauth'
+gem 'letter_opener'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'capybara-email'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
