@@ -14,7 +14,5 @@ RSpec.describe UsersController do
     it 'update user email' do
       expect(@user.reload.unconfirmed_email).to eq 'updated@user.email'
     end
-
-    it { response.should redirect_to confirm_email_path }
   end
 end
