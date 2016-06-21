@@ -32,6 +32,7 @@ GEM
     ast (2.3.0)
     bcrypt (3.1.11)
     builder (3.2.2)
+    cancancan (1.15.0)
     capybara (2.7.1)
       addressable
       mime-types (>= 1.16)
@@ -298,6 +299,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cancancan
   capybara
   capybara-email
   capybara-webkit
