@@ -24,5 +24,18 @@ class Ability
     guest_abilities
     can :create, [Question, Answer, Comment]
     can :update, [Question, Answer, Comment], user: user
+    can :destroy, Question, user: user
+
+    can :up_vote, Question do |question|
+      question.try(:user) != user
+    end
+
+    can :un_vote, Question do |question|
+      question.try(:user) != user
+    end
+
+    can :down_vote, Question do |question|
+      question.try(:user) != user
+    end
   end
 end
