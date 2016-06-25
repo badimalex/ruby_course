@@ -1,9 +1,14 @@
-class Api::V1::ProfilesController < ApplicationController
-  # doorkeeper_for :all
-
-  respond_to :json
+class Api::V1::ProfilesController < ActionController::Base
+  before_action :doorkeeper_authorize!
+  respond_to    :json
 
   def me
-    respond_with current_user
+    respond_with current_resource_owner
+  end
+
+  protected
+
+  def current_resource_owner
+    @current_resource_owner ||= User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end
 end

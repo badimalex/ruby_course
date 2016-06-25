@@ -60,6 +60,7 @@ group :test, :development do
 end
 
 group :test do
+  gem 'json_spec'
   gem "shoulda-matchers", "~> 3.1",
     require: false
 end
