@@ -39,6 +39,7 @@ gem 'letter_opener'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'capybara-email'
+gem 'doorkeeper'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

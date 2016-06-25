@@ -70,6 +70,8 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    doorkeeper (3.1.0)
+      railties (>= 3.2)
     em-http-request (1.1.4)
       addressable (>= 2.3.4)
       cookiejar (!= 0.3.1)
@@ -306,6 +308,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   database_cleaner
   devise
+  doorkeeper
   factory_girl_rails
   guard-rubocop
   jbuilder (~> 1.2)
