@@ -5,7 +5,7 @@ RubyCourse::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       resource :profiles do
-        get :me, on: :collection
+        get :me, :index, on: :collection
       end
     end
   end
