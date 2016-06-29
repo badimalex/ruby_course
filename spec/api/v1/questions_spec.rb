@@ -52,4 +52,45 @@ describe 'Questions API' do
       end
     end
   end
+
+  describe 'GET /show' do
+    let(:access_token) { create(:access_token) }
+    let(:question) { create(:question) }
+    let!(:comment) { create(:comment, commentable: question) }
+    let!(:attachment) { create(:attachment, attachmentable: question) }
+
+    before { get "/api/v1/questions/#{question.id}", format: :json, access_token: access_token.token }
+
+    it 'returns 200 status code' do
+      expect(response).to be_success
+    end
+
+    %w(id title body created_at updated_at).each do |attr|
+      it "question object contains #{attr}" do
+        expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("#{attr}")
+      end
+    end
+
+    context 'comments' do
+      it 'included in question object' do
+        expect(response.body).to have_json_size(1).at_path("comments")
+      end
+
+      %w(id body created_at updated_at).each do |attr|
+        it "comment object contains #{attr}" do
+          expect(response.body).to be_json_eql(comment.send(attr.to_sym).to_json).at_path("comments/0/#{attr}")
+        end
+      end
+    end
+
+    context 'attachments' do
+      it 'included in question object' do
+        expect(response.body).to have_json_size(1).at_path("attachments")
+      end
+
+      it 'attachment object contain file url' do
+        expect(response.body).to be_json_eql(attachment.file.url.to_json).at_path("attachments/0/file/url")
+      end
+    end
+  end
 end
