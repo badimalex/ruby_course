@@ -1,5 +1,14 @@
 RubyCourse::Application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, :index, on: :collection
+      end
+    end
+  end
 
   resources :questions do
     member do
