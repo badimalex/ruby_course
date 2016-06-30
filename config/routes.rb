@@ -7,7 +7,9 @@ RubyCourse::Application.routes.draw do
       resource :profiles do
         get :me, :index, on: :collection
       end
-      resources :questions
+      resources :questions do
+        resources :answers
+      end
     end
   end
 
