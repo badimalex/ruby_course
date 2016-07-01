@@ -93,4 +93,26 @@ describe 'Questions API' do
       end
     end
   end
+
+  describe 'POST /create' do
+    let(:access_token) { create(:access_token) }
+
+    context 'when is successfully created' do
+      before do
+        question = create(:question)
+        @question_attributes = attributes_for :question
+        post '/api/v1/questions', question: @question_attributes, format: :json, access_token: access_token.token
+      end
+
+      it 'returns 201 status code' do
+        expect(response).to have_http_status(:created)
+      end
+
+      %w(title body).each do |attr|
+        it "question object contains #{attr}" do
+          expect(response.body).to be_json_eql(@question_attributes[attr.to_sym].to_json).at_path("#{attr}")
+        end
+      end
+    end
+  end
 end
