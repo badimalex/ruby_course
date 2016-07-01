@@ -88,4 +88,24 @@ describe 'Answers API' do
       end
     end
   end
+
+  describe 'POST /create' do
+    let(:access_token) { create(:access_token) }
+    let!(:question) { create(:question) }
+    context 'when is successfully created' do
+      before do
+        answer = create(:answer, question: question)
+        @answer_attributes = attributes_for :answer
+        post "/api/v1/questions/#{question.id}/answers", answer: @answer_attributes, format: :json, access_token: access_token.token
+      end
+
+      it 'returns 201 status code' do
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'answer object contains body' do
+        expect(response.body).to be_json_eql(@answer_attributes[:body].to_json).at_path('body')
+      end
+    end
+  end
 end
