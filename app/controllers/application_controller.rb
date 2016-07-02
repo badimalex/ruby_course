@@ -19,4 +19,8 @@ class ApplicationController < ActionController::Base
       redirect_to finish_signup_path(current_user)
     end
   end
+
+  rescue_from CanCan::AccessDenied do |e|
+    redirect_to root_url, alert: e.message
+  end
 end
