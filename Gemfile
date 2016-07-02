@@ -40,6 +40,9 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'capybara-email'
 gem 'doorkeeper'
+gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 gem 'cancancan'
 
 group :doc do
