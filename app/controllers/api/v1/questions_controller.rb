@@ -1,4 +1,5 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
+  authorize_resource
   before_action :load_question, only: [:show]
 
   def index
