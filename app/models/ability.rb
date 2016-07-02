@@ -26,16 +26,16 @@ class Ability
     can :update, [Question, Answer, Comment], user: user
     can :destroy, Question, user: user
 
-    can :up_vote, Question do |question|
-      question.try(:user) != user
+    can :up_vote, [Question, Answer] do |voteable|
+      voteable.try(:user_id) != user.id
     end
 
-    can :un_vote, Question do |question|
-      question.try(:user) != user
+    can :un_vote, [Question, Answer] do |voteable|
+      voteable.try(:user_id) != user.id
     end
 
-    can :down_vote, Question do |question|
-      question.try(:user) != user
+    can :down_vote, [Question, Answer] do |voteable|
+      voteable.try(:user_id) != user.id
     end
   end
 end
