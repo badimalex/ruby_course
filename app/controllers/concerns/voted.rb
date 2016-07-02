@@ -8,33 +8,28 @@ module Voted
     rescue_from OwnerVotedError, AlreadyVotedError do |exception|
       render json: { error: exception.to_s }, status: :forbidden
     end
+
+    rescue_from CanCan::AccessDenied do |exception|
+      render json: { error: exception.to_s }, status: :forbidden
+    end
   end
 
   def down_vote
-    unless current_user
-      render json: { error: 'Only autorized user can vote' }, status: :forbidden
-    else
-      current_user.down_vote(@voteable)
-      render json: @voteable, methods: [:rating]
-    end
+    authorize! :down_vote, @voteable
+    current_user.down_vote(@voteable)
+    render json: @voteable, methods: [:rating]
   end
 
   def up_vote
-    if !current_user
-      render json: { error: 'Only autorized user can vote' }, status: :forbidden
-    else
-      current_user.up_vote(@voteable)
-      render json: @voteable, methods: [:rating]
-    end
+    authorize! :up_vote, @voteable
+    current_user.up_vote(@voteable)
+    render json: @voteable, methods: [:rating]
   end
 
   def un_vote
-    if !current_user
-      render json: { error: 'Only autorized user can vote' }, status: :forbidden
-    else
-      current_user.un_vote(@voteable)
-      render json: @voteable, methods: [:rating]
-    end
+    authorize! :un_vote, @voteable
+    current_user.un_vote(@voteable)
+    render json: @voteable, methods: [:rating]
   end
 
   private

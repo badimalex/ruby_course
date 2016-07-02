@@ -43,6 +43,7 @@ gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
+gem 'cancancan'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
