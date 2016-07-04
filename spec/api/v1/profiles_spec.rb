@@ -26,9 +26,14 @@ describe 'Profile API' do
          end
        end
      end
+     def do_request(options = {})
+       get '/api/v1/profiles/me', { format: :json }.merge(options)
+     end
    end
 
   describe 'GET /index' do
+    it_behaves_like 'API Authenticable'
+
     context 'unauthorized' do
       it 'returns 401 status if there is no access_token' do
         get '/api/v1/profiles', format: :json
@@ -61,9 +66,9 @@ describe 'Profile API' do
         expect(response.body).to_not have_json_path(me.to_json)
       end
     end
-  end
 
-  def do_request(options = {})
-    get '/api/v1/profiles/me', { format: :json }.merge(options)
+    def do_request(options = {})
+      get 'api/v1/profiles', { format: :json }.merge(options)
+    end
   end
 end

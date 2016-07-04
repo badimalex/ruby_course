@@ -98,8 +98,8 @@ describe 'Questions API' do
 
   describe 'POST /create' do
     it_behaves_like 'API Authenticable'
-
     let(:access_token) { create(:access_token) }
+
     context 'authorized' do
       context 'when is successfully created' do
         before do
