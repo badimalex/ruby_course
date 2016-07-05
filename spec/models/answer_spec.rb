@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Answer do
+  it_behaves_like 'Voteable'
+
   it { should belong_to(:user) }
   it { should belong_to(:question) }
   it { should have_many(:attachments) }
@@ -41,15 +43,6 @@ describe Answer do
     it 'orders by accepted' do
       answers.push accepted_answer
       Answer.first.should eq(accepted_answer)
-    end
-  end
-
-  describe '#rating' do
-    let(:user) { create(:user) }
-    let(:answer) { create(:answer, up_votes: 5, down_votes: 3) }
-
-    it 'should return correct answer rating' do
-      expect(answer.rating).to eq(2)
     end
   end
 end

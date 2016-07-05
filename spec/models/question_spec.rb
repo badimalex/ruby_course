@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Question do
+  it_behaves_like 'Voteable'
+
   it { should belong_to(:user) }
   it { should have_many :attachments }
   it { should have_many :votes }
@@ -19,13 +21,4 @@ describe Question do
   it { should validate_numericality_of(:down_votes) }
 
   it { should accept_nested_attributes_for :attachments }
-
-  describe '#rating' do
-    let(:user) { create(:user) }
-    let(:question) { create(:question, up_votes: 5, down_votes: 3) }
-
-    it 'should return correct voteable rating' do
-      expect(question.rating).to eq(2)
-    end
-  end
 end
