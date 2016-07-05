@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  it_behaves_like 'Voted'
+
   describe 'POST #create' do
     sign_in_user
     let(:question) { create(:question, user: @user) }
@@ -138,128 +140,4 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to render_template :update
     end
   end
-
-  describe 'Post #up_vote' do
-    context 'current user is not the answer author' do
-      sign_in_user
-      let(:answer) { create(:answer) }
-      before { post :up_vote, id: answer }
-
-      it 'increment answer up_vote value' do
-        expect(answer.reload.up_votes).to eq 1
-      end
-
-      it 'return ok' do
-        expect(response).to have_http_status(:ok)
-      end
-    end
-
-    context 'answer author is the current user' do
-      sign_in_user
-      let(:answer) { create(:answer, user: @user) }
-
-      before do
-        post :up_vote, id: answer
-      end
-
-      it 'not increment question up_vote value' do
-        expect(answer.reload.up_votes).to eq 0
-      end
-
-      it 'return forbidden' do
-        expect(response).to have_http_status(:forbidden)
-      end
-    end
-  end
-
-  describe 'Post #up_vote' do
-    context 'current user is not the answer author' do
-      sign_in_user
-      let(:answer) { create(:answer) }
-      before { post :up_vote, id: answer }
-
-      it 'increment answer up_vote value' do
-        expect(answer.reload.up_votes).to eq 1
-      end
-
-      it 'return ok' do
-        expect(response).to have_http_status(:ok)
-      end
-    end
-
-    context 'answer author is the current user' do
-      sign_in_user
-      let(:answer) { create(:answer, user: @user) }
-
-      before do
-        post :up_vote, id: answer
-      end
-
-      it 'not increment question up_vote value' do
-        expect(answer.reload.up_votes).to eq 0
-      end
-
-      it 'return forbidden' do
-        expect(response).to have_http_status(:forbidden)
-      end
-    end
-  end
-
-  describe 'Post #down_vote' do
-    context 'current user is not the answer author' do
-      sign_in_user
-      let(:answer) { create(:answer) }
-      before { post :down_vote, id: answer }
-
-      it 'should decrease down votes of answer by one' do
-        expect(answer.reload.down_votes).to eq 1
-      end
-
-      it 'return ok' do
-        expect(response).to have_http_status(:ok)
-      end
-    end
-
-    context 'answer author is the current user' do
-      sign_in_user
-      let(:answer) { create(:answer, user: @user) }
-
-      before do
-        post :down_vote, id: answer
-      end
-
-      it 'not increment question up_vote value' do
-        expect(answer.reload.down_votes).to eq 0
-      end
-
-      it 'return forbidden' do
-        expect(response).to have_http_status(:forbidden)
-      end
-    end
-  end
-
-    describe 'Post #un_vote' do
-      sign_in_user
-      let(:answer) { create(:answer) }
-
-      context 'when already up voted' do
-        it 'reset question up_votes' do
-          post :up_vote, id: answer
-          expect(answer.reload.up_votes).to eq 1
-
-          post :un_vote, id: answer
-          expect(answer.reload.up_votes).to eq 0
-        end
-      end
-
-      context 'when already down voted' do
-        it 'reset question up_votes' do
-          post :down_vote, id: answer
-          expect(answer.reload.down_votes).to eq 1
-          post :un_vote, id: answer
-
-          expect(answer.reload.down_votes).to eq 0
-        end
-      end
-    end
 end

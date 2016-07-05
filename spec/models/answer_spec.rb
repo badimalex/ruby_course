@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Answer do
-  it_behaves_like 'Model voteable'
+  it_behaves_like 'Voteable'
 
   it { should belong_to(:user) }
   it { should belong_to(:question) }
