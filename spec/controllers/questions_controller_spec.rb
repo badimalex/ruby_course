@@ -74,6 +74,10 @@ RSpec.describe QuestionsController do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
+      it 'publish question' do
+        expect(PrivatePub).to receive(:publish_to)
+        post :create, question: attributes_for(:question)
+      end
     end
     context 'with invalid attributes' do
       it 'does not save the question' do
