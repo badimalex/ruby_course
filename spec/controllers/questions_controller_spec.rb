@@ -87,6 +87,10 @@ RSpec.describe QuestionsController do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
       end
+      it 'not publish question' do
+        expect(PrivatePub).to_not receive(:publish_to)
+        post :create, question: attributes_for(:invalid_question)
+      end
     end
   end
 

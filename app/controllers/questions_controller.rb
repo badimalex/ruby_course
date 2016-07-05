@@ -63,6 +63,6 @@ class QuestionsController < ApplicationController
   end
 
   def publish_question
-    PrivatePub.publish_to '/questions', question: @question.to_json
+    PrivatePub.publish_to '/questions', question: @question.to_json if @question.persisted?
   end
 end
