@@ -17,19 +17,19 @@ module Voted
   def down_vote
     authorize! :down_vote, @voteable
     current_user.down_vote(@voteable)
-    render json: @voteable, methods: [:rating]
+    render_voteable_json
   end
 
   def up_vote
     authorize! :up_vote, @voteable
     current_user.up_vote(@voteable)
-    render json: @voteable, methods: [:rating]
+    render_voteable_json
   end
 
   def un_vote
     authorize! :un_vote, @voteable
     current_user.un_vote(@voteable)
-    render json: @voteable, methods: [:rating]
+    render_voteable_json
   end
 
   private
@@ -40,5 +40,9 @@ module Voted
 
   def set_voteable
     @voteable = model_klass.find(params[:id])
+  end
+
+  def render_voteable_json
+    render json: @voteable.as_json.merge(rating: @voteable.rating)
   end
 end
