@@ -21,4 +21,20 @@ describe Question do
   it { should validate_numericality_of(:down_votes) }
 
   it { should accept_nested_attributes_for :attachments }
+
+  describe 'reputation' do
+    let(:user) { create(:user) }
+    subject { build(:question, user: user) }
+
+    it 'should calculate reputation after creating' do
+      expect(Reputation).to receive(:calculate).with(subject)
+      subject.save!
+    end
+
+    it 'should not calculate reputation after update' do
+      subject.save!
+      expect(Reputation).to_not receive(:calculate)
+      subject.update(title: '123')
+    end
+  end
 end

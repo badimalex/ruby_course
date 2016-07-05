@@ -18,4 +18,12 @@ class Answer < ActiveRecord::Base
       update!(accepted: true)
     end
   end
+
+  after_create :calculate_reputation
+
+  private
+
+  def calculate_reputation
+    Reputation.delay.calculate(self)
+  end
 end
