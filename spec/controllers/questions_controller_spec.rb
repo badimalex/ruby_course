@@ -75,7 +75,7 @@ RSpec.describe QuestionsController do
         expect(response).to redirect_to question_path(assigns(:question))
       end
       it 'publish question' do
-        expect(PrivatePub).to receive(:publish_to)
+        expect(PrivatePub).to receive(:publish_to).with('/questions', anything())
         post :create, question: attributes_for(:question)
       end
     end
