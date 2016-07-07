@@ -2,7 +2,7 @@ class DailyMailer < ActionMailer::Base
   default from: "from@example.com"
 
   def digest(user)
-    @greeting = "Hi"
+    @questions = Question.last_day.all
 
     mail to: user.email
   end
