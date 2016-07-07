@@ -13,7 +13,7 @@ RSpec.describe DailyMailer, type: :mailer do
 
   it 'assigns questions attributes' do
     questions.each do |question|
-      expect(mail.body.encoded).to match(question.title)
+      expect(mail.body.encoded).to match("/questions/#{question.id}")
       expect(mail.body.encoded).to match(question.body)
     end
   end
