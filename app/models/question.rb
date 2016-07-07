@@ -1,5 +1,8 @@
 class Question < ActiveRecord::Base
   include Voteable
+
+  scope :last_day, -> { where({ created_at: (Time.now.midnight - 1.day)..Time.now.midnight }) }
+
   has_many :answers, dependent: :destroy
   has_many :comments, as: :commentable
   has_many :attachments, as: :attachmentable

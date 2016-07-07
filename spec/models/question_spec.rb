@@ -27,4 +27,17 @@ describe Question do
     subject { build(:question, user: user) }
     it_behaves_like 'calculates reputation'
   end
+
+  describe 'daily scope' do
+    let!(:last_day_questions) { Array.new(2) { create(:question, created_at: Time.now.midnight - 1.day) } }
+    let!(:current_day_questions) { Array.new(2) { create(:question) } }
+
+    it 'returns questions by last day' do
+      expect(Question.last_day.all).to match_array(last_day_questions)
+    end
+
+    it 'not contain questions by current day' do
+      expect(Question.last_day.all).to_not match_array(current_day_questions)
+    end
+  end
 end
