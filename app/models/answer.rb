@@ -19,11 +19,11 @@ class Answer < ActiveRecord::Base
     end
   end
 
-  after_create :calculate_reputation
+  after_create :update_reputation
 
   private
 
-  def calculate_reputation
-    Reputation.delay.calculate(self)
+  def update_reputation
+    CalculateReputationJob.perform_later(self)
   end
 end
