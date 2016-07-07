@@ -53,4 +53,13 @@ describe Answer do
 
     it_behaves_like 'calculates reputation'
   end
+
+
+  describe '.notify_author' do
+    let(:question) { create(:question) }
+
+    it 'should notify question author' do
+      expect(QuestionAuthorNotifierJob).to receive(:perform_later).with(subject)
+    end
+  end
 end
