@@ -22,12 +22,6 @@ describe Question do
 
   it { should accept_nested_attributes_for :attachments }
 
-  describe 'reputation' do
-    let(:user) { create(:user) }
-    subject { build(:question, user: user) }
-    it_behaves_like 'calculates reputation'
-  end
-
   describe 'daily scope' do
     let!(:last_day_questions) { Array.new(2) { create(:question, created_at: Time.now.midnight - 1.day) } }
     let!(:current_day_questions) { Array.new(2) { create(:question) } }

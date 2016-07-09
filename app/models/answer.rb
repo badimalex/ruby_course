@@ -19,14 +19,9 @@ class Answer < ActiveRecord::Base
     end
   end
 
-  after_create :update_reputation
   after_create :notify_subscriber
 
   private
-
-  def update_reputation
-    CalculateReputationJob.perform_later(self)
-  end
 
   def notify_subscriber
     QuestionNotifierJob.perform_later(self)

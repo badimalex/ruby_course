@@ -13,12 +13,4 @@ class Question < ActiveRecord::Base
   validates :body, length: { minimum: 15 }
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank
-
-  after_create :update_reputation
-
-  private
-
-  def update_reputation
-    CalculateReputationJob.perform_later(self)
-  end
 end
