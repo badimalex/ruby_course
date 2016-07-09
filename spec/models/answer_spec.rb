@@ -55,11 +55,14 @@ describe Answer do
   end
 
 
-  describe '.notify_author' do
-    let(:question) { create(:question) }
+  describe '.notify_subscriber' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    subject { build(:answer, question: question) }
 
     it 'should notify question author' do
-      expect(QuestionAuthorNotifierJob).to receive(:perform_later).with(subject)
+      expect(QuestionNotifierJob).to receive(:perform_later).with(subject)
+      subject.save!
     end
   end
 end
