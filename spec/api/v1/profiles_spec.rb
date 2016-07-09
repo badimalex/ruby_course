@@ -8,7 +8,7 @@ describe 'Profile API' do
        let(:me) { create(:user) }
        let(:access_token) { create(:access_token, resource_owner_id: me.id ) }
 
-       before { get 'api/v1/profiles/me', format: :json, access_token: access_token.token }
+       before { get '/api/v1/profiles/me', format: :json, access_token: access_token.token }
 
        it 'returns 200 status' do
          expect(response).to be_success
@@ -50,7 +50,7 @@ describe 'Profile API' do
       let(:me) { create(:user) }
       let!(:users) { create_list(:user, 2) }
       let(:access_token) { create(:access_token, resource_owner_id: me.id ) }
-      before { get 'api/v1/profiles', format: :json, access_token: access_token.token }
+      before { get '/api/v1/profiles', format: :json, access_token: access_token.token }
 
       it 'returns 200 status' do
         expect(response).to be_success
@@ -68,7 +68,7 @@ describe 'Profile API' do
     end
 
     def do_request(options = {})
-      get 'api/v1/profiles', { format: :json }.merge(options)
+      get '/api/v1/profiles', { format: :json }.merge(options)
     end
   end
 end
