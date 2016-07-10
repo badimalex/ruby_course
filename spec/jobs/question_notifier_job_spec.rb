@@ -1,12 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe QuestionNotifierJob, type: :job do
-  let(:user) { create(:user) }
-  let(:question) { create(:question, user: user) }
-  let(:answer) { create(:answer, question: question) }
+  let(:question) { create :question }
+  let(:subscriptions) { create_list(:subscription, 2, question: question) }
+  let(:answer) { create :answer, question: question }
 
   it 'notify user about new answer' do
-    expect(QuestionMailer).to receive(:digest).with(question, answer).and_call_original
+    answer.question.subscriptions.each do |subscription|
+      expect(QuestionMailer).to receive(:new_answer).with(answer, subscription.user.email).and_call_original
+    end
     QuestionNotifierJob.perform_now(answer)
   end
 end

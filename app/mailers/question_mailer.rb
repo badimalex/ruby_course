@@ -1,9 +1,9 @@
 class QuestionMailer < ActionMailer::Base
   default from: "from@example.com"
 
-  def digest(question, answer)
+  def new_answer(answer, email)
     @answer = answer
-    @question = question
-    mail to: @question.user.email
+    @question = answer.question
+    mail to: email
   end
 end

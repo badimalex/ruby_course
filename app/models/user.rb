@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :answers, dependent: :destroy
   has_many :votes
   has_many :comments
+  has_many :subscriptions
   has_many :authorizations
 
   # Include default devise modules. Others available are:

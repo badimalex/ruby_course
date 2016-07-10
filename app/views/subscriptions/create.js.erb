@@ -1,0 +1,3 @@
+$('.create_subscribe').after('<a class="cancel_subscribe" data-remote="true" rel="nofollow" data-method="delete" ' +
+    'href="<%= question_subscription_path(@subscription.question, @subscription) %>">Cancel subscription</a>');
+$('.create_subscribe').hide();

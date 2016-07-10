@@ -4,10 +4,10 @@ RSpec.describe QuestionMailer, type: :mailer do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
   let(:answer) { create(:answer, question: question) }
-  let(:mail) { described_class.digest(question, answer).deliver_now }
+  let(:mail) { described_class.new_answer(answer, user.email).deliver_now }
 
   it 'notify about new answer' do
-    expect{ QuestionMailer.digest(question, answer).deliver_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    expect{ QuestionMailer.new_answer(answer, user.email).deliver_now }.to change { ActionMailer::Base.deliveries.count }.by(1)
   end
 
   it 'assigns answer' do

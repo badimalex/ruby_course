@@ -29,6 +29,7 @@ RubyCourse::Application.routes.draw do
       post :accept, on: :member
     end
     resources :comments
+    resources :subscriptions
   end
 
   resources :answers do
