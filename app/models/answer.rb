@@ -18,4 +18,12 @@ class Answer < ActiveRecord::Base
       update!(accepted: true)
     end
   end
+
+  after_create :notify_subscriber
+
+  private
+
+  def notify_subscriber
+    QuestionNotifierJob.perform_later(self)
+  end
 end

@@ -1,0 +1,5 @@
+table.questions
+  - @questions.each do |question|
+    tr
+      td= link_to question.title, question
+      td= question.body

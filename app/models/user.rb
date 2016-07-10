@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :answers, dependent: :destroy
   has_many :votes
   has_many :comments
+  has_many :subscriptions
   has_many :authorizations
 
   # Include default devise modules. Others available are:
@@ -83,5 +84,11 @@ class User < ActiveRecord::Base
     end
     user.authorizations.create(provider: auth.provider, uid: auth.uid)
     user
+  end
+
+  def self.send_daily_digest
+    find_each.each do |user|
+      DailyMailer.digest(user).deliver_later
+    end
   end
 end

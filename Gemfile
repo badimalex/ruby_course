@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.0'
+gem 'rails', '4.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -44,6 +44,11 @@ gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
 gem 'cancancan'
+# gem 'delayed_job_active_record'
+gem 'whenever'
+gem 'sidekiq'
+gem 'sinatra', '>= 1.3.0', require: nil
+gem 'sidetiq'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

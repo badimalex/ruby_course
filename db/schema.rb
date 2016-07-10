@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160621102112) do
+ActiveRecord::Schema.define(version: 20160709160431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "answers", force: true do |t|
+  create_table "answers", force: :cascade do |t|
     t.text     "body"
     t.integer  "question_id"
     t.datetime "created_at"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20160621102112) do
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
   add_index "answers", ["user_id"], name: "index_answers_on_user_id", using: :btree
 
-  create_table "attachments", force: true do |t|
+  create_table "attachments", force: :cascade do |t|
     t.string   "file"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20160621102112) do
 
   add_index "attachments", ["attachmentable_id", "attachmentable_type"], name: "index_attachments_on_attachmentable_id_and_attachmentable_type", using: :btree
 
-  create_table "authorizations", force: true do |t|
+  create_table "authorizations", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "provider"
     t.string   "uid"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20160621102112) do
 
   add_index "authorizations", ["provider", "uid"], name: "index_authorizations_on_provider_and_uid", using: :btree
 
-  create_table "comments", force: true do |t|
+  create_table "comments", force: :cascade do |t|
     t.string   "body"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -61,7 +61,23 @@ ActiveRecord::Schema.define(version: 20160621102112) do
 
   add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
 
-  create_table "oauth_access_grants", force: true do |t|
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id", null: false
     t.integer  "application_id",    null: false
     t.string   "token",             null: false
@@ -74,7 +90,7 @@ ActiveRecord::Schema.define(version: 20160621102112) do
 
   add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
-  create_table "oauth_access_tokens", force: true do |t|
+  create_table "oauth_access_tokens", force: :cascade do |t|
     t.integer  "resource_owner_id"
     t.integer  "application_id"
     t.string   "token",             null: false
@@ -89,7 +105,7 @@ ActiveRecord::Schema.define(version: 20160621102112) do
   add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
   add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
-  create_table "oauth_applications", force: true do |t|
+  create_table "oauth_applications", force: :cascade do |t|
     t.string   "name",                      null: false
     t.string   "uid",                       null: false
     t.string   "secret",                    null: false
@@ -101,7 +117,7 @@ ActiveRecord::Schema.define(version: 20160621102112) do
 
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
-  create_table "questions", force: true do |t|
+  create_table "questions", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
     t.datetime "created_at"
@@ -113,7 +129,16 @@ ActiveRecord::Schema.define(version: 20160621102112) do
 
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "question_id"
+  end
+
+  add_index "subscriptions", ["question_id"], name: "index_subscriptions_on_question_id", using: :btree
+  add_index "subscriptions", ["user_id", "question_id"], name: "index_subscriptions_on_user_id_and_question_id", using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email",                  default: "", null: false
@@ -131,13 +156,14 @@ ActiveRecord::Schema.define(version: 20160621102112) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.boolean  "admin"
+    t.integer  "reputation",             default: 0
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "votes", force: true do |t|
+  create_table "votes", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"

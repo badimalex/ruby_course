@@ -1,4 +1,10 @@
+require 'sidekiq/web'
+
 RubyCourse::Application.routes.draw do
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
@@ -23,6 +29,7 @@ RubyCourse::Application.routes.draw do
       post :accept, on: :member
     end
     resources :comments
+    resources :subscriptions
   end
 
   resources :answers do

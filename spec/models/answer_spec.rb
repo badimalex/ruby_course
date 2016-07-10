@@ -45,4 +45,15 @@ describe Answer do
       Answer.first.should eq(accepted_answer)
     end
   end
+
+  describe '.notify_subscriber' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user: user) }
+    subject { build(:answer, question: question) }
+
+    it 'should notify question author' do
+      expect(QuestionNotifierJob).to receive(:perform_later).with(subject)
+      subject.save!
+    end
+  end
 end
