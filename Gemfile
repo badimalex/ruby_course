@@ -49,6 +49,8 @@ gem 'whenever'
 gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', require: nil
 gem 'sidetiq'
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
