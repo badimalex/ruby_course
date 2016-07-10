@@ -2,10 +2,11 @@
   = render @question
   = render 'vote', voteable: @question
   = render 'comments', commentable: @question
-  - if @subscription = current_user.subscriptions.find_by(question_id: @question.id)
-    = link_to 'Cancel subscription', question_subscription_path(@question, @subscription), method: 'delete', remote: true, class: 'cancel_subscribe'
-  - else
-    = link_to 'Create subscription', question_subscriptions_path(@question), method: 'post', remote: true, class: 'create_subscribe'
+  - if current_user
+    - if @subscription = current_user.subscriptions.find_by(question_id: @question.id)
+      = link_to 'Cancel subscription', question_subscription_path(@question, @subscription), method: 'delete', remote: true, class: 'cancel_subscribe'
+    - else
+      = link_to 'Create subscription', question_subscriptions_path(@question), method: 'post', remote: true, class: 'create_subscribe'
 
 - if current_user && current_user.author_of?(@question)
   = link_to 'Remove', question_path(@question), method: 'delete'

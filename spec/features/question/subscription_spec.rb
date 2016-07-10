@@ -13,4 +13,12 @@ feature 'Question subscribe' do
     expect(page).to have_link 'Cancel subscription'
     expect(page).to_not have_link 'Create subscription'
   end
+
+  context 'non authorized' do
+    scenario 'User try to subscribe question', js: true do
+      visit question_path(question)
+
+      expect(page).to_not have_link 'Create subscription'
+    end
+  end
 end
