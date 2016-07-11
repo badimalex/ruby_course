@@ -18,3 +18,6 @@
 /.idea
 /public/uploads
 dump.rdb
+config/*.sphinx.conf
+db/sphinx
+log/*.sphinx.pid

@@ -1,0 +1,9 @@
+= form_tag searches_path, url: 'searches', method: :get do
+  = label_tag :query, 'Query'
+  = text_field_tag :query
+  = select_tag :section, options_for_select(Search::SECTIONS)
+  = submit_tag 'Find'
+
+- if @results
+  - @results.each do |result|
+    = link_to result.title, "/questions/#{result.id}"
