@@ -6,4 +6,7 @@
 
 - if @results
   - @results.each do |result|
-    = link_to result.title, "/questions/#{result.id}"
+    - if @section == 'questions'
+      = link_to result.title, "/questions/#{result.id}"
+    - if @section == 'answers'
+      = link_to result.body, "/questions/#{result.id}"
