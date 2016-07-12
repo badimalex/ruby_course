@@ -1,12 +1,17 @@
 = form_tag searches_path, url: 'searches', method: :get do
   = label_tag :query, 'Query'
-  = text_field_tag :query
-  = select_tag :section, options_for_select(Search::SECTIONS)
+  = text_field_tag :query, @query
+  = select_tag :section, options_for_select(Search::SECTIONS, @section)
   = submit_tag 'Find'
 
 - if @results
   - @results.each do |result|
-    - if @section == 'questions'
+    = result.class.to_s
+    - if @section == 'questions' or result.class.to_s == 'Question'
       = link_to result.title, "/questions/#{result.id}"
-    - if @section == 'answers'
-      = link_to result.body, "/questions/#{result.id}"
+    - if @section == 'answers' or result.class.to_s == 'Answer'
+      = link_to result.body, "/questions/#{result.question.id}"
+    - if @section == 'comments' or result.class.to_s == 'Comment'
+      = link_to result.body, "/questions/#{result.commentable_id}"
+    - if @section == 'users' or result.class.to_s == 'User'
+      = link_to result.email, "/users/#{result.id}"
