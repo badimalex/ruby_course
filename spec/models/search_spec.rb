@@ -14,6 +14,11 @@ RSpec.describe Search, type: :model do
         expect(Question).to receive(:search).with('string')
         Search.find('string', section)
       end
+
+      it 'escape query' do
+        expect(Riddle::Query).to receive(:escape).with('string')
+        Search.find('string', section)
+      end
     end
 
     context 'when search everywhere' do
@@ -25,6 +30,11 @@ RSpec.describe Search, type: :model do
 
       it 'not search with object model class' do
         expect(Question).to_not receive(:search).with('string')
+        Search.find('string', section)
+      end
+
+      it 'escape query' do
+        expect(Riddle::Query).to receive(:escape).with('string')
         Search.find('string', section)
       end
     end
