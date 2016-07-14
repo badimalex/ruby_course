@@ -28,5 +28,11 @@ RSpec.describe Search, type: :model do
         Search.find('string', section)
       end
     end
+
+    context 'with non exists section' do
+      it 'raise exception' do
+        expect { Search.find('string', 'non_exist_section') }.to raise_error(Exceptions::NonExistSection)
+      end
+    end
   end
 end
