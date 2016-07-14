@@ -49,6 +49,8 @@ gem 'whenever'
 gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', require: nil
 gem 'sidetiq'
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -57,6 +59,10 @@ end
 
 group :development do
   gem 'guard-rubocop'
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
 end
 
 group :test, :development do
