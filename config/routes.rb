@@ -36,6 +36,8 @@ RubyCourse::Application.routes.draw do
     resources :comments
   end
 
+  resources :searches
+
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
   post 'answers/:id/up_vote', to: 'answers#up_vote', as: 'up_vote_answer'
   post 'answers/:id/down_vote', to: 'answers#down_vote', as: 'down_vote_answer'

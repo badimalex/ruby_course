@@ -9,4 +9,9 @@ module Exceptions
       super 'The voteable cannot be voted by the owner.'
     end
   end
+  class NonExistSection < StandardError
+    def initialize
+      super 'The section non exist.'
+    end
+  end
 end
