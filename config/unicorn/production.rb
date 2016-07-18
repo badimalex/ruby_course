@@ -1,5 +1,5 @@
 # paths
-app_path = "/home/badichan/Desktop/ruby_course"
+app_path = "/home/deployer/ruby_course/current"
 working_directory "#{app_path}/current"
 pid               "#{app_path}/current/tmp/pids/unicorn.pid"
 
