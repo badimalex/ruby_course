@@ -5,27 +5,27 @@ div { data-answer = answer.id }
     span = 'Accepted'
 
   - if answer.persisted?
+    - cache answer do
+      = render 'questions/vote', voteable: answer
+      = render 'questions/comments', commentable: answer
 
-    = render 'questions/vote', voteable: answer
-    = render 'questions/comments', commentable: answer
+      ul.answer-attachments
+        - answer.attachments.each do |a|
+          li { data-id = a.id }
+            = link_to a.file.filename, a.file.url
+            = ' '
+            - if current_user && current_user.author_of?(answer)
+              = link_to 'Remove attachment', destroy_attachment_path(a), method: 'delete', remote: true
 
-    ul.answer-attachments
-      - answer.attachments.each do |a|
-        li { data-id = a.id }
-          = link_to a.file.filename, a.file.url
-          = ' '
-          - if current_user && current_user.author_of?(answer)
-            = link_to 'Remove attachment', destroy_attachment_path(a), method: 'delete', remote: true
+      - if current_user
+        - if current_user.author_of?(answer)
+          p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete', remote: true
+          p = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
 
-    - if current_user
-      - if current_user.author_of?(answer)
-        p = link_to 'Remove answer', question_answer_path(@question, answer), method: 'delete', remote: true
-        p = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+        - if current_user.author_of?(@question)
+          p = link_to 'Accept answer', accept_question_answer_path(@question, answer), class: 'accept-answer-link', method: 'post', remote: true
 
-      - if current_user.author_of?(@question)
-        p = link_to 'Accept answer', accept_question_answer_path(@question, answer), class: 'accept-answer-link', method: 'post', remote: true
-
-      = form_for [@question, answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
-        = f.label :body, 'Answer'
-        = f.text_area :body
-        = f.submit 'Save'
+        = form_for [@question, answer], remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
+          = f.label :body, 'Answer'
+          = f.text_area :body
+          = f.submit 'Save'
