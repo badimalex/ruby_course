@@ -32,6 +32,7 @@ module RubyCourse
                         request_specs: false,
                         controller_specs: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
+      config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expares_in: 90.minutes }
     end
   end
 end

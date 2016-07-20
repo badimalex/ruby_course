@@ -1,6 +1,7 @@
 .comments
   - commentable.comments.each do |comment|
-    p= comment.body
+    - cache comment do
+      p= comment.body
 
 .comments-form
   = form_for [commentable, commentable.comments.build], remote: true do |f|
